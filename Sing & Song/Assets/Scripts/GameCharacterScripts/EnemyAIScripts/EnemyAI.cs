@@ -6,7 +6,7 @@ public class EnemyAI : GameCharacter
 {
     #region EnemyVariables
     [SerializeField] protected GameObject playerObject;
-    protected PlayerController playerController;
+    protected SingScript singController;
 
     [SerializeField] protected Vector2 attackRange;
 
@@ -34,7 +34,7 @@ public class EnemyAI : GameCharacter
 
     protected override void Initialise()
     {
-        playerController = playerObject.GetComponent<PlayerController>();
+        singController = playerObject.GetComponent<SingScript>();
         enemyState = EnemyState.ENEMY_PATROLLING;
     }
 
@@ -159,7 +159,7 @@ public class EnemyAI : GameCharacter
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            playerController.DamagePlayer(this.gameObject);
+            singController.DamagePlayer(this.gameObject);
         }
     }
 }

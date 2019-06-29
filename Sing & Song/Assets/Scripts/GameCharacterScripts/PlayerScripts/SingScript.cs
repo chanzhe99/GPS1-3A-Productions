@@ -45,6 +45,12 @@ public class SingScript : GameCharacter
     [SerializeField] private float dashInterval;
     private float dashTimeTimer;
     private float dashIntervalTimer;
+    private bool dashedInAir;
+    #endregion
+
+    #region Damaged Variables
+    [Header("Damaged Variables")]
+    [SerializeField] private float invulnerabilityPeriod;
     #endregion
 
     private enum PlayerState
@@ -69,8 +75,11 @@ public class SingScript : GameCharacter
         currentSpirit = maximumSpirit;
         #endregion
         #region Initialise Jump Variables
-        gravity = rigidbody2D.gravityScale;
+        gravity = this.rigidbody2D.gravityScale;
         jumpVelocity = Mathf.Sqrt(Mathf.Pow(jumpHeight, 2) * gravity);
+        #endregion
+        #region Initialise Dash Variables
+        dashIntervalTimer = dashInterval;
         #endregion
     }
 
@@ -90,139 +99,145 @@ public class SingScript : GameCharacter
         UpdateRaycastOrigins();
         VerticalCollisionDetection();
         #endregion
+        #region Reset Jump Time
+        if(playerState != PlayerState.PLAYER_JUMPING && jumpTime > 0) { jumpTime = 0; }
+        #endregion
+        #region Reset Heal Input Buffer
+        if(!inputHeal && inputBuffer > 0) { inputBuffer = 0; }
+        #endregion
+        #region Reset Dash Interval
+        if(dashIntervalTimer < dashInterval) { dashIntervalTimer += Time.deltaTime; }
+        #endregion
 
-
-
-        //print($"playerState: {playerState}");
-        //print($"inputBuffer: {inputBuffer}");
-        print($"isGrounded: {isGrounded}");
-        //print($"isHitCeiling: {isHitCeiling}");
         PlayerSwitchState();
+        print($"playerState: {playerState}");
+        //print($"inputBuffer: {inputBuffer}");
+        //print($"isGrounded: {isGrounded}");
+        //print($"isHitCeiling: {isHitCeiling}");
+        //print($"currentHealth: {currentHealth}");
+        //print($"currentSpirit: {currentSpirit}");
+        //print($"dashedInAir: {dashedInAir}");
     }
     
-    
-
     private void PlayerSwitchState()
     {
-        switch(playerState)
+        switch (playerState)
         {
             case PlayerState.PLAYER_IDLE:
                 animator.SetBool("isRunning", false);
                 PlayerFlip();
-                if(!isGrounded)
-                    playerState = PlayerState.PLAYER_FALLING;
-                if(input.x != 0)
-                    playerState = PlayerState.PLAYER_RUNNING;
-                else if(inputJumpPress && isGrounded)
-                    playerState = PlayerState.PLAYER_JUMPING;
+                if(!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
+                else if(input.x != 0) { playerState = PlayerState.PLAYER_RUNNING; }
+                else if(inputJumpPress && isGrounded) { playerState = PlayerState.PLAYER_JUMPING; }
                 else if(inputHeal && currentSpirit >= spiritDrainToHeal)
+                {
                     if(inputBuffer >= inputBufferTime)
                     {
                         inputBuffer = 0;
                         playerState = PlayerState.PLAYER_HEALING;
                     }
-                    else
-                    {
-                        inputBuffer += Time.deltaTime;
-                    }
-                else if(!inputHeal && inputBuffer > 0)
-                    inputBuffer = 0;
-                else if(inputDash)
+                    else { inputBuffer += Time.deltaTime; }
+                }
+                else if(inputDash && dashIntervalTimer >= dashInterval)
+                {
+                    dashIntervalTimer = 0f;
                     playerState = PlayerState.PLAYER_DASHING;
+                }
                 break;
             case PlayerState.PLAYER_RUNNING:
                 animator.SetBool("isRunning", true);
                 PlayerFlip();
                 PlayerMove();
-                if(!isGrounded)
-                    playerState = PlayerState.PLAYER_FALLING;
-                if(input.x == 0)
-                    playerState = PlayerState.PLAYER_IDLE;
-                else if(inputJumpPress && isGrounded)
-                    playerState = PlayerState.PLAYER_JUMPING;
+                if(!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
+                else if(input.x == 0) { playerState = PlayerState.PLAYER_IDLE; }
+                else if(inputJumpPress && isGrounded) { playerState = PlayerState.PLAYER_JUMPING; }
                 else if(inputHeal && currentSpirit >= spiritDrainToHeal)
-                    if (inputBuffer >= inputBufferTime)
+                {
+                    if(inputBuffer >= inputBufferTime)
                     {
                         inputBuffer = 0;
                         playerState = PlayerState.PLAYER_HEALING;
                     }
-                    else
-                    {
-                        inputBuffer += Time.deltaTime;
-                    }
-                else if(!inputHeal && inputBuffer > 0)
-                    inputBuffer = 0;
-                else if(inputDash)
+                    else { inputBuffer += Time.deltaTime; }
+                }
+                else if(inputDash && dashIntervalTimer >= dashInterval)
+                {
+                    dashIntervalTimer = 0f;
                     playerState = PlayerState.PLAYER_DASHING;
+                }
                 break;
             case PlayerState.PLAYER_JUMPING:
                 animator.SetBool("isRunning", false);
                 PlayerFlip();
                 PlayerMove();
                 PlayerJump();
-                if(!inputJump || isHitCeiling)
+                if(!inputJump || isHitCeiling) { playerState = PlayerState.PLAYER_FALLING; }
+                else if(inputDash && dashIntervalTimer >= dashInterval && !dashedInAir)
                 {
-                    jumpTime = 0;
-                    playerState = PlayerState.PLAYER_FALLING;
+                    dashIntervalTimer = 0f;
+                    dashedInAir = true;
+                    playerState = PlayerState.PLAYER_DASHING;
                 }
                 break;
             case PlayerState.PLAYER_FALLING:
+                animator.SetBool("isRunning", false);
                 PlayerFlip();
                 PlayerMove();
-                PlayerFall();
+                if(isGrounded)
+                {
+                    dashedInAir = false;
+                    playerState = PlayerState.PLAYER_IDLE;
+                } // Resets player state to idle after landing from a fall
+                if(inputDash && dashIntervalTimer >= dashInterval && !dashedInAir)
+                {
+                    dashIntervalTimer = 0f;
+                    dashedInAir = true;
+                    playerState = PlayerState.PLAYER_DASHING;
+                }
                 break;
             case PlayerState.PLAYER_HEALING:
                 animator.SetBool("isRunning", false);
-                rigidbody2D.velocity = Vector2.zero;
+                this.rigidbody2D.velocity = Vector2.zero;
                 PlayerHeal();
-                if(!isGrounded)
-                    playerState = PlayerState.PLAYER_FALLING;
-                if(!inputHeal || currentSpirit <= 0 || finishedHeal && currentSpirit < spiritDrainToHeal || finishedHeal && currentHealth >= maximumHealth)
+                if(!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
+                else if(!inputHeal || currentSpirit <= 0 || finishedHeal && currentSpirit < spiritDrainToHeal || finishedHeal && currentHealth >= maximumHealth)
                 {
                     spiritDrain = 0;
                     currentSpirit = Mathf.RoundToInt(currentSpirit);
                     playerState = PlayerState.PLAYER_IDLE;
                 }
-                else if(inputHeal && currentSpirit >= spiritDrainToHeal && finishedHeal)
-                    playerState = PlayerState.PLAYER_HEALING;
+                else if(inputHeal && currentSpirit >= spiritDrainToHeal && finishedHeal) { playerState = PlayerState.PLAYER_HEALING; }
                 break;
             case PlayerState.PLAYER_DASHING:
+                animator.SetBool("isRunning", false);
                 PlayerDash();
-                playerState = PlayerState.PLAYER_IDLE;
+                break;
+            case PlayerState.PLAYER_HIT:
+                animator.SetBool("isRunning", false);
+                StartCoroutine(PlayerKnockback());
                 break;
         }
     }
 
     private void PlayerFlip()
     {
-        if (input.x > 0 && !facingRight || input.x < 0 && facingRight)
-            FlipCharacter();
+        if(input.x > 0 && !facingRight || input.x < 0 && facingRight) { FlipCharacter(); }
     } // Checks direction of player
 
     private void PlayerMove()
     {
-        rigidbody2D.velocity = new Vector2(input.x * moveSpeed, rigidbody2D.velocity.y);
+        this.rigidbody2D.velocity = new Vector2(input.x * moveSpeed, this.rigidbody2D.velocity.y);
     } // Makes player move
 
     private void PlayerJump()
     {
-        if(jumpTime >= timeToJumpApex)
-        {
-            jumpTime = 0;
-            playerState = PlayerState.PLAYER_FALLING;
-        }
+        if(jumpTime >= timeToJumpApex) { playerState = PlayerState.PLAYER_FALLING; }
         else
         {
             jumpTime += Time.deltaTime;
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpVelocity);
+            this.rigidbody2D.velocity = new Vector2(this.rigidbody2D.velocity.x, jumpVelocity);
         }
     } // Makes player jump
-
-    private void PlayerFall()
-    {
-        if(isGrounded)
-            playerState = PlayerState.PLAYER_IDLE;
-    } // Resets player state to idle after landing from a fall
 
     private void PlayerHeal()
     {
@@ -247,7 +262,17 @@ public class SingScript : GameCharacter
 
     private void PlayerDash()
     {
-
+        if(dashTimeTimer >= dashTime)
+        {
+            dashTimeTimer = 0;
+            this.rigidbody2D.velocity = Vector2.zero;
+            playerState = (dashedInAir) ? PlayerState.PLAYER_FALLING : PlayerState.PLAYER_IDLE;
+        }
+        else
+        {
+            dashTimeTimer += Time.deltaTime;
+            this.rigidbody2D.velocity = (facingRight) ? Vector2.right * dashSpeed : Vector2.left * dashSpeed;
+        }
     } // Makes player dash
 
     private void PlayerMeleeAttack()
@@ -262,7 +287,29 @@ public class SingScript : GameCharacter
     
     public void DamagePlayer(GameObject enemyObject)
     {
+        if (enemyObject.transform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
+        else { knockbackDirection.x = knockbackForce.x; }
         if(playerState != PlayerState.PLAYER_HIT)
+        {
             playerState = PlayerState.PLAYER_HIT;
+            if (currentHealth > 0) { currentHealth -= 1; }
+            else { /*restart from checkpoint*/ }
+        }
+            
     } // Gets called when player is hit by enemy
+
+    IEnumerator PlayerKnockback()
+    {
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(0.2f);
+        Time.timeScale = 1;
+        if (knockbackDirection.x < 0 && !facingRight || knockbackDirection.x > 0 && facingRight) { FlipCharacter(); }
+        this.rigidbody2D.velocity = Vector2.zero;
+        this.rigidbody2D.AddForce(knockbackDirection, ForceMode2D.Impulse);
+        
+        yield return new WaitForSecondsRealtime(0.2f);
+        this.rigidbody2D.velocity = Vector2.zero;
+        playerState = PlayerState.PLAYER_FALLING;
+        //yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
+    }
 }
