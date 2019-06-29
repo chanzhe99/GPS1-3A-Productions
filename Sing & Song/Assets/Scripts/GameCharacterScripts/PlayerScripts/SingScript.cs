@@ -20,13 +20,6 @@ public class SingScript : GameCharacter
     [SerializeField] private int maximumSpirit = 9;
     private float currentSpirit;
     #endregion
-    #region Ground & Ceiling Check Variables
-    private Transform groundCheck;
-    private Transform ceilingCheck;
-    private Vector2 checkSize;
-    private bool isGrounded;
-    private bool isHitCeiling;
-    #endregion
     #region Jump Variables
     [Header("Jump Variables")]
     [SerializeField] private float jumpHeight = 4.5f;
@@ -75,16 +68,10 @@ public class SingScript : GameCharacter
         #region Initialise Spirit Variables
         currentSpirit = maximumSpirit;
         #endregion
-        #region Initialise Ground & Ceiling Check Variables
-        groundCheck = transform.Find("SingCollider/GroundCheck").transform;
-        ceilingCheck = transform.Find("SingCollider/CeilingCheck").transform;
-        checkSize = new Vector2(capsuleCollider2D.size.x * 0.95f, 0.1f);
-        #endregion
         #region Initialise Jump Variables
         gravity = rigidbody2D.gravityScale;
         jumpVelocity = Mathf.Sqrt(Mathf.Pow(jumpHeight, 2) * gravity);
         #endregion
-
     }
 
     private void Update()
@@ -100,17 +87,21 @@ public class SingScript : GameCharacter
         inputInteract = Input.GetButtonDown("InteractButton"); // Input for interact
         #endregion
         #region Check Ground & Ceiling
-        isGrounded = Physics2D.OverlapBox(groundCheck.position, checkSize, 0f, terrainLayer);
-        isHitCeiling = Physics2D.OverlapBox(ceilingCheck.position, checkSize, 0f, terrainLayer);
+        UpdateRaycastOrigins();
+        VerticalCollisionDetection();
         #endregion
 
-        
 
-        print($"playerState: {playerState}");
-        print($"inputBuffer: {inputBuffer}");
+
+        //print($"playerState: {playerState}");
+        //print($"inputBuffer: {inputBuffer}");
+        print($"isGrounded: {isGrounded}");
+        //print($"isHitCeiling: {isHitCeiling}");
         PlayerSwitchState();
     }
     
+    
+
     private void PlayerSwitchState()
     {
         switch(playerState)
@@ -169,7 +160,7 @@ public class SingScript : GameCharacter
                 PlayerFlip();
                 PlayerMove();
                 PlayerJump();
-                if(!inputJump)
+                if(!inputJump || isHitCeiling)
                 {
                     jumpTime = 0;
                     playerState = PlayerState.PLAYER_FALLING;
@@ -186,13 +177,13 @@ public class SingScript : GameCharacter
                 PlayerHeal();
                 if(!isGrounded)
                     playerState = PlayerState.PLAYER_FALLING;
-                if (!inputHeal || currentSpirit <= 0 || finishedHeal && currentSpirit < spiritDrainToHeal || finishedHeal && currentHealth >= maximumHealth)
+                if(!inputHeal || currentSpirit <= 0 || finishedHeal && currentSpirit < spiritDrainToHeal || finishedHeal && currentHealth >= maximumHealth)
                 {
                     spiritDrain = 0;
                     currentSpirit = Mathf.RoundToInt(currentSpirit);
                     playerState = PlayerState.PLAYER_IDLE;
                 }
-                else if (inputHeal && currentSpirit >= spiritDrainToHeal && finishedHeal)
+                else if(inputHeal && currentSpirit >= spiritDrainToHeal && finishedHeal)
                     playerState = PlayerState.PLAYER_HEALING;
                 break;
             case PlayerState.PLAYER_DASHING:
@@ -202,18 +193,18 @@ public class SingScript : GameCharacter
         }
     }
 
-    private void PlayerFlip() // Checks direction of player
+    private void PlayerFlip()
     {
         if (input.x > 0 && !facingRight || input.x < 0 && facingRight)
             FlipCharacter();
-    }
+    } // Checks direction of player
 
-    private void PlayerMove() // Makes player move
+    private void PlayerMove()
     {
         rigidbody2D.velocity = new Vector2(input.x * moveSpeed, rigidbody2D.velocity.y);
-    }
+    } // Makes player move
 
-    private void PlayerJump() // Makes player jump
+    private void PlayerJump()
     {
         if(jumpTime >= timeToJumpApex)
         {
@@ -225,15 +216,15 @@ public class SingScript : GameCharacter
             jumpTime += Time.deltaTime;
             rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpVelocity);
         }
-    }
+    } // Makes player jump
 
-    private void PlayerFall() // Resets jump values when player lands after jumping
+    private void PlayerFall()
     {
         if(isGrounded)
             playerState = PlayerState.PLAYER_IDLE;
-    }
+    } // Resets player state to idle after landing from a fall
 
-    private void PlayerHeal() // Makes player heal
+    private void PlayerHeal()
     {
         if(spiritDrain >= spiritDrainToHeal)
         {
@@ -252,31 +243,26 @@ public class SingScript : GameCharacter
             currentSpirit -= Time.deltaTime * (spiritDrainToHeal / healTime);
             finishedHeal = false;
         }
-    }
+    } // Makes player heal
 
     private void PlayerDash()
     {
 
-    }
+    } // Makes player dash
 
     private void PlayerMeleeAttack()
     {
 
-    }
+    } // Makes player use melee attack
 
     private void PlayerSpiritAttack()
     {
 
-    }
-
-    private void PlayerHit()
-    {
-
-    }
-
+    } // Makes player use spirit attack 
+    
     public void DamagePlayer(GameObject enemyObject)
     {
         if(playerState != PlayerState.PLAYER_HIT)
             playerState = PlayerState.PLAYER_HIT;
-    }
+    } // Gets called when player is hit by enemy
 }
