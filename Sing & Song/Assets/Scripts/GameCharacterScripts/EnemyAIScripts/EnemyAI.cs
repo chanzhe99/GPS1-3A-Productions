@@ -5,13 +5,13 @@ using UnityEngine;
 public class EnemyAI : GameCharacter
 {
     #region EnemyVariables
+    [SerializeField] protected GameObject playerObject;
     protected PlayerController playerController;
 
     [SerializeField] protected Vector2 attackRange;
 
     [SerializeField] protected Vector2 playerDetectionRange;
     protected bool isDetectPlayerWhilePatrolling;
-    protected LayerMask playerLayer;
 
     [SerializeField] protected float restTime;
     [SerializeField] protected float retreatTime;
@@ -35,7 +35,7 @@ public class EnemyAI : GameCharacter
     protected override void Initialise()
     {
         playerController = playerObject.GetComponent<PlayerController>();
-        playerLayer = LayerMask.GetMask("Player");
+        enemyState = EnemyState.ENEMY_PATROLLING;
     }
 
     private void Update()

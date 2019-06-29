@@ -257,7 +257,7 @@ public class PlayerController : MonoBehaviour
         xInput = Input.GetAxisRaw("Horizontal");
         yInput = Input.GetAxisRaw("Vertical");
 
-        if(xInput < 0 || xInput > 0)
+        if(xInput != 0)
         {
             animator.SetBool("isRunning", true);
         }

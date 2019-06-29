@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class FlyingLemurAI : EnemyAI
 {
+    #region Ground Check Variables
+    [SerializeField] protected Transform groundCheck;
+    protected bool isGrounded;
+    protected Vector2 checkSize;
+    #endregion
+
     private Vector3 lemurPerchPosition;
     private Vector3 lemurDefaultPosition;
     private Vector3 playerDivePosition;
@@ -18,7 +24,6 @@ public class FlyingLemurAI : EnemyAI
     protected override void Initialise()
     {
         base.Initialise();
-        enemyState = EnemyState.ENEMY_PATROLLING;
         lemurPerchPosition = transform.position;
         lemurDefaultPosition.y = transform.position.y;
 
