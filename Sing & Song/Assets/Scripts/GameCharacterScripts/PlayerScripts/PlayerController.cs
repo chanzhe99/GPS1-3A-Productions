@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
         maxHP = 5;
         currentHP = maxHP;
         maxSP = 100;
-        currentSP = 0;
+        currentSP = maxSP;
         maxSPPosition = new Vector2(SPBar.rectTransform.anchoredPosition.x, -65);
         minSPPosition = new Vector2(SPBar.rectTransform.anchoredPosition.x, -200);
         SPBarMovingRight = true;
@@ -283,7 +283,7 @@ public class PlayerController : MonoBehaviour
     private void PlayerJump()
     {
         // Check isGrounded & isHitCeiling
-        isGrounded = Physics2D.OverlapBox(groundCheck.position, checkSize, 0f, terrainLayer);
+        isGrounded = true;//Physics2D.OverlapBox(groundCheck.position, checkSize, 0f, terrainLayer);
         isHitCeiling = Physics2D.OverlapBox(ceilingCheck.position, checkSize, 0f, terrainLayer);
 
         // Set isGrounded Variable Defaults

@@ -43,6 +43,7 @@ public class GameCharacter : MonoBehaviour
 
     [SerializeField] protected int maximumHealth;
     [SerializeField] protected int attackDamage;
+    [SerializeField] protected Vector2 attackRange;
     [SerializeField] protected float moveSpeed;
     protected int currentHealth;
 
@@ -72,6 +73,9 @@ public class GameCharacter : MonoBehaviour
         playerLayer = LayerMask.GetMask("Player");
         enemyLayer = LayerMask.GetMask("Enemy");
         terrainLayer = LayerMask.GetMask("Terrain");
+        #endregion
+        #region Initialise Health Variables
+        currentHealth = maximumHealth;
         #endregion
 
         DetermineStartingDirection(); 

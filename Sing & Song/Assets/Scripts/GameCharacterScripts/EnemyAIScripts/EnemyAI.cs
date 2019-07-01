@@ -8,7 +8,7 @@ public class EnemyAI : GameCharacter
     [SerializeField] protected GameObject playerObject;
     protected SingScript singController;
 
-    [SerializeField] protected Vector2 attackRange;
+    
 
     [SerializeField] protected Vector2 playerDetectionRange;
     protected bool isDetectPlayerWhilePatrolling;
@@ -34,12 +34,14 @@ public class EnemyAI : GameCharacter
 
     protected override void Initialise()
     {
+        base.Initialise();
         singController = playerObject.GetComponent<SingScript>();
         enemyState = EnemyState.ENEMY_PATROLLING;
     }
 
     private void Update()
     {
+        print($"currentHealth: {currentHealth}");
         EnemySwitchState();
     }
 
@@ -128,7 +130,7 @@ public class EnemyAI : GameCharacter
             }
             else
             {
-                Destroy(this.gameObject);
+                //Destroy(this.gameObject);
             }
             //print($"isHit: {isHit}");
             //print($"currentHealth: {currentHealth}");

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SingScript : GameCharacter
 {
@@ -17,7 +18,7 @@ public class SingScript : GameCharacter
     #endregion
     #region Spirit Variables
     [Header("Spirit Variables")]
-    [SerializeField] private int maximumSpirit = 9;
+    [SerializeField] private float maximumSpirit = 9f;
     private float currentSpirit;
     #endregion
     #region Jump Variables
@@ -31,7 +32,7 @@ public class SingScript : GameCharacter
     #region Heal Variables
     [Header("Heal Variables")]
     [SerializeField] private float inputBufferTime = 0.2f;
-    [SerializeField] private int spiritDrainToHeal = 3;
+    [SerializeField] private float spiritDrainToHeal = 3f;
     [SerializeField] private float healTime = 1.5f;
     private float inputBuffer;
     private float spiritDrain;
@@ -47,10 +48,33 @@ public class SingScript : GameCharacter
     private float dashIntervalTimer;
     private bool dashedInAir;
     #endregion
-
+    #region Melee Attack Variables
+    [Header("Melee Attack Variables")]
+    [SerializeField] private Transform meleeAttackTransform;
+    [SerializeField] private float meleeAttackInterval;
+    private float meleeAttackIntervalTimer;
+    private Collider2D[] enemiesHit;
+    #endregion
     #region Damaged Variables
     [Header("Damaged Variables")]
-    [SerializeField] private float invulnerabilityPeriod;
+    [SerializeField] private float hitImpactTime = 0.2f;
+    [SerializeField] private float hitKnockbackTime = 0.3f;
+    [SerializeField] private float invulnerabilityPeriod = 0.5f;
+    private bool vulnerable;
+    private bool ignoreEnemyCollision;
+    #endregion
+    #region UI Variables
+    [Header("UI Variables")]
+    [SerializeField] private Image[] healthCrystals;
+    [SerializeField] private Image spiritWell;
+    [SerializeField] private float spiritWellFlowSpeed;
+    private Vector2 maximumSpiritWellPosition;
+    private Vector2 minimumSpiritWellPosition;
+    private Vector2 currentSpiritWellPosition;
+    private float previousSpiritWellPosition;
+    private float spiritWellAlpha;
+    //private float spiritWellEdge;
+    //private bool spiritWellFlowingRight;
     #endregion
 
     private enum PlayerState
@@ -68,9 +92,6 @@ public class SingScript : GameCharacter
     protected override void Initialise()
     {
         base.Initialise();
-        #region Initialise Health Variables
-        currentHealth = maximumHealth;
-        #endregion
         #region Initialise Spirit Variables
         currentSpirit = maximumSpirit;
         #endregion
@@ -80,6 +101,19 @@ public class SingScript : GameCharacter
         #endregion
         #region Initialise Dash Variables
         dashIntervalTimer = dashInterval;
+        #endregion
+        #region Initialise Melee Attack Variables
+        meleeAttackIntervalTimer = meleeAttackInterval;
+        #endregion
+        #region Initialise Damaged Variables
+        vulnerable = true;
+        #endregion
+        #region Initialise UI Variables
+        minimumSpiritWellPosition = new Vector2(spiritWell.rectTransform.anchoredPosition.x, -200);
+        maximumSpiritWellPosition = new Vector2(spiritWell.rectTransform.anchoredPosition.x, -65);
+        previousSpiritWellPosition = currentSpiritWellPosition.y;
+        spiritWellAlpha = spiritWell.color.a;
+        //spiritWellEdge = 500f;
         #endregion
     }
 
@@ -99,6 +133,11 @@ public class SingScript : GameCharacter
         UpdateRaycastOrigins();
         VerticalCollisionDetection();
         #endregion
+        #region Check Spirit
+        if(currentSpirit > maximumSpirit) { currentSpirit = maximumSpirit; } // maybe move this to attack function
+        if(currentSpirit < 0) { currentSpirit = 0; }
+        if(playerState != PlayerState.PLAYER_HEALING && currentSpirit >= spiritDrainToHeal - 0.1f && currentSpirit < spiritDrainToHeal) { currentSpirit = Mathf.Round(currentSpirit); }
+        #endregion
         #region Reset Jump Time
         if(playerState != PlayerState.PLAYER_JUMPING && jumpTime > 0) { jumpTime = 0; }
         #endregion
@@ -108,17 +147,58 @@ public class SingScript : GameCharacter
         #region Reset Dash Interval
         if(dashIntervalTimer < dashInterval) { dashIntervalTimer += Time.deltaTime; }
         #endregion
+        #region Update Melee Attack Interval Timer & Position
+        if(meleeAttackIntervalTimer < meleeAttackInterval) { meleeAttackIntervalTimer += Time.deltaTime; }
+        if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING)
+        {
+            meleeAttackTransform.localPosition = (input.y > 0) ? Vector2.up * 2f : Vector2.left;
+            if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { PlayerMeleeAttack(); }
+        }
+        else if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
+        {
+            meleeAttackTransform.localPosition = (input.y != 0) ? Vector2.up * input.y * 2f : Vector2.left;
+            if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { PlayerMeleeAttack(); }
+        }
+        #endregion
+        #region Set Enemy Layer Collision
+        ignoreEnemyCollision = !vulnerable;
+        Physics2D.IgnoreLayerCollision(8, 9, ignoreEnemyCollision);
+        #endregion
+
+        #region Update UI
+        for (int i = 0; i < healthCrystals.Length; i++)
+        {
+            healthCrystals[i].enabled = (i < currentHealth) ? true : false;
+        }
+        spiritWellAlpha = (playerState != PlayerState.PLAYER_HEALING && currentSpirit < spiritDrainToHeal) ? 0.6f : 1f;
+        spiritWell.color = new Color(1f, 1f, 1f, Mathf.Lerp(spiritWell.color.a, spiritWellAlpha, Time.deltaTime * 2));
+        currentSpiritWellPosition = Vector2.Lerp(minimumSpiritWellPosition, maximumSpiritWellPosition, currentSpirit/maximumSpirit);
+        spiritWell.rectTransform.anchoredPosition = Vector2.Lerp(spiritWell.rectTransform.anchoredPosition, currentSpiritWellPosition, 1f);
+
+        if(previousSpiritWellPosition != currentSpiritWellPosition.y)
+        {
+            //spiritWell.rectTransform.Translate(spiritWellFlowSpeed * Time.deltaTime, 0f, 0f);
+            previousSpiritWellPosition = currentSpiritWellPosition.y;
+        }
+        #endregion
 
         PlayerSwitchState();
-        print($"playerState: {playerState}");
+        //print($"playerState: {playerState}");
         //print($"inputBuffer: {inputBuffer}");
         //print($"isGrounded: {isGrounded}");
         //print($"isHitCeiling: {isHitCeiling}");
         //print($"currentHealth: {currentHealth}");
         //print($"currentSpirit: {currentSpirit}");
         //print($"dashedInAir: {dashedInAir}");
+        print($"enemiesHit: {enemiesHit}");
     }
-    
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(meleeAttackTransform.position, attackRange.x);
+    }
+
     private void PlayerSwitchState()
     {
         switch (playerState)
@@ -203,7 +283,6 @@ public class SingScript : GameCharacter
                 else if(!inputHeal || currentSpirit <= 0 || finishedHeal && currentSpirit < spiritDrainToHeal || finishedHeal && currentHealth >= maximumHealth)
                 {
                     spiritDrain = 0;
-                    currentSpirit = Mathf.RoundToInt(currentSpirit);
                     playerState = PlayerState.PLAYER_IDLE;
                 }
                 else if(inputHeal && currentSpirit >= spiritDrainToHeal && finishedHeal) { playerState = PlayerState.PLAYER_HEALING; }
@@ -214,7 +293,6 @@ public class SingScript : GameCharacter
                 break;
             case PlayerState.PLAYER_HIT:
                 animator.SetBool("isRunning", false);
-                StartCoroutine(PlayerKnockback());
                 break;
         }
     }
@@ -244,7 +322,6 @@ public class SingScript : GameCharacter
         if(spiritDrain >= spiritDrainToHeal)
         {
             spiritDrain = 0;
-            currentSpirit = Mathf.RoundToInt(currentSpirit);
             if(currentHealth < maximumHealth)
             {
                 currentHealth += 1;
@@ -266,18 +343,35 @@ public class SingScript : GameCharacter
         {
             dashTimeTimer = 0;
             this.rigidbody2D.velocity = Vector2.zero;
+            vulnerable = true;
             playerState = (dashedInAir) ? PlayerState.PLAYER_FALLING : PlayerState.PLAYER_IDLE;
         }
         else
         {
             dashTimeTimer += Time.deltaTime;
+            vulnerable = false;
             this.rigidbody2D.velocity = (facingRight) ? Vector2.right * dashSpeed : Vector2.left * dashSpeed;
         }
     } // Makes player dash
 
     private void PlayerMeleeAttack()
     {
-
+        enemiesHit = Physics2D.OverlapCircleAll(meleeAttackTransform.position, attackRange.x, enemyLayer);
+        if (enemiesHit.Length != 0 && meleeAttackTransform.localPosition.y < 0)
+        {
+            this.rigidbody2D.velocity = Vector2.zero;
+            this.rigidbody2D.AddForce(new Vector2(0f, knockbackDirection.y * 1.5f), ForceMode2D.Impulse);
+        }
+        for (int i = 0; i < enemiesHit.Length; i++)
+        {
+            if(enemiesHit[i].GetComponentInParent<FlyingLemurAI>() != null) { enemiesHit[i].GetComponentInParent<FlyingLemurAI>().DamageEnemy(); }
+            if(enemiesHit[i].GetComponentInParent<WildDogAI>() != null) { enemiesHit[i].GetComponentInParent<WildDogAI>().DamageEnemy(); }
+            if(enemiesHit[i].GetComponentInParent<PangolinAI>() != null) { enemiesHit[i].GetComponentInParent<PangolinAI>().DamageEnemy(); }
+            if(enemiesHit[i].GetComponentInParent<CrocodileAI>() != null) { enemiesHit[i].GetComponentInParent<CrocodileAI>().DamageEnemy(); }
+            if(enemiesHit[i].GetComponentInParent<RhinoAI>() != null) { enemiesHit[i].GetComponentInParent<RhinoAI>().DamageEnemy(); }
+            currentSpirit = (currentSpirit < maximumSpirit) ? currentSpirit += 1 : maximumSpirit;
+        }
+        //if()
     } // Makes player use melee attack
 
     private void PlayerSpiritAttack()
@@ -289,9 +383,11 @@ public class SingScript : GameCharacter
     {
         if (enemyObject.transform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
         else { knockbackDirection.x = knockbackForce.x; }
-        if(playerState != PlayerState.PLAYER_HIT)
+        if(vulnerable)
         {
+            vulnerable = false;
             playerState = PlayerState.PLAYER_HIT;
+            StartCoroutine(PlayerKnockback());
             if (currentHealth > 0) { currentHealth -= 1; }
             else { /*restart from checkpoint*/ }
         }
@@ -301,15 +397,14 @@ public class SingScript : GameCharacter
     IEnumerator PlayerKnockback()
     {
         Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(0.2f);
+        yield return new WaitForSecondsRealtime(hitImpactTime);
         Time.timeScale = 1;
         if (knockbackDirection.x < 0 && !facingRight || knockbackDirection.x > 0 && facingRight) { FlipCharacter(); }
         this.rigidbody2D.velocity = Vector2.zero;
         this.rigidbody2D.AddForce(knockbackDirection, ForceMode2D.Impulse);
-        
-        yield return new WaitForSecondsRealtime(0.2f);
-        this.rigidbody2D.velocity = Vector2.zero;
+        yield return new WaitForSecondsRealtime(hitKnockbackTime);
         playerState = PlayerState.PLAYER_FALLING;
-        //yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
+        yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
+        vulnerable = true;
     }
 }
