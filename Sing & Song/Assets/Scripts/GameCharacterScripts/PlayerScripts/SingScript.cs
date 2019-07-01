@@ -52,7 +52,9 @@ public class SingScript : GameCharacter
     [Header("Melee Attack Variables")]
     [SerializeField] private Transform meleeAttackTransform;
     [SerializeField] private float meleeAttackInterval;
+    [SerializeField] private float meleeAttackBuffer;
     private float meleeAttackIntervalTimer;
+    private float meleeAttackBufferTimer;
     private Collider2D[] enemiesHit;
     #endregion
     #region Damaged Variables
@@ -356,13 +358,20 @@ public class SingScript : GameCharacter
 
     private void PlayerMeleeAttack()
     {
-        enemiesHit = Physics2D.OverlapCircleAll(meleeAttackTransform.position, attackRange.x, enemyLayer);
-        if (enemiesHit.Length != 0 && meleeAttackTransform.localPosition.y < 0)
+        meleeAttackBufferTimer = 0f;
+        while(meleeAttackBufferTimer < meleeAttackBuffer)
+        {
+            meleeAttackBufferTimer += Time.deltaTime;
+            enemiesHit = Physics2D.OverlapCircleAll(meleeAttackTransform.position, attackRange.x, enemyLayer);
+            if(enemiesHit.Length != 0) { break; }
+        } // Ask mr boon if this is a good idea
+        if(enemiesHit.Length != 0)
         {
             this.rigidbody2D.velocity = Vector2.zero;
-            this.rigidbody2D.AddForce(new Vector2(0f, knockbackDirection.y * 1.5f), ForceMode2D.Impulse);
+            if (meleeAttackTransform.localPosition.y < 0) { this.rigidbody2D.AddForce(new Vector2(0f, knockbackDirection.y * 1.5f), ForceMode2D.Impulse); }
+            else { this.rigidbody2D.AddForce(new Vector2(meleeAttackTransform.localPosition.x * knockbackForce.x * 0.75f, 0f), ForceMode2D.Impulse); }
         }
-        for (int i = 0; i < enemiesHit.Length; i++)
+        for(int i = 0; i < enemiesHit.Length; i++)
         {
             if(enemiesHit[i].GetComponentInParent<FlyingLemurAI>() != null) { enemiesHit[i].GetComponentInParent<FlyingLemurAI>().DamageEnemy(); }
             if(enemiesHit[i].GetComponentInParent<WildDogAI>() != null) { enemiesHit[i].GetComponentInParent<WildDogAI>().DamageEnemy(); }
@@ -371,7 +380,6 @@ public class SingScript : GameCharacter
             if(enemiesHit[i].GetComponentInParent<RhinoAI>() != null) { enemiesHit[i].GetComponentInParent<RhinoAI>().DamageEnemy(); }
             currentSpirit = (currentSpirit < maximumSpirit) ? currentSpirit += 1 : maximumSpirit;
         }
-        //if()
     } // Makes player use melee attack
 
     private void PlayerSpiritAttack()
