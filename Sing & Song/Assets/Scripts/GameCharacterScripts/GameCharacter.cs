@@ -11,7 +11,6 @@ public class GameCharacter : MonoBehaviour
     protected Rigidbody2D rigidbody2D;
     protected Animator animator;
     #endregion
-
     #region Layer Variables
     protected LayerMask playerLayer;
     protected LayerMask enemyLayer;
@@ -34,24 +33,33 @@ public class GameCharacter : MonoBehaviour
     protected bool isHitCeiling;
     #endregion
     #region Sprite Flip Variables
+    [Header("Spawn Direction")]
     [SerializeField] protected bool spawnFacingRight;
     protected bool facingRight;
     private Quaternion targetRotation;
     private float rotationTime;
     #endregion
-
-
+    #region Health Variables
+    [Header("Health Variable")]
     [SerializeField] protected int maximumHealth;
-    [SerializeField] protected int attackDamage;
-    [SerializeField] protected Vector2 attackRange;
-    [SerializeField] protected float moveSpeed;
     protected int currentHealth;
-
+    #endregion
+    #region Movespeed Variables
+    [Header("Movespeed Variable")]
+    [SerializeField] protected float moveSpeed;
+    #endregion
+    #region Attack Range Variable
+    [Header("Attack Range Variable (X value for circle radius)")]
+    [SerializeField] protected Vector2 attackRange;
+    #endregion
+    #region Knockback Variables
+    [Header("Knockback Variables")]
     [SerializeField] protected Vector2 knockbackForce;
+    [SerializeField] protected float knockbackTime = 0.3f;
     protected Vector2 knockbackDirection;
     protected bool isHit;
+    #endregion
 
-    
     private void Start()
     {
         Initialise();
@@ -59,7 +67,6 @@ public class GameCharacter : MonoBehaviour
 
     protected virtual void Initialise()
     {
-
         #region Initialise Component Variables
         colliderTransform = GetComponentInChildren<Transform>();
         capsuleCollider2D = GetComponentInChildren<CapsuleCollider2D>();
@@ -75,13 +82,12 @@ public class GameCharacter : MonoBehaviour
         terrainLayer = LayerMask.GetMask("Terrain");
         #endregion
         #region Initialise Health Variables
-        currentHealth = maximumHealth;
+        currentHealth = maximumHealth - 2;
         #endregion
-
-        DetermineStartingDirection(); 
-
+        #region Initialise knockbackDirection
         knockbackDirection = knockbackForce;
-        currentHealth = maximumHealth;
+        #endregion
+        DetermineStartingDirection();
     }
 
     protected void DetermineStartingDirection()

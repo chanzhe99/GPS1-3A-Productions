@@ -456,11 +456,11 @@ public class PlayerController : MonoBehaviour
                     {
                         if(enemyToDamage[i].GetComponentInParent<FlyingLemurAI>() != null)
                         {
-                            enemyToDamage[i].GetComponentInParent<FlyingLemurAI>().DamageEnemy();
+                            enemyToDamage[i].GetComponentInParent<FlyingLemurAI>().DamageEnemyMelee();
                         }
                         if (enemyToDamage[i].GetComponentInParent<WildDogAI>() != null)
                         {
-                            enemyToDamage[i].GetComponentInParent<WildDogAI>().DamageEnemy();
+                            enemyToDamage[i].GetComponentInParent<WildDogAI>().DamageEnemyMelee();
                         }
                             
                         //enemyToDamage[i].GetComponentInParent<PangolinAI>().DamageEnemy();

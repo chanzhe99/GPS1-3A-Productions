@@ -4,23 +4,33 @@ using UnityEngine;
 
 public class EnemyAI : GameCharacter
 {
-    #region EnemyVariables
+    #region Player Component Variables
+    [Header("Player Object Variable")]
     [SerializeField] protected GameObject playerObject;
-    protected SingScript singController;
-
-    
-
+    protected Transform playerTransform;
+    protected SingScript playerScript;
+    #endregion
+    #region Spirit Armour Variables
+    [Header("Spirit Armour Variables")]
+    [SerializeField] private GameObject spiritArmour;
+    [SerializeField] private bool haveSpiritArmour = false;
+    [SerializeField] private float spiritArmourRecharge = 15f;
+    private float spiritArmourRechargeTimer;
+    #endregion
+    #region Aggro Detection Variables
+    [Header("Aggro Range")]
     [SerializeField] protected Vector2 playerDetectionRange;
     protected bool isDetectPlayerWhilePatrolling;
-
+    #endregion
+    #region State Variables
+    [Header("Rest Time Variable")]
     [SerializeField] protected float restTime;
-    [SerializeField] protected float retreatTime;
     protected float restTimeTimer;
+    [Header("Retreat Time Variable")]
+    [SerializeField] protected float retreatTime;
     protected float retreatTimeTimer;
     #endregion
-
-
-    // Enemy States Enumerators
+    #region EnemyState Enums
     protected enum EnemyState
     {
         ENEMY_PATROLLING,
@@ -31,20 +41,41 @@ public class EnemyAI : GameCharacter
         ENEMY_HIT
     };
     protected EnemyState enemyState;
-
+    #endregion
     protected override void Initialise()
     {
         base.Initialise();
-        singController = playerObject.GetComponent<SingScript>();
+        #region Initialise Player Component Variables
+        playerTransform = playerObject.GetComponent<Transform>();
+        playerScript = playerObject.GetComponent<SingScript>();
+        #endregion
+        #region Initialise Spirit Armour Variables
+        if(haveSpiritArmour) { spiritArmour.SetActive(true); }
+        else { spiritArmour.SetActive(false); }
+        #endregion
         enemyState = EnemyState.ENEMY_PATROLLING;
     }
-
     private void Update()
     {
-        print($"currentHealth: {currentHealth}");
+        #region Check Health
+        if (currentHealth <= 0f) { this.gameObject.SetActive(false); }
+        #endregion
+        #region Recharge Spirit Armour
+        if (haveSpiritArmour && !spiritArmour.activeSelf)
+        {
+            if(spiritArmourRechargeTimer >= spiritArmourRecharge)
+            {
+                spiritArmourRechargeTimer = 0f;
+                spiritArmour.SetActive(true);
+            }
+            else { spiritArmourRechargeTimer += Time.deltaTime; }
+        }
+        #endregion
+        
         EnemySwitchState();
+        print($"enemyState: {enemyState}");
+        print($"enemyCurrentHealth: {currentHealth}");
     }
-
     private void EnemySwitchState()
     {
         switch(enemyState)
@@ -53,6 +84,7 @@ public class EnemyAI : GameCharacter
                 EnemyPatrol();
                 break;
             case EnemyState.ENEMY_CHASING:
+                EnemyFlip();
                 EnemyChase();
                 break;
             case EnemyState.ENEMY_ATTACKING:
@@ -65,31 +97,20 @@ public class EnemyAI : GameCharacter
                 EnemyRetreat();
                 break;
             case EnemyState.ENEMY_HIT:
-                EnemyHit();
                 break;
         }
-        print($"enemyState: {enemyState}");
     }
-
+    private void EnemyFlip()
+    {
+        if(playerTransform.position.x > this.transform.position.x && !facingRight || playerTransform.position.x < this.transform.position.x && facingRight) { FlipCharacter(); }
+    }
     protected virtual void EnemyPatrol()
     {
         isDetectPlayerWhilePatrolling = Physics2D.OverlapBox(this.colliderTransform.position, playerDetectionRange, 0f, playerLayer);
-        if (isDetectPlayerWhilePatrolling)
-        {
-            enemyState = EnemyState.ENEMY_CHASING;
-        }
+        if(isDetectPlayerWhilePatrolling) { enemyState = EnemyState.ENEMY_CHASING; }
     }
-
-    protected virtual void EnemyChase()
-    {
-
-    }
-
-    protected virtual void EnemyAttack()
-    {
-
-    }
-
+    protected virtual void EnemyChase() { }
+    protected virtual void EnemyAttack() { }
     protected virtual void EnemyRest()
     {
         if(restTimeTimer >= restTime)
@@ -103,65 +124,54 @@ public class EnemyAI : GameCharacter
             transform.position = transform.position;
         }
     }
-
-    protected virtual void EnemyRetreat()
+    protected virtual void EnemyRetreat() { }
+    public void DamageEnemyMelee()
     {
-
-    }
-
-    protected virtual void EnemyHit()
-    {
-        if (playerObject.transform.position.x > this.transform.position.x)
+        if(playerTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
+        else { knockbackDirection.x = knockbackForce.x; }
+        if(enemyState != EnemyState.ENEMY_HIT)
         {
-            knockbackDirection.x = -knockbackForce.x;
+            enemyState = EnemyState.ENEMY_HIT;
+            StartCoroutine(EnemyKnockback());
+            if(!spiritArmour.activeSelf)
+            {
+                if (currentHealth > 0) { currentHealth -= 1; }
+            }
+        }
+    } // Gets called when enemy is melee attacked by player
+    private void DamageEnemySpirit()
+    {
+        if(spiritArmour.activeSelf)
+        {
+            knockbackDirection = new Vector2(0f, 0f);
+            spiritArmour.SetActive(false);
+            StartCoroutine(EnemyKnockback());
         }
         else
         {
-            knockbackDirection.x = knockbackForce.x;
-        }
-
-        if(!isHit)
-        {
-            isHit = true;
-            
-            if (currentHealth > 0)
-            {
-                currentHealth -= 1;
-            }
-            else
-            {
-                //Destroy(this.gameObject);
-            }
-            //print($"isHit: {isHit}");
-            //print($"currentHealth: {currentHealth}");
-
+            if(playerTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
+            else { knockbackDirection.x = knockbackForce.x; }
             StartCoroutine(EnemyKnockback());
-            
-            enemyState = EnemyState.ENEMY_RESTING;
+            if(currentHealth > 0) { currentHealth -= 2; }
         }
-    }
-
+    } // Gets called when enemy is spirit attacked by player
     IEnumerator EnemyKnockback()
     {
         this.rigidbody2D.velocity = Vector2.zero;
         this.rigidbody2D.AddForce(knockbackDirection, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(0.3f);
-        this.rigidbody2D.velocity = Vector2.zero;
-        isHit = false;
-    }
-
-    public void DamageEnemy()
-    {
-        print("DAMAGE ENEMY CALLED");
-        enemyState = EnemyState.ENEMY_HIT;
-    }
-
-    // Enemy Hits Player
+        yield return new WaitForSeconds(knockbackTime);
+        enemyState = EnemyState.ENEMY_CHASING;
+    } // Coroutine that runs when enemy is attacked
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if(collision.gameObject.CompareTag("Player")) { playerScript.DamagePlayer(this.transform); }
+    } // Enemy hits player collision check
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("SpiritAttack") && enemyState != EnemyState.ENEMY_HIT)
         {
-            singController.DamagePlayer(this.gameObject);
+            enemyState = EnemyState.ENEMY_HIT;
+            DamageEnemySpirit();
         }
-    }
+    } // Enemy is hit by spirit attack collision check
 }

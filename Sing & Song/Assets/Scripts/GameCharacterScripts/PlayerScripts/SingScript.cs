@@ -17,7 +17,7 @@ public class SingScript : GameCharacter
     private bool inputInteract;
     #endregion
     #region Spirit Variables
-    [Header("Spirit Variables")]
+    [Header("Spirit Variable")]
     [SerializeField] private float maximumSpirit = 9f;
     private float currentSpirit;
     #endregion
@@ -32,7 +32,7 @@ public class SingScript : GameCharacter
     #region Heal Variables
     [Header("Heal Variables")]
     [SerializeField] private float inputBufferTime = 0.2f;
-    [SerializeField] private float spiritDrainToHeal = 3f;
+    [SerializeField] private float spiritDrainToUse = 3f;
     [SerializeField] private float healTime = 1.5f;
     private float inputBuffer;
     private float spiritDrain;
@@ -57,10 +57,15 @@ public class SingScript : GameCharacter
     private float meleeAttackBufferTimer;
     private Collider2D[] enemiesHit;
     #endregion
+    #region Spirit Attack Variables
+    [Header("Spirit Attack Variables")]
+    [SerializeField] private GameObject spiritAttack;
+    [SerializeField] private float spiritAttackDuration;
+    private float spiritAttackDurationTimer;
+    #endregion  
     #region Damaged Variables
     [Header("Damaged Variables")]
     [SerializeField] private float hitImpactTime = 0.2f;
-    [SerializeField] private float hitKnockbackTime = 0.3f;
     [SerializeField] private float invulnerabilityPeriod = 0.5f;
     private bool vulnerable;
     private bool ignoreEnemyCollision;
@@ -78,7 +83,7 @@ public class SingScript : GameCharacter
     //private float spiritWellEdge;
     //private bool spiritWellFlowingRight;
     #endregion
-
+    #region PlayerState Enums
     private enum PlayerState
     {
         PLAYER_IDLE,
@@ -87,10 +92,11 @@ public class SingScript : GameCharacter
         PLAYER_FALLING,
         PLAYER_HEALING,
         PLAYER_DASHING,
+        PLAYER_SPIRIT,
         PLAYER_HIT
     };
     private PlayerState playerState;
-
+    #endregion
     protected override void Initialise()
     {
         base.Initialise();
@@ -107,6 +113,9 @@ public class SingScript : GameCharacter
         #region Initialise Melee Attack Variables
         meleeAttackIntervalTimer = meleeAttackInterval;
         #endregion
+        #region Initialise Spirit Attack Variables
+        spiritAttack.SetActive(false);
+        #endregion
         #region Initialise Damaged Variables
         vulnerable = true;
         #endregion
@@ -117,8 +126,7 @@ public class SingScript : GameCharacter
         spiritWellAlpha = spiritWell.color.a;
         //spiritWellEdge = 500f;
         #endregion
-    }
-
+    } // Initialises player variables
     private void Update()
     {
         #region Check Inputs
@@ -135,10 +143,13 @@ public class SingScript : GameCharacter
         UpdateRaycastOrigins();
         VerticalCollisionDetection();
         #endregion
+        #region Check Health
+        if(currentHealth <= 0) { /*restart from checkpoint*/ }
+        #endregion
         #region Check Spirit
-        if(currentSpirit > maximumSpirit) { currentSpirit = maximumSpirit; } // maybe move this to attack function
+        if (currentSpirit > maximumSpirit) { currentSpirit = maximumSpirit; }
         if(currentSpirit < 0) { currentSpirit = 0; }
-        if(playerState != PlayerState.PLAYER_HEALING && currentSpirit >= spiritDrainToHeal - 0.1f && currentSpirit < spiritDrainToHeal) { currentSpirit = Mathf.Round(currentSpirit); }
+        if(playerState != PlayerState.PLAYER_HEALING && currentSpirit >= spiritDrainToUse - 0.1f && currentSpirit < spiritDrainToUse) { currentSpirit = Mathf.Round(currentSpirit); }
         #endregion
         #region Reset Jump Time
         if(playerState != PlayerState.PLAYER_JUMPING && jumpTime > 0) { jumpTime = 0; }
@@ -151,31 +162,29 @@ public class SingScript : GameCharacter
         #endregion
         #region Update Melee Attack Interval Timer & Position
         if(meleeAttackIntervalTimer < meleeAttackInterval) { meleeAttackIntervalTimer += Time.deltaTime; }
-        if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING)
+        if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING || playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING) {if (inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { PlayerMeleeAttack(); } }
+        #endregion
+        #region Update Spirit Attack Position
+        spiritAttack.transform.position = meleeAttackTransform.position;
+        if(inputSpiritAttack && currentSpirit >= spiritDrainToUse)
         {
-            meleeAttackTransform.localPosition = (input.y > 0) ? Vector2.up * 2f : Vector2.left;
-            if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { PlayerMeleeAttack(); }
-        }
-        else if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
-        {
-            meleeAttackTransform.localPosition = (input.y != 0) ? Vector2.up * input.y * 2f : Vector2.left;
-            if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { PlayerMeleeAttack(); }
+            currentSpirit -= spiritDrainToUse;
+            playerState = PlayerState.PLAYER_SPIRIT;
         }
         #endregion
         #region Set Enemy Layer Collision
         ignoreEnemyCollision = !vulnerable;
         Physics2D.IgnoreLayerCollision(8, 9, ignoreEnemyCollision);
         #endregion
-
         #region Update UI
         for (int i = 0; i < healthCrystals.Length; i++)
         {
             healthCrystals[i].enabled = (i < currentHealth) ? true : false;
         }
-        spiritWellAlpha = (playerState != PlayerState.PLAYER_HEALING && currentSpirit < spiritDrainToHeal) ? 0.6f : 1f;
+        spiritWellAlpha = (playerState != PlayerState.PLAYER_HEALING && currentSpirit < spiritDrainToUse) ? 0.6f : 1f;
         spiritWell.color = new Color(1f, 1f, 1f, Mathf.Lerp(spiritWell.color.a, spiritWellAlpha, Time.deltaTime * 2));
         currentSpiritWellPosition = Vector2.Lerp(minimumSpiritWellPosition, maximumSpiritWellPosition, currentSpirit/maximumSpirit);
-        spiritWell.rectTransform.anchoredPosition = Vector2.Lerp(spiritWell.rectTransform.anchoredPosition, currentSpiritWellPosition, 1f);
+        spiritWell.rectTransform.anchoredPosition = Vector2.Lerp(spiritWell.rectTransform.anchoredPosition, currentSpiritWellPosition, Time.deltaTime * 10f);
 
         if(previousSpiritWellPosition != currentSpiritWellPosition.y)
         {
@@ -192,15 +201,14 @@ public class SingScript : GameCharacter
         //print($"currentHealth: {currentHealth}");
         //print($"currentSpirit: {currentSpirit}");
         //print($"dashedInAir: {dashedInAir}");
-        print($"enemiesHit: {enemiesHit}");
-    }
-
+        //print($"enemiesHit: {enemiesHit}");
+        //print($"meleeAttackBufferTimer: {meleeAttackBufferTimer}");
+    } // Gets called every frame
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(meleeAttackTransform.position, attackRange.x);
-    }
-
+    } // Draws melee attack range
     private void PlayerSwitchState()
     {
         switch (playerState)
@@ -208,10 +216,12 @@ public class SingScript : GameCharacter
             case PlayerState.PLAYER_IDLE:
                 animator.SetBool("isRunning", false);
                 PlayerFlip();
-                if(!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
+                meleeAttackTransform.localPosition = (input.y > 0) ? Vector2.up * 2f : Vector2.left;
+                spiritAttack.transform.localRotation = (input.y > 0) ? Quaternion.Euler(0f, 0f, -90f) : Quaternion.Euler(0f, 0f, 0f);
+                if (!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
                 else if(input.x != 0) { playerState = PlayerState.PLAYER_RUNNING; }
                 else if(inputJumpPress && isGrounded) { playerState = PlayerState.PLAYER_JUMPING; }
-                else if(inputHeal && currentSpirit >= spiritDrainToHeal)
+                else if(inputHeal && currentSpirit >= spiritDrainToUse)
                 {
                     if(inputBuffer >= inputBufferTime)
                     {
@@ -230,10 +240,12 @@ public class SingScript : GameCharacter
                 animator.SetBool("isRunning", true);
                 PlayerFlip();
                 PlayerMove();
-                if(!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
+                meleeAttackTransform.localPosition = (input.y > 0) ? Vector2.up * 2f : Vector2.left;
+                spiritAttack.transform.localRotation = (input.y > 0) ? Quaternion.Euler(0f, 0f, -90f) : Quaternion.Euler(0f, 0f, 0f);
+                if (!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
                 else if(input.x == 0) { playerState = PlayerState.PLAYER_IDLE; }
                 else if(inputJumpPress && isGrounded) { playerState = PlayerState.PLAYER_JUMPING; }
-                else if(inputHeal && currentSpirit >= spiritDrainToHeal)
+                else if(inputHeal && currentSpirit >= spiritDrainToUse)
                 {
                     if(inputBuffer >= inputBufferTime)
                     {
@@ -253,7 +265,9 @@ public class SingScript : GameCharacter
                 PlayerFlip();
                 PlayerMove();
                 PlayerJump();
-                if(!inputJump || isHitCeiling) { playerState = PlayerState.PLAYER_FALLING; }
+                meleeAttackTransform.localPosition = (input.y != 0) ? Vector2.up * input.y * 2f : Vector2.left;
+                spiritAttack.transform.localRotation = (input.y != 0) ? Quaternion.Euler(0f, 0f, input.y * -90f) : Quaternion.Euler(0f, 0f, 0f);
+                if (!inputJump || isHitCeiling) { playerState = PlayerState.PLAYER_FALLING; }
                 else if(inputDash && dashIntervalTimer >= dashInterval && !dashedInAir)
                 {
                     dashIntervalTimer = 0f;
@@ -265,7 +279,9 @@ public class SingScript : GameCharacter
                 animator.SetBool("isRunning", false);
                 PlayerFlip();
                 PlayerMove();
-                if(isGrounded)
+                meleeAttackTransform.localPosition = (input.y != 0) ? Vector2.up * input.y * 2f : Vector2.left;
+                spiritAttack.transform.localRotation = (input.y != 0) ? Quaternion.Euler(0f, 0f, input.y * -90f) : Quaternion.Euler(0f, 0f, 0f);
+                if (isGrounded)
                 {
                     dashedInAir = false;
                     playerState = PlayerState.PLAYER_IDLE;
@@ -282,33 +298,30 @@ public class SingScript : GameCharacter
                 this.rigidbody2D.velocity = Vector2.zero;
                 PlayerHeal();
                 if(!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
-                else if(!inputHeal || currentSpirit <= 0 || finishedHeal && currentSpirit < spiritDrainToHeal || finishedHeal && currentHealth >= maximumHealth)
+                else if(!inputHeal || currentSpirit <= 0 || finishedHeal && currentSpirit < spiritDrainToUse || finishedHeal && currentHealth >= maximumHealth)
                 {
                     spiritDrain = 0;
                     playerState = PlayerState.PLAYER_IDLE;
                 }
-                else if(inputHeal && currentSpirit >= spiritDrainToHeal && finishedHeal) { playerState = PlayerState.PLAYER_HEALING; }
+                else if(inputHeal && currentSpirit >= spiritDrainToUse && finishedHeal) { playerState = PlayerState.PLAYER_HEALING; }
                 break;
             case PlayerState.PLAYER_DASHING:
                 animator.SetBool("isRunning", false);
                 PlayerDash();
                 break;
+            case PlayerState.PLAYER_SPIRIT:
+                animator.SetBool("isRunning", false);
+                this.rigidbody2D.gravityScale = 0f;
+                this.rigidbody2D.velocity = Vector2.zero;
+                PlayerSpiritAttack();
+                break;
             case PlayerState.PLAYER_HIT:
                 animator.SetBool("isRunning", false);
                 break;
         }
-    }
-
-    private void PlayerFlip()
-    {
-        if(input.x > 0 && !facingRight || input.x < 0 && facingRight) { FlipCharacter(); }
-    } // Checks direction of player
-
-    private void PlayerMove()
-    {
-        this.rigidbody2D.velocity = new Vector2(input.x * moveSpeed, this.rigidbody2D.velocity.y);
-    } // Makes player move
-
+    } // Determines what happens in each playerState
+    private void PlayerFlip() { if(input.x > 0 && !facingRight || input.x < 0 && facingRight) { FlipCharacter(); } } // Checks direction of player
+    private void PlayerMove() { this.rigidbody2D.velocity = new Vector2(input.x * moveSpeed, this.rigidbody2D.velocity.y); } // Makes player move
     private void PlayerJump()
     {
         if(jumpTime >= timeToJumpApex) { playerState = PlayerState.PLAYER_FALLING; }
@@ -318,10 +331,9 @@ public class SingScript : GameCharacter
             this.rigidbody2D.velocity = new Vector2(this.rigidbody2D.velocity.x, jumpVelocity);
         }
     } // Makes player jump
-
     private void PlayerHeal()
     {
-        if(spiritDrain >= spiritDrainToHeal)
+        if(spiritDrain >= spiritDrainToUse)
         {
             spiritDrain = 0;
             if(currentHealth < maximumHealth)
@@ -333,12 +345,11 @@ public class SingScript : GameCharacter
         }
         else
         {
-            spiritDrain += Time.deltaTime * (spiritDrainToHeal / healTime);
-            currentSpirit -= Time.deltaTime * (spiritDrainToHeal / healTime);
+            spiritDrain += Time.deltaTime * (spiritDrainToUse / healTime);
+            currentSpirit -= Time.deltaTime * (spiritDrainToUse / healTime);
             finishedHeal = false;
         }
     } // Makes player heal
-
     private void PlayerDash()
     {
         if(dashTimeTimer >= dashTime)
@@ -355,53 +366,63 @@ public class SingScript : GameCharacter
             this.rigidbody2D.velocity = (facingRight) ? Vector2.right * dashSpeed : Vector2.left * dashSpeed;
         }
     } // Makes player dash
-
     private void PlayerMeleeAttack()
     {
-        meleeAttackBufferTimer = 0f;
-        while(meleeAttackBufferTimer < meleeAttackBuffer)
-        {
-            meleeAttackBufferTimer += Time.deltaTime;
-            enemiesHit = Physics2D.OverlapCircleAll(meleeAttackTransform.position, attackRange.x, enemyLayer);
-            if(enemiesHit.Length != 0) { break; }
-        } // Ask mr boon if this is a good idea
+        //meleeAttackBufferTimer = 0f;
+        //while(meleeAttackBufferTimer < meleeAttackBuffer)
+        //{
+        //    meleeAttackBufferTimer += Time.deltaTime;
+        enemiesHit = Physics2D.OverlapCircleAll(meleeAttackTransform.position, attackRange.x, enemyLayer);
+        //    if(enemiesHit.Length != 0) { break; }
+        //} // Ask mr boon if this is a good idea
         if(enemiesHit.Length != 0)
         {
             this.rigidbody2D.velocity = Vector2.zero;
-            if (meleeAttackTransform.localPosition.y < 0) { this.rigidbody2D.AddForce(new Vector2(0f, knockbackDirection.y * 1.5f), ForceMode2D.Impulse); }
-            else { this.rigidbody2D.AddForce(new Vector2(meleeAttackTransform.localPosition.x * knockbackForce.x * 0.75f, 0f), ForceMode2D.Impulse); }
+            if(meleeAttackTransform.localPosition.y < 0) { this.rigidbody2D.AddForce(new Vector2(0f, knockbackForce.y * 1.5f), ForceMode2D.Impulse); }
+            else
+            {
+                if(facingRight) { this.rigidbody2D.AddForce(new Vector2(-knockbackForce.x * 0.5f, 0f), ForceMode2D.Impulse); }
+                else { this.rigidbody2D.AddForce(new Vector2(knockbackForce.x * 0.5f, 0f), ForceMode2D.Impulse); }
+            }
+            playerState = (isGrounded) ? PlayerState.PLAYER_IDLE : PlayerState.PLAYER_FALLING;
         }
         for(int i = 0; i < enemiesHit.Length; i++)
         {
-            if(enemiesHit[i].GetComponentInParent<FlyingLemurAI>() != null) { enemiesHit[i].GetComponentInParent<FlyingLemurAI>().DamageEnemy(); }
-            if(enemiesHit[i].GetComponentInParent<WildDogAI>() != null) { enemiesHit[i].GetComponentInParent<WildDogAI>().DamageEnemy(); }
-            if(enemiesHit[i].GetComponentInParent<PangolinAI>() != null) { enemiesHit[i].GetComponentInParent<PangolinAI>().DamageEnemy(); }
-            if(enemiesHit[i].GetComponentInParent<CrocodileAI>() != null) { enemiesHit[i].GetComponentInParent<CrocodileAI>().DamageEnemy(); }
-            if(enemiesHit[i].GetComponentInParent<RhinoAI>() != null) { enemiesHit[i].GetComponentInParent<RhinoAI>().DamageEnemy(); }
+            if(enemiesHit[i].GetComponentInParent<FlyingLemurAI>() != null) { enemiesHit[i].GetComponentInParent<FlyingLemurAI>().DamageEnemyMelee(); }
+            if(enemiesHit[i].GetComponentInParent<WildDogAI>() != null) { enemiesHit[i].GetComponentInParent<WildDogAI>().DamageEnemyMelee(); }
+            if(enemiesHit[i].GetComponentInParent<PangolinAI>() != null) { enemiesHit[i].GetComponentInParent<PangolinAI>().DamageEnemyMelee(); }
+            if(enemiesHit[i].GetComponentInParent<CrocodileAI>() != null) { enemiesHit[i].GetComponentInParent<CrocodileAI>().DamageEnemyMelee(); }
+            if(enemiesHit[i].GetComponentInParent<RhinoAI>() != null) { enemiesHit[i].GetComponentInParent<RhinoAI>().DamageEnemyMelee(); }
             currentSpirit = (currentSpirit < maximumSpirit) ? currentSpirit += 1 : maximumSpirit;
         }
     } // Makes player use melee attack
-
     private void PlayerSpiritAttack()
     {
-
+        if(spiritAttackDurationTimer >= spiritAttackDuration)
+        {
+            spiritAttackDurationTimer = 0f;
+            spiritAttack.SetActive(false);
+            this.rigidbody2D.gravityScale = gravity;
+            playerState = (isGrounded) ? PlayerState.PLAYER_IDLE : PlayerState.PLAYER_FALLING;
+        }
+        else
+        {
+            spiritAttackDurationTimer += Time.deltaTime;
+            spiritAttack.SetActive(true);
+        }
     } // Makes player use spirit attack 
-    
-    public void DamagePlayer(GameObject enemyObject)
+    public void DamagePlayer(Transform enemyTransform)
     {
-        if (enemyObject.transform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
-        else { knockbackDirection.x = knockbackForce.x; }
+        if(enemyTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
+        else{ knockbackDirection.x = knockbackForce.x; }
         if(vulnerable)
         {
             vulnerable = false;
             playerState = PlayerState.PLAYER_HIT;
             StartCoroutine(PlayerKnockback());
-            if (currentHealth > 0) { currentHealth -= 1; }
-            else { /*restart from checkpoint*/ }
+            if(currentHealth > 0) { currentHealth -= 1; }
         }
-            
     } // Gets called when player is hit by enemy
-
     IEnumerator PlayerKnockback()
     {
         Time.timeScale = 0;
@@ -410,9 +431,9 @@ public class SingScript : GameCharacter
         if (knockbackDirection.x < 0 && !facingRight || knockbackDirection.x > 0 && facingRight) { FlipCharacter(); }
         this.rigidbody2D.velocity = Vector2.zero;
         this.rigidbody2D.AddForce(knockbackDirection, ForceMode2D.Impulse);
-        yield return new WaitForSecondsRealtime(hitKnockbackTime);
+        yield return new WaitForSecondsRealtime(knockbackTime);
         playerState = PlayerState.PLAYER_FALLING;
         yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
         vulnerable = true;
-    }
+    } // Coroutine that runs when player is hit
 }
