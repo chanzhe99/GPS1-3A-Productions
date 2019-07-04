@@ -151,7 +151,7 @@ public class SingScript : GameCharacter
         if(currentSpirit < 0) { currentSpirit = 0; }
         if(playerState != PlayerState.PLAYER_HEALING && currentSpirit >= spiritDrainToUse - 0.1f && currentSpirit < spiritDrainToUse) { currentSpirit = Mathf.Round(currentSpirit); }
         #endregion
-        #region Reset Jump Time
+        #region Reset jumpTime
         if(playerState != PlayerState.PLAYER_JUMPING && jumpTime > 0) { jumpTime = 0; }
         #endregion
         #region Reset Heal Input Buffer

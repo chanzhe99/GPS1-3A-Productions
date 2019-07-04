@@ -32,9 +32,7 @@ public class FlyingLemurAI : EnemyAI
 
     protected override void EnemyPatrol()
     {
-
-        base.EnemyPatrol();
-        
+        base.EnemyPatrol();   
         if(transform.position != lemurPerchPosition)
         {
             transform.position = Vector2.MoveTowards(transform.position, lemurPerchPosition, moveSpeed * Time.deltaTime);

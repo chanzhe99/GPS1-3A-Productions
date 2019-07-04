@@ -64,7 +64,6 @@ public class GameCharacter : MonoBehaviour
     {
         Initialise();
     }
-
     protected virtual void Initialise()
     {
         #region Initialise Component Variables
@@ -82,14 +81,13 @@ public class GameCharacter : MonoBehaviour
         terrainLayer = LayerMask.GetMask("Terrain");
         #endregion
         #region Initialise Health Variables
-        currentHealth = maximumHealth - 2;
+        currentHealth = maximumHealth;
         #endregion
         #region Initialise knockbackDirection
         knockbackDirection = knockbackForce;
         #endregion
         DetermineStartingDirection();
     }
-
     protected void DetermineStartingDirection()
     {
         if(spawnFacingRight)
@@ -104,7 +102,6 @@ public class GameCharacter : MonoBehaviour
         }
         targetRotation = this.transform.rotation;
     } // Determines whether the character spawns facing left or right
-
     protected void UpdateRaycastOrigins()
     {
         colliderBounds = capsuleCollider2D.bounds;
@@ -115,36 +112,25 @@ public class GameCharacter : MonoBehaviour
         raycastOrigins.topLeft = new Vector2(colliderBounds.min.x, colliderBounds.max.y);
         raycastOrigins.topRight = new Vector2(colliderBounds.max.x, colliderBounds.max.y);
     } // Updates position of raycastOrigins
-
     protected void CalculateRaySpacing()
     {
         colliderBounds = capsuleCollider2D.bounds;
         colliderBounds.Expand(colliderSkinWidth * -2);
 
         rayCount = Mathf.Clamp(rayCount, 2, int.MaxValue);
-
         raySpacing = colliderBounds.size.x / (rayCount - 1);
     }  // Calculates the spacing between each raycast depending on amount
-
     protected void VerticalCollisionDetection()
     {
         rayLength = capsuleCollider2D.size.y * 0.1f + colliderSkinWidth;
         for(int i = 0; i < rayCount; i++)
         {
             raycastHit2D = Physics2D.Raycast(raycastOrigins.bottomLeft + Vector2.right * raySpacing * i, Vector2.down, rayLength, terrainLayer);
-            if(raycastHit2D)
-            {
-                isGrounded = true;
-                break;
-            }
-            else
-            {
-                isGrounded = false;
-            }
+            if(raycastHit2D) { isGrounded = true; break; }
+            else { isGrounded = false; }
             Debug.DrawRay(raycastOrigins.bottomLeft + Vector2.right * raySpacing * i, Vector2.down * rayLength, Color.red);
-        }
-
-        for (int i = 0; i < rayCount; i++)
+        } // groundCheck raycasts
+        for(int i = 0; i < rayCount; i++)
         {
             raycastHit2D = Physics2D.Raycast(raycastOrigins.topLeft + Vector2.right * raySpacing * i, Vector2.up, rayLength, terrainLayer);
             if (raycastHit2D)
@@ -157,9 +143,8 @@ public class GameCharacter : MonoBehaviour
                 isHitCeiling = false;
             }
             Debug.DrawRay(raycastOrigins.topLeft + Vector2.right * raySpacing * i, Vector2.up * rayLength, Color.red);
-        }
+        } // ceilingCheck raycasts
     } // Toggles isGrounded & isHitceiling
-
     protected void FlipCharacter()
     {
         facingRight = !facingRight;
@@ -167,7 +152,6 @@ public class GameCharacter : MonoBehaviour
         rotationTime = 0f;
         StartCoroutine(FlipCharacterSprite());
     } // Sets character's rotation
-
     private IEnumerator FlipCharacterSprite()
     {
         while(rotationTime < 1f)

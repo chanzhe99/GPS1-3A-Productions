@@ -17,6 +17,8 @@ public class EnemyAI : GameCharacter
     [SerializeField] private float spiritArmourRecharge = 15f;
     private float spiritArmourRechargeTimer;
     #endregion
+    #region Enemy Patrol Variables
+    #endregion
     #region Aggro Detection Variables
     [Header("Aggro Range")]
     [SerializeField] protected Vector2 playerDetectionRange;
@@ -71,10 +73,14 @@ public class EnemyAI : GameCharacter
             else { spiritArmourRechargeTimer += Time.deltaTime; }
         }
         #endregion
-        
+        #region Check Ground & Ceiling
+        UpdateRaycastOrigins();
+        VerticalCollisionDetection();
+        #endregion
+
         EnemySwitchState();
-        print($"enemyState: {enemyState}");
-        print($"enemyCurrentHealth: {currentHealth}");
+        //print($"enemyState: {enemyState}");
+        //print($"enemyCurrentHealth: {currentHealth}");
     }
     private void EnemySwitchState()
     {
