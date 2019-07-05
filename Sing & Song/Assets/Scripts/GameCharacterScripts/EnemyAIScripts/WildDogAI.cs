@@ -4,19 +4,29 @@ using UnityEngine;
 
 public class WildDogAI : EnemyAI
 {
-    private bool canLunge;
-    private bool isLunge;
+    #region Patrol Variables
+    [Header("Wild Dog Patrol Variables")]
+    [SerializeField] private Transform patrolRayOrigin;
+    [SerializeField] private float patrolDistance;
+    #endregion
+    #region Attack Variables
+    [Header("Wild Dog Attack Variables")]
     [SerializeField] private Vector2 lungeForce;
     private Vector2 lungeDirection;
-
+    private bool canLunge;
+    private bool isLunge;
+    #endregion
     protected override void Initialise()
     {
         base.Initialise();
         lungeDirection.y = lungeForce.y;
     }
+    
     protected override void EnemyPatrol()
     {
         base.EnemyPatrol();
+        this.rigidbody2D.velocity = new Vector2(-transform.right.x * moveSpeed, this.rigidbody2D.velocity.y);
+        Debug.DrawRay(patrolRayOrigin.position, -transform.right * 0.2f, Color.red);
         //else { rigidbody2D.velocity = new Vector2(moveSpeed, rigidbody2D.velocity.y); }
     }
     protected override void EnemyChase()

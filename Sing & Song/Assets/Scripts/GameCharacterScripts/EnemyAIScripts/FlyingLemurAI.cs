@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FlyingLemurAI : EnemyAI
 {
+    private Vector2 direction;
+
     private Vector3 lemurPerchPosition;
     private Vector3 lemurDefaultPosition;
     private Vector3 playerDivePosition;
@@ -24,7 +26,7 @@ public class FlyingLemurAI : EnemyAI
 
     protected override void EnemyPatrol()
     {
-        base.EnemyPatrol();   
+        base.EnemyPatrol();
         if(transform.position != lemurPerchPosition)
         {
             transform.position = Vector2.MoveTowards(transform.position, lemurPerchPosition, moveSpeed * Time.deltaTime);
@@ -34,8 +36,9 @@ public class FlyingLemurAI : EnemyAI
     protected override void EnemyChase()
     {
         animator.SetBool("isChasing", true);
-        canDive = Physics2D.OverlapCircle(this.colliderTransform.position, attackRange.x, playerLayer);
+        direction = playerTransform.position - this.transform.position;
 
+        canDive = Physics2D.OverlapCircle(this.colliderTransform.position, attackRange.x, playerLayer);
         if(canDive)
         {
             lemurDefaultPosition.x = transform.position.x; // Stores Lemur's X Position as for Retreating

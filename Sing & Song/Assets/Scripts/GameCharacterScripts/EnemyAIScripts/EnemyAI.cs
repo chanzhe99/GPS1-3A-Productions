@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class EnemyAI : GameCharacter
 {
-    #region Player Component Variables
-    [Header("Player Object Variable")]
+    #region Component Variables
+    [Header("Component Variables")]
     [SerializeField] protected GameObject playerObject;
+    [SerializeField] protected Transform enemySpriteTransform;
+    [SerializeField] protected Transform rayOrigin;
     protected Transform playerTransform;
     protected SingScript playerScript;
     #endregion
@@ -14,10 +16,8 @@ public class EnemyAI : GameCharacter
     [Header("Spirit Armour Variables")]
     [SerializeField] private GameObject spiritArmour;
     [SerializeField] private bool haveSpiritArmour = false;
-    [SerializeField] private float spiritArmourRecharge = 15f;
+    [SerializeField] private float spiritArmourRecharge = 10f;
     private float spiritArmourRechargeTimer;
-    #endregion
-    #region Enemy Patrol Variables
     #endregion
     #region Aggro Detection Variables
     [Header("Aggro Range")]
@@ -76,6 +76,9 @@ public class EnemyAI : GameCharacter
         #region Check Ground & Ceiling
         UpdateRaycastOrigins();
         VerticalCollisionDetection();
+        #endregion
+        #region Check Walls & Edges
+        Debug.DrawRay(rayOrigin.position, -transform.right * 0.2f, Color.red);
         #endregion
 
         EnemySwitchState();
