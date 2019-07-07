@@ -25,9 +25,9 @@ sealed public class PangolinAI : EnemyAI
     protected override void EnemyChase()
     {
         enemySpriteTransform.Rotate(0f, 0f, spinSpeed * Time.deltaTime);
-        if (playerTransform.position.x > this.transform.position.x) { rollDirection.x = rollForce.x; }
+        if(playerTransform.position.x > this.transform.position.x) { rollDirection.x = rollForce.x; }
         else { rollDirection.x = -rollForce.x; }
-        if (!bounceCharge)
+        if(!bounceCharge)
         {
             this.rigidbody2D.AddForce(new Vector2(0f, rollDirection.y), ForceMode2D.Impulse);
             if(isGrounded) { bounceCharge = true; }
@@ -57,13 +57,13 @@ sealed public class PangolinAI : EnemyAI
             if(hitWall)
             {
                 this.rigidbody2D.velocity = Vector2.zero;
-                this.rigidbody2D.AddForce(new Vector2(-rollDirection.x * 3, rollDirection.y), ForceMode2D.Force);
+                //this.rigidbody2D.AddForce(new Vector2(-rollDirection.x * 3, rollDirection.y), ForceMode2D.Force);
                 enemyState = EnemyState.ENEMY_RESTING;
             }
             else if(hitEdge)
             {
                 this.rigidbody2D.velocity = Vector2.zero;
-                this.rigidbody2D.AddForce(new Vector2(-rollDirection.x * 3, rollDirection.y), ForceMode2D.Force);
+                //this.rigidbody2D.AddForce(new Vector2(-rollDirection.x * 3, rollDirection.y), ForceMode2D.Force);
                 enemyState = EnemyState.ENEMY_RESTING;
             }
             else
