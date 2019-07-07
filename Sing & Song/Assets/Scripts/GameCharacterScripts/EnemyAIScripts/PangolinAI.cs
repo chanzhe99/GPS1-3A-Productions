@@ -54,7 +54,22 @@ sealed public class PangolinAI : EnemyAI
         else
         {
             rollTimeTimer += Time.deltaTime;
-            this.rigidbody2D.AddForce(new Vector2(rollDirection.x * 3, this.rigidbody2D.velocity.y), ForceMode2D.Force);
+            if(hitWall)
+            {
+                this.rigidbody2D.velocity = Vector2.zero;
+                this.rigidbody2D.AddForce(new Vector2(-rollDirection.x * 3, rollDirection.y), ForceMode2D.Force);
+                enemyState = EnemyState.ENEMY_RESTING;
+            }
+            else if(hitEdge)
+            {
+                this.rigidbody2D.velocity = Vector2.zero;
+                this.rigidbody2D.AddForce(new Vector2(-rollDirection.x * 3, rollDirection.y), ForceMode2D.Force);
+                enemyState = EnemyState.ENEMY_RESTING;
+            }
+            else
+            {
+                this.rigidbody2D.AddForce(new Vector2(rollDirection.x * 3, this.rigidbody2D.velocity.y), ForceMode2D.Force);
+            }
         }
     }
     protected override void EnemyRest()

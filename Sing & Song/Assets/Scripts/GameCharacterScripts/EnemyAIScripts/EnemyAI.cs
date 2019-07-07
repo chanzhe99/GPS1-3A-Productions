@@ -8,9 +8,15 @@ public class EnemyAI : GameCharacter
     [Header("Component Variables")]
     [SerializeField] protected GameObject playerObject;
     [SerializeField] protected Transform enemySpriteTransform;
-    [SerializeField] protected Transform rayOrigin;
     protected Transform playerTransform;
     protected SingScript playerScript;
+    #endregion
+    #region Wall & Edge Raycast Variables
+    private Vector2 rayOrigin;
+    private float wallRayLength;
+    private float edgeRayLength;
+    protected bool hitWall;
+    protected bool hitEdge;
     #endregion
     #region Spirit Armour Variables
     [Header("Spirit Armour Variables")]
@@ -51,8 +57,12 @@ public class EnemyAI : GameCharacter
         playerTransform = playerObject.GetComponent<Transform>();
         playerScript = playerObject.GetComponent<SingScript>();
         #endregion
+        #region Initialise Wall & Edge Raycast Variables
+        wallRayLength = capsuleCollider2D.size.x * 0.05f;
+        edgeRayLength = capsuleCollider2D.size.y * 1.5f;
+        #endregion
         #region Initialise Spirit Armour Variables
-        if(haveSpiritArmour) { spiritArmour.SetActive(true); }
+        if (haveSpiritArmour) { spiritArmour.SetActive(true); }
         else { spiritArmour.SetActive(false); }
         #endregion
         enemyState = EnemyState.ENEMY_PATROLLING;
@@ -78,12 +88,14 @@ public class EnemyAI : GameCharacter
         VerticalCollisionDetection();
         #endregion
         #region Check Walls & Edges
-        Debug.DrawRay(rayOrigin.position, -transform.right * 0.2f, Color.red);
+        UpdateWallRaycast();
         #endregion
 
         EnemySwitchState();
         //print($"enemyState: {enemyState}");
         //print($"enemyCurrentHealth: {currentHealth}");
+        print($"hitWall: {hitWall}");
+        print($"hitEdge: {hitEdge}");
     }
     private void EnemySwitchState()
     {
@@ -112,6 +124,14 @@ public class EnemyAI : GameCharacter
     private void EnemyFlip()
     {
         if(playerTransform.position.x > this.transform.position.x && !facingRight || playerTransform.position.x < this.transform.position.x && facingRight) { FlipCharacter(); }
+    }
+    private void UpdateWallRaycast()
+    {
+        rayOrigin = colliderTransform.position + (-transform.right * capsuleCollider2D.size.x * 0.5f);
+        hitWall = Physics2D.Raycast(rayOrigin, -transform.right, wallRayLength, terrainLayer);
+        hitEdge = !Physics2D.Raycast(rayOrigin, -transform.up, edgeRayLength, terrainLayer);
+        Debug.DrawRay(rayOrigin, -transform.right * wallRayLength, Color.red);
+        Debug.DrawRay(rayOrigin, -transform.up * edgeRayLength, Color.red);
     }
     protected virtual void EnemyPatrol()
     {

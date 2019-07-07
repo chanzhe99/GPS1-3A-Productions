@@ -763,7 +763,7 @@ GameObject:
   m_Layer: 9
   m_Name: PangolinTest
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -780,7 +780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayCount: 5
-  spawnFacingRight: 0
+  spawnFacingRight: 1
   maximumHealth: 5
   moveSpeed: 4
   attackRange: {x: 8, y: 2}
@@ -846,7 +846,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 258717871}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -89.31, y: -3.6, z: 0}
+  m_LocalPosition: {x: -89.31, y: -4.289, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1291880617}
@@ -1292,7 +1292,7 @@ GameObject:
   - component: {fileID: 408601076}
   - component: {fileID: 408601077}
   - component: {fileID: 408601078}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: bg3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1588,7 +1588,7 @@ GameObject:
   m_Component:
   - component: {fileID: 475430447}
   - component: {fileID: 475430448}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: CameraController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1927,7 +1927,7 @@ GameObject:
   - component: {fileID: 584732655}
   - component: {fileID: 584732656}
   - component: {fileID: 584732657}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2414,7 +2414,7 @@ GameObject:
   - component: {fileID: 885127475}
   - component: {fileID: 885127476}
   - component: {fileID: 885127477}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2542,7 +2542,7 @@ GameObject:
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &918179918
 Transform:
   m_ObjectHideFlags: 0
@@ -2910,7 +2910,7 @@ GameObject:
   - component: {fileID: 1030020937}
   - component: {fileID: 1030020938}
   - component: {fileID: 1030020939}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: bg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3017,7 +3017,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1077692574}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1270550176}
@@ -3538,7 +3538,7 @@ GameObject:
   - component: {fileID: 1260224672}
   - component: {fileID: 1260224673}
   - component: {fileID: 1260224674}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: bg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3635,10 +3635,10 @@ GameObject:
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1260836610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3717,7 +3717,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1260836609}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -61.36, y: -2.91, z: 0}
+  m_LocalPosition: {x: -61.36, y: -4.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1077692575}
@@ -3907,7 +3907,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1291880616}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2094707638}
@@ -4658,7 +4658,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1777386885}
   - component: {fileID: 1777386886}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: ForestArea1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4712,6 +4712,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FlyingLemur
+      objectReference: {fileID: 0}
+    - target: {fileID: 3508639375589561848, guid: 91ebb62030203bc4b87639ba5df44327,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3508639375589561849, guid: 91ebb62030203bc4b87639ba5df44327,
         type: 3}
@@ -4786,7 +4791,7 @@ GameObject:
   - component: {fileID: 1835606813}
   - component: {fileID: 1835606814}
   - component: {fileID: 1835606815}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: bg4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

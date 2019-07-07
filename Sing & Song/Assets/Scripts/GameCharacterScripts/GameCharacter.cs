@@ -6,8 +6,8 @@ using UnityEngine;
 public class GameCharacter : MonoBehaviour
 {
     #region Component Variables
-    protected Transform colliderTransform;
     protected CapsuleCollider2D capsuleCollider2D;
+    protected Transform colliderTransform;
     protected Rigidbody2D rigidbody2D;
     protected Animator animator;
     #endregion
@@ -67,8 +67,8 @@ public class GameCharacter : MonoBehaviour
     protected virtual void Initialise()
     {
         #region Initialise Component Variables
-        colliderTransform = GetComponentInChildren<Transform>();
         capsuleCollider2D = GetComponentInChildren<CapsuleCollider2D>();
+        colliderTransform = capsuleCollider2D.transform;
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         #endregion
