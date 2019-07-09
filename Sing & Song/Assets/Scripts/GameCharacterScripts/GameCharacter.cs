@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof (Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class GameCharacter : MonoBehaviour
 {
     #region Component Variables
@@ -32,6 +33,9 @@ public class GameCharacter : MonoBehaviour
     protected bool isGrounded;
     protected bool isHitCeiling;
     #endregion
+    #region Spawn Variables
+    protected Vector2 spawnPosition;
+    #endregion
     #region Sprite Flip Variables
     [Header("Spawn Direction")]
     [SerializeField] protected bool spawnFacingRight;
@@ -57,7 +61,6 @@ public class GameCharacter : MonoBehaviour
     [SerializeField] protected Vector2 knockbackForce;
     [SerializeField] protected float knockbackTime = 0.3f;
     protected Vector2 knockbackDirection;
-    protected bool isHit;
     #endregion
 
     private void Start()
@@ -79,6 +82,9 @@ public class GameCharacter : MonoBehaviour
         playerLayer = LayerMask.GetMask("Player");
         enemyLayer = LayerMask.GetMask("Enemy");
         terrainLayer = LayerMask.GetMask("Terrain");
+        #endregion
+        #region Initialise Spawn Variables
+        spawnPosition = transform.position;
         #endregion
         #region Initialise Health Variables
         currentHealth = maximumHealth;

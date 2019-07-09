@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class WildDogAI : EnemyAI
 {
-    #region Patrol Variables
-    [Header("Wild Dog Patrol Variables")]
-    [SerializeField] private Transform patrolRayOrigin;
-    [SerializeField] private float patrolDistance;
-    #endregion
     #region Attack Variables
     [Header("Wild Dog Attack Variables")]
     [SerializeField] private Vector2 lungeForce;
@@ -21,13 +16,9 @@ public class WildDogAI : EnemyAI
         base.Initialise();
         lungeDirection.y = lungeForce.y;
     }
-    
     protected override void EnemyPatrol()
     {
         base.EnemyPatrol();
-        this.rigidbody2D.velocity = new Vector2(-transform.right.x * moveSpeed, this.rigidbody2D.velocity.y);
-        Debug.DrawRay(patrolRayOrigin.position, -transform.right * 0.2f, Color.red);
-        //else { rigidbody2D.velocity = new Vector2(moveSpeed, rigidbody2D.velocity.y); }
     }
     protected override void EnemyChase()
     {
@@ -38,15 +29,11 @@ public class WildDogAI : EnemyAI
             else { lungeDirection.x = -lungeForce.x; }
             enemyState = EnemyState.ENEMY_ATTACKING;
         }
-        else { transform.position = Vector2.MoveTowards(transform.position, new Vector2(playerTransform.position.x, transform.position.y), moveSpeed * Time.deltaTime); }
+        else { this.transform.position = Vector2.MoveTowards(transform.position, new Vector2(playerTransform.position.x, transform.position.y), moveSpeed * 2 * Time.deltaTime); }
     }
     protected override void EnemyAttack()
     {
-        if(!isLunge)
-        {
-            isLunge = true;
-            StartCoroutine(Lunge());
-        }
+        if(!isLunge) { isLunge = true; StartCoroutine(Lunge()); }
     }
     protected override void EnemyRetreat()
     {
@@ -58,8 +45,13 @@ public class WildDogAI : EnemyAI
         else
         {
             retreatTimeTimer += Time.deltaTime;
-            transform.Translate(new Vector3(lungeDirection.x * -0.25f, transform.position.y, transform.position.z) * Time.deltaTime);
+            this.rigidbody2D.velocity = new Vector3(lungeDirection.x * -0.5f, transform.position.y, transform.position.z);
         }
+    }
+    protected override void EnemyRest()
+    {
+        this.rigidbody2D.velocity = new Vector2(Vector2.zero.x, this.rigidbody2D.velocity.y);
+        base.EnemyRest();
     }
     IEnumerator Lunge()
     {
@@ -69,12 +61,12 @@ public class WildDogAI : EnemyAI
         enemyState = EnemyState.ENEMY_RETREATING;
         isLunge = false;
     }
-    private void OnDrawGizmos()
+    protected override void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        base.OnDrawGizmos();
         if (this.colliderTransform != null)
         {
-            Gizmos.DrawWireCube(this.colliderTransform.position, playerDetectionRange); // do if check != NULL
+            Gizmos.DrawWireCube(this.colliderTransform.position, playerDetectionRange);
             Gizmos.DrawWireCube(this.colliderTransform.position, attackRange);
         }
     }

@@ -410,7 +410,7 @@ public class SingScript : GameCharacter
             spiritAttackDurationTimer += Time.deltaTime;
             spiritAttack.SetActive(true);
         }
-    } // Makes player use spirit attack 
+    } // Makes player use spirit attack
     public void DamagePlayer(Transform enemyTransform)
     {
         if(enemyTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
@@ -436,4 +436,9 @@ public class SingScript : GameCharacter
         yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
         vulnerable = true;
     } // Coroutine that runs when player is hit
+
+    private void SongFollow()
+    {
+
+    }
 }

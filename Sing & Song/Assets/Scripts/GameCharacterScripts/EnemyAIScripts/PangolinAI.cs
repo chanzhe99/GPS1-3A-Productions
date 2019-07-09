@@ -4,14 +4,20 @@ using UnityEngine;
 
 sealed public class PangolinAI : EnemyAI
 {
-    [SerializeField] private float rollChargeTime;
-    [SerializeField] private float rollTime;
-    [SerializeField] private Vector2 rollForce;
+    #region Spin Variables
+    [Header("Spin Variables")]
+    [SerializeField] private float spinTime = 0.5f;
     [SerializeField] private float spinSpeed = 500f;
-    private float rollChargeTimeTimer;
-    private float rollTimeTimer;
+    private float spinTimeTimer = 0f;
+    private bool spinBounce;
+    #endregion
+    #region Roll Variables
+    [Header("Roll Variables")]
+    [SerializeField] private Vector2 rollForce = new Vector2(5f, 10f);
+    [SerializeField] private float rollTime = 1f;
     private Vector2 rollDirection;
-    private bool bounceCharge;
+    private float rollTimeTimer = 0f;
+    #endregion
 
     protected override void Initialise()
     {
@@ -27,24 +33,24 @@ sealed public class PangolinAI : EnemyAI
         enemySpriteTransform.Rotate(0f, 0f, spinSpeed * Time.deltaTime);
         if(playerTransform.position.x > this.transform.position.x) { rollDirection.x = rollForce.x; }
         else { rollDirection.x = -rollForce.x; }
-        if(!bounceCharge)
+        if(!spinBounce)
         {
             this.rigidbody2D.AddForce(new Vector2(0f, rollDirection.y), ForceMode2D.Impulse);
-            if(isGrounded) { bounceCharge = true; }
+            spinBounce = true;
         }
         else
         {
-            if(rollChargeTimeTimer >= rollChargeTime)
+            if (spinTimeTimer >= spinTime)
             {
-                rollChargeTimeTimer = 0f;
+                spinTimeTimer = 0f;
                 enemyState = EnemyState.ENEMY_ATTACKING;
             }
-            else{ rollChargeTimeTimer += Time.deltaTime; }
+            else{ spinTimeTimer += Time.deltaTime; }
         }
     }
     protected override void EnemyAttack()
     {
-        bounceCharge = false;
+        spinBounce = false;
         enemySpriteTransform.Rotate(0f, 0f, spinSpeed * Time.deltaTime);
         if(rollTimeTimer >= rollTime)
         {
@@ -56,33 +62,65 @@ sealed public class PangolinAI : EnemyAI
             rollTimeTimer += Time.deltaTime;
             if(hitWall)
             {
+                rollTimeTimer = 0f;
                 this.rigidbody2D.velocity = Vector2.zero;
-                //this.rigidbody2D.AddForce(new Vector2(-rollDirection.x * 3, rollDirection.y), ForceMode2D.Force);
+                this.rigidbody2D.AddForce(new Vector2(-rollDirection.x, rollDirection.y), ForceMode2D.Impulse);
                 enemyState = EnemyState.ENEMY_RESTING;
             }
-            else if(hitEdge)
-            {
-                this.rigidbody2D.velocity = Vector2.zero;
-                //this.rigidbody2D.AddForce(new Vector2(-rollDirection.x * 3, rollDirection.y), ForceMode2D.Force);
-                enemyState = EnemyState.ENEMY_RESTING;
-            }
-            else
-            {
-                this.rigidbody2D.AddForce(new Vector2(rollDirection.x * 3, this.rigidbody2D.velocity.y), ForceMode2D.Force);
-            }
+            else { this.rigidbody2D.AddForce(new Vector2(rollDirection.x * 3, this.rigidbody2D.velocity.y), ForceMode2D.Force); }
         }
     }
     protected override void EnemyRest()
     {
         base.EnemyRest();
     }
-    private void OnDrawGizmos()
+    public override void DamageEnemyMelee()
     {
-        Gizmos.color = Color.red;
-        if (this.colliderTransform != null)
+        rollTimeTimer = 0f;
+        if(playerTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
+        else { knockbackDirection.x = knockbackForce.x; }
+        if(enemyState == EnemyState.ENEMY_RESTING)
         {
-            Gizmos.DrawWireCube(this.colliderTransform.position, playerDetectionRange);
-            Gizmos.DrawWireCube(this.colliderTransform.position, attackRange);
+            StartCoroutine(EnemyKnockback());
+            if(!spiritArmour.activeSelf)
+            {
+                if(currentHealth > 0) { currentHealth -= 1; }
+            }
         }
+        else if(enemyState != EnemyState.ENEMY_HIT)
+        {
+            enemyState = EnemyState.ENEMY_HIT;
+            StartCoroutine(EnemyKnockback());
+        }
+    }
+    protected override void DamageEnemySpirit()
+    {
+        if(spiritArmour.activeSelf)
+        {
+            knockbackDirection = new Vector2(0f, 0f);
+            spiritArmour.SetActive(false);
+            StartCoroutine(EnemyKnockback());
+        }
+        else
+        {
+            rollTimeTimer = 0f;
+            if (playerTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
+            else { knockbackDirection.x = knockbackForce.x; }
+            StartCoroutine(EnemyKnockback());
+            if (currentHealth > 0) { currentHealth -= 2; }
+        }
+    }
+    protected override IEnumerator EnemyKnockback()
+    {
+        this.rigidbody2D.velocity = Vector2.zero;
+        this.rigidbody2D.AddForce(knockbackDirection, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(knockbackTime);
+        this.rigidbody2D.velocity = Vector2.zero;
+        if(enemyState != EnemyState.ENEMY_RESTING) { enemyState = EnemyState.ENEMY_CHASING; }
+    }
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+        if(this.colliderTransform != null) { Gizmos.DrawWireCube(this.colliderTransform.position, playerDetectionRange); }
     }
 }
