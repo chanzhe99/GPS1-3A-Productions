@@ -388,11 +388,7 @@ public class SingScript : GameCharacter
         }
         for(int i = 0; i < enemiesHit.Length; i++)
         {
-            if(enemiesHit[i].GetComponentInParent<FlyingLemurAI>() != null) { enemiesHit[i].GetComponentInParent<FlyingLemurAI>().DamageEnemyMelee(); }
-            if(enemiesHit[i].GetComponentInParent<WildDogAI>() != null) { enemiesHit[i].GetComponentInParent<WildDogAI>().DamageEnemyMelee(); }
-            if(enemiesHit[i].GetComponentInParent<PangolinAI>() != null) { enemiesHit[i].GetComponentInParent<PangolinAI>().DamageEnemyMelee(); }
-            if(enemiesHit[i].GetComponentInParent<CrocodileAI>() != null) { enemiesHit[i].GetComponentInParent<CrocodileAI>().DamageEnemyMelee(); }
-            if(enemiesHit[i].GetComponentInParent<RhinoAI>() != null) { enemiesHit[i].GetComponentInParent<RhinoAI>().DamageEnemyMelee(); }
+            if(enemiesHit[i].GetComponentInParent<EnemyAI>() != null) { enemiesHit[i].GetComponentInParent<EnemyAI>().DamageEnemyMelee(); }
             currentSpirit = (currentSpirit < maximumSpirit) ? currentSpirit += 1 : maximumSpirit;
         }
     } // Makes player use melee attack
@@ -436,7 +432,6 @@ public class SingScript : GameCharacter
         yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
         vulnerable = true;
     } // Coroutine that runs when player is hit
-
     private void SongFollow()
     {
 
