@@ -92,6 +92,7 @@ public class GameCharacter : MonoBehaviour
         #region Initialise knockbackDirection
         knockbackDirection = knockbackForce;
         #endregion
+        Physics2D.IgnoreLayerCollision(8, 8, true);
         DetermineStartingDirection();
     }
     protected void DetermineStartingDirection()
@@ -139,15 +140,8 @@ public class GameCharacter : MonoBehaviour
         for(int i = 0; i < rayCount; i++)
         {
             raycastHit2D = Physics2D.Raycast(raycastOrigins.topLeft + Vector2.right * raySpacing * i, Vector2.up, rayLength, terrainLayer);
-            if (raycastHit2D)
-            {
-                isHitCeiling = true;
-                break;
-            }
-            else
-            {
-                isHitCeiling = false;
-            }
+            if(raycastHit2D){ isHitCeiling = true; break; }
+            else { isHitCeiling = false; }
             Debug.DrawRay(raycastOrigins.topLeft + Vector2.right * raySpacing * i, Vector2.up * rayLength, Color.red);
         } // ceilingCheck raycasts
     } // Toggles isGrounded & isHitceiling
@@ -164,7 +158,6 @@ public class GameCharacter : MonoBehaviour
         {
             rotationTime += Time.deltaTime;
             this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, rotationTime);
-
             yield return null;
         }
     } // Makes character's sprite flip with flip effect

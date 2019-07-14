@@ -64,7 +64,7 @@ public class WildDogAI : EnemyAI
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
-        if (this.colliderTransform != null)
+        if(this.colliderTransform != null)
         {
             Gizmos.DrawWireCube(this.colliderTransform.position, playerDetectionRange);
             Gizmos.DrawWireCube(this.colliderTransform.position, attackRange);

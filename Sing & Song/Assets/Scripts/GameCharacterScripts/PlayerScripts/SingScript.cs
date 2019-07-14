@@ -70,6 +70,15 @@ public class SingScript : GameCharacter
     private bool vulnerable;
     private bool ignoreEnemyCollision;
     #endregion
+    #region Song Node Variables
+    [Header("Song Node Variables")]
+    [SerializeField] private GameObject song;
+    [SerializeField] private Vector2 nodeOffsetDefault = new Vector2(1.5f, 0f);
+    [SerializeField] private float nodeInterval = 0.15f;
+    protected Vector2 nodePosition;
+    private Vector2 nodeOffset;
+    private float nodeIntervalTimer;
+    #endregion
     #region UI Variables
     [Header("UI Variables")]
     [SerializeField] private Image[] healthCrystals;
@@ -118,6 +127,9 @@ public class SingScript : GameCharacter
         #endregion
         #region Initialise Damaged Variables
         vulnerable = true;
+        #endregion
+        #region Initialise Song Node Variables
+        nodePosition = (Vector2)transform.position + nodeOffset;
         #endregion
         #region Initialise UI Variables
         minimumSpiritWellPosition = new Vector2(spiritWell.rectTransform.anchoredPosition.x, -200);
@@ -171,6 +183,16 @@ public class SingScript : GameCharacter
             currentSpirit -= spiritDrainToUse;
             playerState = PlayerState.PLAYER_SPIRIT;
         }
+        #endregion
+        #region Update Song Node Position
+        song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, song.transform.position.y), moveSpeed * Time.deltaTime);
+        nodeOffset = (facingRight) ? -nodeOffsetDefault : nodeOffsetDefault;
+        if(nodeIntervalTimer > nodeInterval)
+        {
+            nodeIntervalTimer = 0f;
+            nodePosition = (Vector2)transform.position + nodeOffset;
+        }
+        else { nodeIntervalTimer += Time.deltaTime; }
         #endregion
         #region Set Enemy Layer Collision
         ignoreEnemyCollision = !vulnerable;
@@ -432,8 +454,4 @@ public class SingScript : GameCharacter
         yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
         vulnerable = true;
     } // Coroutine that runs when player is hit
-    private void SongFollow()
-    {
-
-    }
 }
