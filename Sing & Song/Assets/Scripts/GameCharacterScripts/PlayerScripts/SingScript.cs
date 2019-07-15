@@ -185,7 +185,6 @@ public class SingScript : GameCharacter
         }
         #endregion
         #region Update Song Node Position
-        song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, song.transform.position.y), moveSpeed * Time.deltaTime);
         nodeOffset = (facingRight) ? -nodeOffsetDefault : nodeOffsetDefault;
         if(nodeIntervalTimer > nodeInterval)
         {
@@ -193,6 +192,18 @@ public class SingScript : GameCharacter
             nodePosition = (Vector2)transform.position + nodeOffset;
         }
         else { nodeIntervalTimer += Time.deltaTime; }
+        #endregion
+        #region Update Song Position
+        if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING)
+        {
+            song.GetComponent<Rigidbody2D>().gravityScale = 2f;
+            song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, song.transform.position.y), moveSpeed * Time.deltaTime);
+        }
+        if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
+        {
+            song.GetComponent<Rigidbody2D>().gravityScale = 0f;
+            song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, nodePosition.y), moveSpeed * Time.deltaTime);
+        }
         #endregion
         #region Set Enemy Layer Collision
         ignoreEnemyCollision = !vulnerable;
@@ -454,4 +465,9 @@ public class SingScript : GameCharacter
         yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
         vulnerable = true;
     } // Coroutine that runs when player is hit
+
+    private void SongJump()
+    {
+
+    }
 }

@@ -92,7 +92,8 @@ public class GameCharacter : MonoBehaviour
         #region Initialise knockbackDirection
         knockbackDirection = knockbackForce;
         #endregion
-        Physics2D.IgnoreLayerCollision(8, 8, true);
+        Physics2D.IgnoreLayerCollision(8, 11, true);
+        Physics2D.IgnoreLayerCollision(9, 11, true);
         DetermineStartingDirection();
     }
     protected void DetermineStartingDirection()
