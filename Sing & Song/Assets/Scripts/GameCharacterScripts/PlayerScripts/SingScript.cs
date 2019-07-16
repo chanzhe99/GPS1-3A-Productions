@@ -202,7 +202,7 @@ public class SingScript : GameCharacter
         if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
         {
             song.GetComponent<Rigidbody2D>().gravityScale = 0f;
-            song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, nodePosition.y), moveSpeed * Time.deltaTime);
+            song.transform.position = Vector2.MoveTowards(song.transform.position, this.transform.position, moveSpeed * Time.deltaTime);
         }
         #endregion
         #region Set Enemy Layer Collision

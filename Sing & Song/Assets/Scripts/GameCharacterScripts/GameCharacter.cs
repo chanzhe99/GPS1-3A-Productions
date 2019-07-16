@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class GameCharacter : MonoBehaviour
 {
     #region Component Variables
+    [Header("Animator Component")]
+    [SerializeField] protected Animator animator;
     protected CapsuleCollider2D capsuleCollider2D;
     protected Transform colliderTransform;
     protected Rigidbody2D rigidbody2D;
-    protected Animator animator;
     #endregion
     #region Layer Variables
     protected LayerMask playerLayer;
@@ -73,7 +73,6 @@ public class GameCharacter : MonoBehaviour
         capsuleCollider2D = GetComponentInChildren<CapsuleCollider2D>();
         colliderTransform = capsuleCollider2D.transform;
         rigidbody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
         #endregion
         #region Initialise Raycast Variables
         CalculateRaySpacing();
