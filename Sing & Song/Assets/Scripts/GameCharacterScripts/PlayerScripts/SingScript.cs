@@ -465,9 +465,4 @@ public class SingScript : GameCharacter
         yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
         vulnerable = true;
     } // Coroutine that runs when player is hit
-
-    private void SongJump()
-    {
-
-    }
 }
