@@ -6,8 +6,8 @@ public class EnemyAI : GameCharacter
 {
     #region Component Variables
     [Header("Component Variables")]
-    [SerializeField] protected GameObject playerObject;
     [SerializeField] protected Transform enemySpriteTransform;
+    protected GameObject playerObject;
     protected Transform playerTransform;
     protected SingScript playerScript;
     #endregion
@@ -61,6 +61,7 @@ public class EnemyAI : GameCharacter
     {
         base.Initialise();
         #region Initialise Player Component Variables
+        playerObject = GameObject.FindGameObjectWithTag("Player");
         playerTransform = playerObject.GetComponent<Transform>();
         playerScript = playerObject.GetComponent<SingScript>();
         #endregion

@@ -4,34 +4,32 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // Camera Component + Other Objects Variables
-    // Camera Follow Variables
-    [SerializeField] private float cameraSmoothingSpeed;
-    [SerializeField] public Vector3 cameraOffset;
-    private Vector3 cameraVelocity = Vector3.zero;
-    private float cameraDesiredPositionX;
-    private float cameraDesiredPositionY;
-    private Vector3 cameraSmoothedPosition;
+    #region Component Variables
     private Transform playerTransform;
+    #endregion
+    #region Camera Position Variables
+    [SerializeField] private Vector3 cameraOffset = new Vector3(0f, 0f, -100f);
+    private Vector3 cameraTargetPosition;
+    [SerializeField] private CameraClampSetter cameraClampSetter;
+    private float minX, maxX, minY, maxY;
+    #endregion
 
     private void Start()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        minX = cameraClampSetter.getMinX() + (this.GetComponent<Camera>().orthographicSize * 16 / 9);
+        maxX = cameraClampSetter.getMaxX() - (this.GetComponent<Camera>().orthographicSize * 16 / 9);
+        minY = cameraClampSetter.getMinY() + (this.GetComponent<Camera>().orthographicSize);
+        maxY = cameraClampSetter.getMaxY() - (this.GetComponent<Camera>().orthographicSize);
     }
-
-    // Updates every frame after "void Update()" (For camera follow)
     private void FixedUpdate()
     {
-        cameraDesiredPositionX = playerTransform.position.x + cameraOffset.x;
-        cameraDesiredPositionY = playerTransform.position.y + cameraOffset.y;
-
-        if (cameraDesiredPositionX != transform.position.x)
+        cameraTargetPosition = playerTransform.position + cameraOffset;
+        cameraTargetPosition.x = Mathf.Clamp(cameraTargetPosition.x, minX, maxX);
+        cameraTargetPosition.y = Mathf.Clamp(cameraTargetPosition.y, minY, maxY);
+        if(cameraTargetPosition != this.transform.position)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, new Vector3(cameraDesiredPositionX, cameraOffset.y, cameraOffset.z), ref cameraVelocity, cameraSmoothingSpeed);
+            this.transform.position = Vector3.Lerp(this.transform.position, cameraTargetPosition, 1f);
         }
-        //else
-        //{
-        //    transform.position = cameraDesiredPosition;
-        //}
     }
 }
