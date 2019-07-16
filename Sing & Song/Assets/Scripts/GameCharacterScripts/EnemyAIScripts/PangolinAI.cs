@@ -4,6 +4,11 @@ using UnityEngine;
 
 sealed public class PangolinAI : EnemyAI
 {
+    #region CapsuleCollider2D Size Variables
+    private Vector2 defaultColliderOffset;
+    private Vector2 defaultColliderSize;
+    private Vector2 rollColliderSize = new Vector2(0.5f, 1f);
+    #endregion
     #region Spin Variables
     [Header("Spin Variables")]
     [SerializeField] private float spinTime = 0.5f;
@@ -22,14 +27,23 @@ sealed public class PangolinAI : EnemyAI
     protected override void Initialise()
     {
         base.Initialise();
+        defaultColliderOffset = capsuleCollider2D.offset;
+        defaultColliderSize = capsuleCollider2D.size;
         rollDirection.y = rollForce.y;
     }
     protected override void EnemyPatrol()
     {
+        animator.SetBool("resting", false);
+        capsuleCollider2D.offset = defaultColliderOffset;
+        capsuleCollider2D.size = defaultColliderSize;
         base.EnemyPatrol();
     }
     protected override void EnemyChase()
     {
+        animator.SetBool("resting", false);
+        animator.SetTrigger("spin");
+        capsuleCollider2D.offset = Vector2.zero;
+        capsuleCollider2D.size = rollColliderSize;
         enemySpriteTransform.Rotate(0f, 0f, spinSpeed * Time.deltaTime);
         if(playerTransform.position.x > this.transform.position.x) { rollDirection.x = rollForce.x; }
         else { rollDirection.x = -rollForce.x; }
@@ -55,6 +69,7 @@ sealed public class PangolinAI : EnemyAI
         if(rollTimeTimer >= rollTime)
         {
             rollTimeTimer = 0f;
+            animator.SetTrigger("uncurl");
             enemyState = EnemyState.ENEMY_RESTING;
         }
         else
@@ -72,6 +87,10 @@ sealed public class PangolinAI : EnemyAI
     }
     protected override void EnemyRest()
     {
+        animator.SetBool("resting", true);
+        enemySpriteTransform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        capsuleCollider2D.offset = defaultColliderOffset;
+        capsuleCollider2D.size = defaultColliderSize;
         base.EnemyRest();
     }
     public override void DamageEnemyMelee()

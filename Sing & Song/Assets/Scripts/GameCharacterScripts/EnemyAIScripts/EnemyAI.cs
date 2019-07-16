@@ -37,6 +37,10 @@ public class EnemyAI : GameCharacter
     private float stopAggroTime = 10f;
     private float stopAggroTimeTimer;
     #endregion
+    #region Death Variables
+    protected float deathFadeOutTime = 3f;
+    protected float deathFadeOutTimeTimer;
+    #endregion
     #region State Variables
     [Header("Rest Time Variable")]
     [SerializeField] protected float restTime;
@@ -53,7 +57,8 @@ public class EnemyAI : GameCharacter
         ENEMY_ATTACKING,
         ENEMY_RESTING,
         ENEMY_RETREATING,
-        ENEMY_HIT
+        ENEMY_HIT,
+        ENEMY_DEAD
     };
     protected EnemyState enemyState;
     #endregion
@@ -81,7 +86,7 @@ public class EnemyAI : GameCharacter
     private void Update()
     {
         #region Check Health
-        if (currentHealth <= 0f) { this.gameObject.SetActive(false); }
+        if(currentHealth <= 0f) { enemyState = EnemyState.ENEMY_DEAD; }
         //if respawn, spawn at spawnposition
         #endregion
         #region Recharge Spirit Armour
@@ -127,13 +132,13 @@ public class EnemyAI : GameCharacter
     }
     private void EnemySwitchState()
     {
-        switch(enemyState)
+        switch (enemyState)
         {
             case EnemyState.ENEMY_PATROLLING:
                 EnemyPatrol();
                 break;
             case EnemyState.ENEMY_CHASING:
-                if(playerTransform.position.x > this.transform.position.x && !facingRight || playerTransform.position.x < this.transform.position.x && facingRight) { FlipCharacter(); }
+                if (playerTransform.position.x > this.transform.position.x && !facingRight || playerTransform.position.x < this.transform.position.x && facingRight) { FlipCharacter(); }
                 EnemyChase();
                 break;
             case EnemyState.ENEMY_ATTACKING:
@@ -146,6 +151,18 @@ public class EnemyAI : GameCharacter
                 EnemyRetreat();
                 break;
             case EnemyState.ENEMY_HIT:
+                break;
+            case EnemyState.ENEMY_DEAD:
+                this.animator.SetTrigger("die");
+                if (deathFadeOutTimeTimer >= deathFadeOutTime)
+                {
+                    deathFadeOutTimeTimer = 0f;
+                    this.gameObject.SetActive(false);
+                }
+                else
+                {
+                    deathFadeOutTimeTimer += Time.deltaTime;
+                }
                 break;
         }
     }

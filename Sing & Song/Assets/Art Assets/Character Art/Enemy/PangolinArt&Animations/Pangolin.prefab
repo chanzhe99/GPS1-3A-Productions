@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7784993951025528759}
   - component: {fileID: 851457968657989411}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PangolinParts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1704577327750675999}
   - component: {fileID: 3192575703345565352}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Tail_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6494460689923961893}
   - component: {fileID: 3707671251560976627}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Leg_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5358951748461438351}
   - component: {fileID: 9146205546897620086}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sclera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,7 +310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 286031648438587782}
   - component: {fileID: 8371126966750616118}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Upper_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9141869971970810394}
   - component: {fileID: 2821955673551537717}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Tail_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -472,7 +472,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2812028488743413139}
   - component: {fileID: 8598022628827971359}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Tail_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -552,7 +552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2736369040707988518}
   - component: {fileID: 4571997137568001875}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PangolinCollider
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -601,7 +601,7 @@ GameObject:
   - component: {fileID: 2736369040991661537}
   - component: {fileID: 6904017603206263146}
   - component: {fileID: 5856149821844967274}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pangolin
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
@@ -639,7 +639,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -669,14 +669,14 @@ MonoBehaviour:
   spiritArmour: {fileID: 5583014901545137671}
   haveSpiritArmour: 0
   spiritArmourRecharge: 10
-  doesPatrol: 1
+  doesPatrol: 0
   playerDetectionRange: {x: 16, y: 2}
   restTime: 1.5
   retreatTime: 1
   spinTime: 0.5
   spinSpeed: 500
-  rollForce: {x: 10, y: 10}
-  rollTime: 1
+  rollForce: {x: 5, y: 10}
+  rollTime: 0.5
 --- !u!1 &2841376844395151017
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,7 +686,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8572036659686232935}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PangolinSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -718,7 +718,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3956127083578871244}
   - component: {fileID: 4284119812553183780}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Back_Hand_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -798,7 +798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2952995357430960801}
   - component: {fileID: 4224548425896063008}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Hand_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -879,7 +879,7 @@ GameObject:
   m_Component:
   - component: {fileID: 814516679597588116}
   - component: {fileID: 1912843018563904243}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Tail_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -960,7 +960,7 @@ GameObject:
   m_Component:
   - component: {fileID: 171814578794576497}
   - component: {fileID: 9142823524942146936}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Back_Leg_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1041,7 +1041,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1658471688782994796}
   - component: {fileID: 6509405110103696050}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1122,7 +1122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3826099042395242249}
   - component: {fileID: 5163461529415841211}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Leg_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1281,7 +1281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7003488155972325288}
   - component: {fileID: 956934020310669311}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: 'Back_Leg_1 '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1362,7 +1362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3133363505312760127}
   - component: {fileID: 8249842889665748911}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Middle_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1443,7 +1443,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8256410895382037781}
   - component: {fileID: 4538778507500136954}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Back_Hand_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1524,7 +1524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3037957340191689819}
   - component: {fileID: 6440215882622213322}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Back_Hand_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1605,7 +1605,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5697249588559993450}
   - component: {fileID: 168666409671503582}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pupil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1686,7 +1686,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1837399588681162945}
   - component: {fileID: 8854497811018667782}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Tail_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1767,7 +1767,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2281593195493619005}
   - component: {fileID: 1075584661033771565}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Hand_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1848,7 +1848,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7257853325745355161}
   - component: {fileID: 7574081563612561670}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Lower_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1928,7 +1928,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1499237219061429990}
   - component: {fileID: 3510884256142080524}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Leg_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2009,7 +2009,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1954666261268350931}
   - component: {fileID: 6627715078541212929}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Eyelid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2089,7 +2089,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1155708292408457921}
   - component: {fileID: 2472000041781146241}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Tail_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2170,7 +2170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1179760736527359070}
   - component: {fileID: 807192157729658566}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Back_Leg_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2250,7 +2250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1007220801668120306}
   - component: {fileID: 2919797072656624656}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Hand_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
