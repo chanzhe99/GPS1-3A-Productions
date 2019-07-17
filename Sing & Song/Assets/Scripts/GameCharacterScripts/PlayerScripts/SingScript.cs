@@ -230,7 +230,7 @@ public class SingScript : GameCharacter
         //print($"playerState: {playerState}");
         //print($"inputBuffer: {inputBuffer}");
         //print($"isGrounded: {isGrounded}");
-        //print($"isHitCeiling: {isHitCeiling}");
+        print($"isHitCeiling: {isHitCeiling}");
         //print($"currentHealth: {currentHealth}");
         //print($"currentSpirit: {currentSpirit}");
         //print($"dashedInAir: {dashedInAir}");
