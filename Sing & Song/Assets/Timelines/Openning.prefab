@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1319913896006667605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1319913896006667602}
+  - component: {fileID: 1319913896006667603}
+  - component: {fileID: 1319913896006667604}
+  - component: {fileID: 1319913896006667601}
+  m_Layer: 0
+  m_Name: Openning
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1319913896006667602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319913896006667605}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!320 &1319913896006667603
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319913896006667605}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 45479a5dd7f69864a85a4abbe5c528bd, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 1
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -4178364637077152632, guid: 7ff24018a3b83ad4581523481f4878a1, type: 2}
+    value: {fileID: 1319913896006667604}
+  - key: {fileID: -3579943536228282472, guid: 7ff24018a3b83ad4581523481f4878a1, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -1887860550988690323, guid: 45479a5dd7f69864a85a4abbe5c528bd, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -2259654832495842708, guid: 45479a5dd7f69864a85a4abbe5c528bd, type: 2}
+    value: {fileID: 0}
+  m_ExposedReferences:
+    m_References: []
+--- !u!95 &1319913896006667604
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319913896006667605}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1319913896006667601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319913896006667605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d1b348e72cdfe4394895a49e824e6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuWaiting: {fileID: 11400000, guid: 45479a5dd7f69864a85a4abbe5c528bd, type: 2}
+  openingMovie1: {fileID: 11400000, guid: 83be02b73cd7fde4c9a71c699bc288eb, type: 2}
+  openingMovie2: {fileID: 11400000, guid: 7ff24018a3b83ad4581523481f4878a1, type: 2}
+  singGameObject: {fileID: 0}
+  playerPivotPoint: {fileID: 0}
+  boatGameObject: {fileID: 3022170706020210080, guid: 24dbee30d181abe4486a2b93c29564a4,
+    type: 3}
