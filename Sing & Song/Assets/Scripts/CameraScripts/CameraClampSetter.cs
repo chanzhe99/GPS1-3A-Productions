@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class CameraClampSetter : MonoBehaviour
 {   
     [SerializeField] private Vector2 levelSize;
