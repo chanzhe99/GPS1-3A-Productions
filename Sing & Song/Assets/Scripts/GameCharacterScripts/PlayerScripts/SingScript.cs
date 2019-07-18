@@ -113,6 +113,8 @@ public class SingScript : GameCharacter
     };
     private PlayerState playerState;
     #endregion
+    [SerializeField] private float JumpSoundTime = 1f;
+    private float JumpSoundTimer = 0f;
     protected override void Initialise()
     {
         base.Initialise();
@@ -387,9 +389,17 @@ public class SingScript : GameCharacter
     } // Determines what happens in each playerState
     private void PlayerFlip() { if(input.x > 0 && !facingRight || input.x < 0 && facingRight) { FlipCharacter(); } } // Checks direction of player
     private void PlayerMove() { this.rigidbody2D.velocity = new Vector2(input.x * moveSpeed, this.rigidbody2D.velocity.y); } // Makes player move
+    private void PlayerMoveSound()
+    {
+        SoundManagerScripts.PlaySound("playerWalking");
+    }//make player move sound
     private void PlayerJump()
     {
-        if(jumpTime >= timeToJumpApex) { playerState = PlayerState.PLAYER_FALLING; }
+        if (jumpTime < timeToJumpApex * 0.05f)
+        {
+            SoundManagerScripts.PlaySound("playerJump");
+        }//player jump sound
+        if (jumpTime >= timeToJumpApex) { playerState = PlayerState.PLAYER_FALLING; }
         else
         {
             jumpTime += Time.deltaTime;
@@ -421,6 +431,7 @@ public class SingScript : GameCharacter
         {
             dashTimeTimer = 0;
             this.rigidbody2D.velocity = Vector2.zero;
+            SoundManagerScripts.PlaySound("playerDash");//player dash sound
             vulnerable = true;
             playerState = (dashedInAir) ? PlayerState.PLAYER_FALLING : PlayerState.PLAYER_IDLE;
         }
@@ -457,6 +468,12 @@ public class SingScript : GameCharacter
             currentSpirit = (currentSpirit < maximumSpirit) ? currentSpirit += 1 : maximumSpirit;
         }
     } // Makes player use melee attack
+
+    private void PlayerAttackSound()
+    {
+        SoundManagerScripts.PlaySound("playerAttack");
+    }
+
     private void PlayerSpiritAttack()
     {
         if(spiritAttackDurationTimer >= spiritAttackDuration)
@@ -472,11 +489,12 @@ public class SingScript : GameCharacter
             spiritAttack.SetActive(true);
         }
     } // Makes player use spirit attack
+
     public void DamagePlayer(Transform enemyTransform)
     {
-        if(enemyTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
-        else{ knockbackDirection.x = knockbackForce.x; }
-        if(vulnerable)
+        if(enemyTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; SoundManagerScripts.PlaySound("playerGetHit"); }
+        else{ knockbackDirection.x = knockbackForce.x; SoundManagerScripts.PlaySound("playerGetHit"); }//player get hit sound
+        if (vulnerable)
         {
             vulnerable = false;
             playerState = PlayerState.PLAYER_HIT;
