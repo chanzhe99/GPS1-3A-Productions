@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class SingScript : GameCharacter
 {
     #region Permission Variables
+    [SerializeField] private Image[] abilityHearts;
     [HideInInspector] public bool canDoAction = true;
     [HideInInspector] public bool canHeal = false;
     [HideInInspector] public bool canSpiritAttack = false;
@@ -115,6 +116,9 @@ public class SingScript : GameCharacter
     protected override void Initialise()
     {
         base.Initialise();
+        #region Initialise Permission Variables
+        for (int i = 0; i < abilityHearts.Length; i++) { abilityHearts[i].enabled = false; }
+        #endregion
         #region Initialise Spirit Variables
         currentSpirit = maximumSpirit;
         #endregion
@@ -149,6 +153,24 @@ public class SingScript : GameCharacter
     {
         #region Check Permissions
         if(!canDoAction) this.playerState = PlayerState.PLAYER_IDLE;
+        if(canHeal)
+        {
+            abilityHearts[0].enabled = true;
+            abilityHearts[0].color = new Color32(148, 250, 242, 255);
+        }
+        if(canHeal && canSpiritAttack)
+        {
+            abilityHearts[1].enabled = true;
+            abilityHearts[0].color = new Color32(255, 255, 255, 255);
+            abilityHearts[1].color = new Color32(148, 250, 242, 255);
+        }
+        if(canHeal && canSpiritAttack && canDash)
+        {
+            abilityHearts[2].enabled = true;
+            abilityHearts[0].color = new Color32(255, 255, 255, 255);
+            abilityHearts[1].color = new Color32(255, 255, 255, 255);
+            abilityHearts[2].color = new Color32(148, 250, 242, 255);
+        }
         #endregion
         #region Check Inputs
         if (canDoAction) // Checks for if player is in dialogue mode
@@ -223,10 +245,7 @@ public class SingScript : GameCharacter
         Physics2D.IgnoreLayerCollision(8, 9, ignoreEnemyCollision);
         #endregion
         #region Update UI
-        for (int i = 0; i < healthCrystals.Length; i++)
-        {
-            healthCrystals[i].enabled = (i < currentHealth) ? true : false;
-        }
+        for (int i = 0; i < healthCrystals.Length; i++) { healthCrystals[i].enabled = (i < currentHealth) ? true : false; }
         spiritWellAlpha = (playerState != PlayerState.PLAYER_HEALING && currentSpirit < spiritDrainToUse) ? 0.6f : 1f;
         spiritWell.color = new Color(1f, 1f, 1f, Mathf.Lerp(spiritWell.color.a, spiritWellAlpha, Time.deltaTime * 2));
         currentSpiritWellPosition = Vector2.Lerp(minimumSpiritWellPosition, maximumSpiritWellPosition, currentSpirit/maximumSpirit);
