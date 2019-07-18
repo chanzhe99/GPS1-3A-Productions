@@ -1,19 +1,25 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Audio;
 
-
-public class VoiceController : MonoBehaviour
+public class MainVoiceController : MonoBehaviour
 {
-    public AudioMixer masterMixer;
 
-    public void SetSfxLvl(float sfxLvl)
+    public AudioMixer audioMixer;    // Control Mixer
+
+    public void SetMasterVolume(float volume)    // Control all volume
     {
-        masterMixer.SetFloat("sfxVol", sfxLvl);
+        audioMixer.SetFloat("MasterVolume", volume);
     }
 
-    public void SetMusicLvl(float musicLvl)
+    public void SetMusicVolume(float volume)    // Control Music volume
     {
-        masterMixer.SetFloat("musicVol", musicLvl);
+        audioMixer.SetFloat("MusicVolume", volume);
+    }
+
+    public void SetSoundEffectVolume(float volume)    // Control sound effects volume
+    {
+        audioMixer.SetFloat("SoundEffectVolume", volume);
     }
 }

@@ -33,7 +33,7 @@ public class WildDogAI : EnemyAI
     }
     protected override void EnemyAttack()
     {
-        if(!isLunge) { isLunge = true; StartCoroutine(Lunge()); }
+        if(!isLunge) { isLunge = true; StartCoroutine(Lunge()); SoundManagerScripts.PlaySound("wilddogAttack"); }//wild dog attack sound
     }
     protected override void EnemyRetreat()
     {

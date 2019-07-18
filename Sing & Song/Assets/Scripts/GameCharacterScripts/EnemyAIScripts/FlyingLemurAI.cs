@@ -70,6 +70,7 @@ public class FlyingLemurAI : EnemyAI
         {
             diveTimeTimer += Time.deltaTime;
             transform.Translate((playerDivePosition - transform.position) * diveSpeed * Time.deltaTime);
+            SoundManagerScripts.PlaySound("flyinglemurAttack");//flyinglemur attack sound
         }
         
     }
