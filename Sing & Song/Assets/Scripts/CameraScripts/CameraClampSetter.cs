@@ -15,7 +15,7 @@ public class CameraClampSetter : MonoBehaviour
         cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         levelCenter = GetComponent<Transform>().position;
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player")) { cameraController.GetCameraClampSetter(this.GetComponent<CameraClampSetter>()); }
     }
