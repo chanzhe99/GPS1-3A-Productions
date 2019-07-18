@@ -18,7 +18,7 @@ public class CameraClampSetter : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")) { cameraController.GetCameraClampSetter(this.GetComponent<CameraClampSetter>()); }
+        if(collision.gameObject.CompareTag("Player")) { cameraController.GetCameraClampSetter(this.GetComponent<CameraClampSetter>()); }
     }
     public float getMinX() { return minX = levelCenter.x - (levelSize.x * 0.5f); }
     public float getMinY() { return minX = levelCenter.y - (levelSize.y * 0.5f); }

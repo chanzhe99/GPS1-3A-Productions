@@ -13,12 +13,8 @@ public class CameraController : MonoBehaviour
     private CameraClampSetter cameraClampSetter;
     private float minX, maxX, minY, maxY;
     #endregion
-
-    public void GetCameraClampSetter(CameraClampSetter clampSetter) { cameraClampSetter = clampSetter; }
-    private void Start()
-    {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-    }
+    
+    private void Start() { playerTransform = GameObject.FindGameObjectWithTag("Player").transform; }
     private void Update()
     {
         minX = cameraClampSetter.getMinX() + (this.GetComponent<Camera>().orthographicSize * 16 / 9);
@@ -36,4 +32,5 @@ public class CameraController : MonoBehaviour
             this.transform.position = Vector3.Lerp(this.transform.position, cameraTargetPosition, 1f);
         }
     }
+    public void GetCameraClampSetter(CameraClampSetter clampSetter) { cameraClampSetter = clampSetter; }
 }
