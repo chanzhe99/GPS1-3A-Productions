@@ -36,7 +36,6 @@ public class DialogueManager : MonoBehaviour
                 if (sentences.Count == 0)
                 {
                     isUsingButton = true;
-                    return;
                 }
                 DisplayNextSentence();
             }

@@ -8787,16 +8787,17 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -1.2985573, y: -2.125342}
-      - {x: -4.7558517, y: -2.1106262}
+    - - {x: 1.868464, y: -2.1539898}
+      - {x: -1.1196718, y: -2.483111}
+      - {x: -4.863182, y: -2.3252878}
       - {x: -4.7635765, y: 13.446715}
       - {x: -6.4743977, y: 13.451986}
       - {x: -6.318673, y: -3.2568874}
       - {x: -4.115469, y: -4.0616817}
       - {x: -2.6566744, y: -4.044406}
       - {x: 2.064282, y: -3.8500447}
-      - {x: 3.174553, y: -2.9819226}
-      - {x: 3.4657187, y: -1.3256502}
+      - {x: 2.7452292, y: -2.9819226}
+      - {x: 2.901299, y: -1.7911894}
 --- !u!95 &887988687856723420
 Animator:
   serializedVersion: 3
@@ -10674,7 +10675,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3920118415174553148}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 5.25, y: -3.15, z: 0}
+  m_LocalPosition: {x: -10.75, y: -3.98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3920118415096064777}
@@ -11649,9 +11650,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogue:
-    name: Opening
+    name: Sing
     sentences:
-    - Hey guy you no need go there~
+    - It feels good to be finally returning home.
 --- !u!50 &4287346010896588508
 Rigidbody2D:
   serializedVersion: 4
@@ -12376,15 +12377,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: TriggerEvent
       objectReference: {fileID: 0}
+    - target: {fileID: 8244043100581041035, guid: 0c05bdb9094e5d646af04af820651d90,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8244043100581041045, guid: 0c05bdb9094e5d646af04af820651d90,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.37
+      value: -1.35
       objectReference: {fileID: 0}
     - target: {fileID: 8244043100581041045, guid: 0c05bdb9094e5d646af04af820651d90,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.9
+      value: -3.58
       objectReference: {fileID: 0}
     - target: {fileID: 8244043100581041045, guid: 0c05bdb9094e5d646af04af820651d90,
         type: 3}
@@ -12430,6 +12436,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8244043100581041044, guid: 0c05bdb9094e5d646af04af820651d90,
+        type: 3}
+      propertyPath: dialogue.sentences.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8244043100581041044, guid: 0c05bdb9094e5d646af04af820651d90,
+        type: 3}
+      propertyPath: dialogue.sentences.Array.data[0]
+      value: Wait...
+      objectReference: {fileID: 0}
+    - target: {fileID: 8244043100581041044, guid: 0c05bdb9094e5d646af04af820651d90,
+        type: 3}
+      propertyPath: dialogue.sentences.Array.data[1]
+      value: something's not right.
+      objectReference: {fileID: 0}
+    - target: {fileID: 8244043100581041044, guid: 0c05bdb9094e5d646af04af820651d90,
+        type: 3}
+      propertyPath: dialogue.sentences.Array.data[2]
+      value: The island's atmosphere is...
+      objectReference: {fileID: 0}
+    - target: {fileID: 8244043100581041044, guid: 0c05bdb9094e5d646af04af820651d90,
+        type: 3}
+      propertyPath: dialogue.sentences.Array.data[3]
+      value: different somehow.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c05bdb9094e5d646af04af820651d90, type: 3}
