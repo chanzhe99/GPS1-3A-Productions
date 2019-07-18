@@ -7,6 +7,7 @@ public class DialogueManager : MonoBehaviour
 {
     public Text nameText;
     public Text dialogueText;
+    private bool isUsingButton = false;
 
     public Animator animator;
 
@@ -18,8 +19,20 @@ public class DialogueManager : MonoBehaviour
         sentences = new Queue<string>();
     }
 
-    public void StartDialogue(ObjectDialogue dialogue)
+    private void Update()
     {
+        if (!isUsingButton)
+        {
+            if (Input.GetButtonDown("InteractButton"))
+            {
+                DisplayNextSentence();
+            }
+        }
+    }
+
+    public void StartDialogue(ObjectDialogue dialogue, bool isClicked)
+    {
+        isUsingButton = isClicked;
         animator.SetBool("IsOpen", true);
 
         nameText.text = dialogue.name;

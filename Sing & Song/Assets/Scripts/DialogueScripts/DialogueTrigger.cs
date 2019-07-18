@@ -15,8 +15,13 @@ public class DialogueTrigger : MonoBehaviour
     {
         if(hit.CompareTag("Player"))
         {
-            FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
+            OpenDialogue(false);
             //Destroy(gameObject);
         }
+    }
+
+    public void OpenDialogue(bool isClicked = true)
+    {
+        FindObjectOfType<DialogueManager>().StartDialogue(dialogue, isClicked);
     }
 }
