@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 
 public class OpenningTimelineController : MonoBehaviour
 {
-    private bool isMoviePlayed = false; //! This one need to push it in GameManager
+    private bool isMoviePlayed = true; //! This one need to push it in GameManager
 
     public bool IsMoviePlayed
     {
