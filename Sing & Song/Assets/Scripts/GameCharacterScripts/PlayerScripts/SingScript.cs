@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public class SingScript : GameCharacter
 {
+    #region Permission Variables
+    [HideInInspector] public bool canDoAction = true;
+    [HideInInspector] public bool canHeal = false;
+    [HideInInspector] public bool canSpiritAttack = false;
+    [HideInInspector] public bool canDash = false;
+    #endregion
     #region Input Variables
     private Vector2 input;
     private bool inputJumpPress;
@@ -141,14 +147,20 @@ public class SingScript : GameCharacter
     } // Initialises player variables
     private void Update()
     {
+        #region Check Permissions
+        if(!canDoAction) this.playerState = PlayerState.PLAYER_IDLE;
+        #endregion
         #region Check Inputs
-        input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // Input for directions
-        inputJumpPress = Input.GetButtonDown("JumpButton"); // Input for jump press
-        inputJump = Input.GetButton("JumpButton"); // Input for jump
-        inputHeal = Input.GetButton("HealButton"); // Input for heal
-        inputDash = Input.GetButtonDown("DashButton"); // Input for dash
-        inputMeleeAttack = Input.GetButtonDown("MeleeAttackButton"); // Input for melee attack
-        inputSpiritAttack = Input.GetButtonDown("SpiritAttackButton"); // Input for spirit attack
+        if (canDoAction) // Checks for if player is in dialogue mode
+        {
+            input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // Input for directions
+            inputJumpPress = Input.GetButtonDown("JumpButton"); // Input for jump press
+            inputJump = Input.GetButton("JumpButton"); // Input for jump
+            if(canHeal) inputHeal = Input.GetButton("HealButton"); // Input for heal
+            if(canDash) inputDash = Input.GetButtonDown("DashButton"); // Input for dash
+            inputMeleeAttack = Input.GetButtonDown("MeleeAttackButton"); // Input for melee attack
+            if(canSpiritAttack) inputSpiritAttack = Input.GetButtonDown("SpiritAttackButton"); // Input for spirit attack
+        }
         inputInteract = Input.GetButtonDown("InteractButton"); // Input for interact
         #endregion
         #region Check Ground & Ceiling
@@ -231,7 +243,7 @@ public class SingScript : GameCharacter
         //print($"playerState: {playerState}");
         //print($"inputBuffer: {inputBuffer}");
         //print($"isGrounded: {isGrounded}");
-        print($"isHitCeiling: {isHitCeiling}");
+        //print($"isHitCeiling: {isHitCeiling}");
         //print($"currentHealth: {currentHealth}");
         //print($"currentSpirit: {currentSpirit}");
         //print($"dashedInAir: {dashedInAir}");

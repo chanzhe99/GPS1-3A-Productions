@@ -5,18 +5,18 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    public Text nameText;
-    public Text dialogueText;
+    [SerializeField] private Text nameText;
+    [SerializeField] private Text dialogueText;
+    [SerializeField] private Animator animator;
     private bool isUsingButton = false;
-
-    public Animator animator;
-
     private Queue<string> sentences;
+    private SingScript singScript;
 
     // Start is called before the first frame update
     void Start()
     {
         sentences = new Queue<string>();
+        singScript = GameObject.FindGameObjectWithTag("Player").GetComponent<SingScript>();
     }
 
     private void Update()
@@ -32,6 +32,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(ObjectDialogue dialogue, bool isClicked)
     {
+        singScript.canDoAction = false;
         isUsingButton = isClicked;
         animator.SetBool("IsOpen", true);
 
@@ -72,6 +73,7 @@ public class DialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
+        singScript.canDoAction = true;
         animator.SetBool("IsOpen", false);
     }
 }
