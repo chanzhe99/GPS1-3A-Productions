@@ -5,8 +5,7 @@ using UnityEngine.Playables;
 
 public class OpenningTimelineController : MonoBehaviour
 {
-    private bool isMoviePlayed = true; //! This one need to push it in GameManager
-
+    private bool isMoviePlayed = false; //! This one need to push it in GameManager
     public bool IsMoviePlayed
     {
         get
@@ -17,11 +16,13 @@ public class OpenningTimelineController : MonoBehaviour
     
     private PlayableDirector playableDirector;
     [SerializeField] private PlayableAsset menuWaiting;
-    [SerializeField] private PlayableAsset openingMovie1;
-    [SerializeField] private PlayableAsset openingMovie2;
+    [SerializeField] private PlayableAsset openingMovie;
     [SerializeField] private GameObject singGameObject;
     [SerializeField] private Transform playerPivotPoint;
     [SerializeField] private GameObject boatGameObject;
+    [SerializeField] private GameObject inGameUIGameObject;
+    private DialogueTrigger openingDialogueTrigger;
+    private DialogueManager dialogueManager;
     private float singDefaultGravityScaleValue;
 
     private bool isLastOpeningMovie = false;
@@ -31,6 +32,8 @@ public class OpenningTimelineController : MonoBehaviour
     {
         if (isMoviePlayed == false)
         {
+            openingDialogueTrigger = transform.GetComponentInChildren<DialogueTrigger>();
+            dialogueManager = FindObjectOfType<DialogueManager>();
             singDefaultGravityScaleValue = singGameObject.GetComponent<Rigidbody2D>().gravityScale;
             playableDirector = GetComponent<PlayableDirector>();
             PlayMenuWaiting();
@@ -43,24 +46,30 @@ public class OpenningTimelineController : MonoBehaviour
         }
     }
 
+    public void ShowOpeningDialogue() //! When the player are first time playing this game, and the player press the start game button it will show the cutscene
+    {
+        openingDialogueTrigger.OpenDialogue(false);
+    }
+
+    public void CheckDialogueEndState() //! For check the dialogue are finish while dialogue button clicked
+    {
+        if(dialogueManager.Sentences.Count == 0)
+        {
+            PlayOpeningMovie();
+        }
+    }
+
     private void OnPlayableDirectorStopped(PlayableDirector aDirector)
     {
         if (playableDirector == aDirector)
         {
-            if (!isLastOpeningMovie)
-            {
-                PlayOpeningPart2Movie();
-            }
-            else
-            {
-                singGameObject.GetComponent<Transform>().SetParent(null, true);
-                EnableSingController();
+            singGameObject.GetComponent<Transform>().SetParent(null, true);
+            EnableSingController();
 
-                //! this one no point, is just for save the isMoviePlayed data, you can change it.
+            //! Here for save the isMoviePlayed data
 
-                playableDirector.stopped -= OnPlayableDirectorStopped;
-                DestroyAllOpeningGameObjects();
-            }
+            playableDirector.stopped -= OnPlayableDirectorStopped;
+            DestroyAllOpeningGameObjects();
         }
             
     }
@@ -74,32 +83,25 @@ public class OpenningTimelineController : MonoBehaviour
         DisableSingController();
     }
 
-    private void DisableSingController()
+    public void PlayOpeningMovie()
     {
-        singGameObject.GetComponent<SingScript>().enabled = false;
-        singGameObject.GetComponent<Rigidbody2D>().gravityScale = 0.0f;
-    }
-
-    public void PlayOpeningPart1Movie()
-    {
-        playableDirector.Play(openingMovie1, DirectorWrapMode.None);
+        playableDirector.Play(openingMovie, DirectorWrapMode.None);
 
         DisableSingController();
 
         playableDirector.stopped += OnPlayableDirectorStopped;
     }
-    private void PlayOpeningPart2Movie()
+
+    private void DisableSingController()
     {
-        playerPivotPoint.SetParent(null, true);
-
-        playableDirector.Play(openingMovie2, DirectorWrapMode.None);
-        DisableSingController();
-
-        isLastOpeningMovie = true;
+        inGameUIGameObject.SetActive(false);
+        singGameObject.GetComponent<SingScript>().enabled = false;
+        singGameObject.GetComponent<Rigidbody2D>().gravityScale = 0.0f;
     }
 
     private void EnableSingController()
     {
+        inGameUIGameObject.SetActive(true);
         singGameObject.GetComponent<SingScript>().enabled = true;
         singGameObject.GetComponent<Rigidbody2D>().gravityScale = singDefaultGravityScaleValue;
     }

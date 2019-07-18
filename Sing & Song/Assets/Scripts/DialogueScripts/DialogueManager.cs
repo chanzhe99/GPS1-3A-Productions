@@ -12,6 +12,14 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> sentences;
     private SingScript singScript;
 
+    public Queue<string> Sentences
+    {
+        get
+        {
+            return sentences;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +33,14 @@ public class DialogueManager : MonoBehaviour
         {
             if (Input.GetButtonDown("InteractButton"))
             {
+                if (sentences.Count == 0)
+                {
+                    isUsingButton = true;
+                    return;
+                }
                 DisplayNextSentence();
             }
+
         }
     }
 
@@ -52,6 +66,13 @@ public class DialogueManager : MonoBehaviour
     {
         if(sentences.Count == 0)
         {
+            if(FindObjectOfType<OpenningTimelineController>() != null)
+            {
+                if (!FindObjectOfType<OpenningTimelineController>().IsMoviePlayed)
+                {
+                    FindObjectOfType<OpenningTimelineController>().PlayOpeningMovie();
+                }
+            }
             EndDialogue();
             return;
         }
