@@ -79,14 +79,14 @@ public class EnemyAI : GameCharacter
         else { spiritArmour.SetActive(false); }
         #endregion
         #region Initialise Patrol Variables
-        patrolSpeed = (doesPatrol) ? 1 : 0;
+        this.patrolSpeed = (this.doesPatrol) ? 1 : 0;
         #endregion
-        enemyState = EnemyState.ENEMY_PATROLLING;
+        this.enemyState = EnemyState.ENEMY_PATROLLING;
     }
     private void Update()
     {
         #region Check Health
-        if(currentHealth <= 0f) { enemyState = EnemyState.ENEMY_DEAD; }
+        if(this.currentHealth <= 0f) { this.enemyState = EnemyState.ENEMY_DEAD; }
         //if respawn, spawn at spawnposition
         #endregion
         #region Recharge Spirit Armour
@@ -108,25 +108,25 @@ public class EnemyAI : GameCharacter
         UpdateWallRaycast();
         #endregion
         #region Check Aggro
-        isDetectPlayer = Physics2D.OverlapBox(this.colliderTransform.position, playerDetectionRange, 0f, playerLayer);
-        if(enemyState != EnemyState.ENEMY_PATROLLING)
+        this.isDetectPlayer = Physics2D.OverlapBox(this.colliderTransform.position, this.playerDetectionRange, 0f, playerLayer);
+        if(this.enemyState != EnemyState.ENEMY_PATROLLING)
         {
-            if(isDetectPlayer) { stopAggroTimeTimer = 0; }
+            if(this.isDetectPlayer) { this.stopAggroTimeTimer = 0; }
             else
             {
-                if(stopAggroTimeTimer >= stopAggroTime)
+                if(this.stopAggroTimeTimer >= this.stopAggroTime)
                 {
-                    enemyState = EnemyState.ENEMY_PATROLLING;
-                    stopAggroTimeTimer = 0;
+                    this.enemyState = EnemyState.ENEMY_PATROLLING;
+                    this.stopAggroTimeTimer = 0;
                 }
-                else { stopAggroTimeTimer += Time.deltaTime; }
+                else { this.stopAggroTimeTimer += Time.deltaTime; }
             }
         }
         #endregion
         
         EnemySwitchState();
         //print($"enemyState: {enemyState}");
-        print($"enemyCurrentHealth: {currentHealth}");
+        //print($"enemyCurrentHealth: {currentHealth}");
         //print($"hitWall: {hitWall}");
         //print($"hitEdge: {hitEdge}");
     }
@@ -135,77 +135,77 @@ public class EnemyAI : GameCharacter
         switch (enemyState)
         {
             case EnemyState.ENEMY_PATROLLING:
-                EnemyPatrol();
+                this.EnemyPatrol();
                 break;
             case EnemyState.ENEMY_CHASING:
-                if (playerTransform.position.x > this.transform.position.x && !facingRight || playerTransform.position.x < this.transform.position.x && facingRight) { FlipCharacter(); }
-                EnemyChase();
+                if (playerTransform.position.x > this.transform.position.x && this.facingRight == false || playerTransform.position.x < this.transform.position.x && this.facingRight) { this.FlipCharacter(); }
+                this.EnemyChase();
                 break;
             case EnemyState.ENEMY_ATTACKING:
-                EnemyAttack();
+                this.EnemyAttack();
                 break;
             case EnemyState.ENEMY_RESTING:
-                EnemyRest();
+                this.EnemyRest();
                 break;
             case EnemyState.ENEMY_RETREATING:
-                EnemyRetreat();
+                this.EnemyRetreat();
                 break;
             case EnemyState.ENEMY_HIT:
                 break;
             case EnemyState.ENEMY_DEAD:
                 this.animator.SetTrigger("die");
-                if (deathFadeOutTimeTimer >= deathFadeOutTime)
+                if (this.deathFadeOutTimeTimer >= this.deathFadeOutTime)
                 {
-                    deathFadeOutTimeTimer = 0f;
+                    this.deathFadeOutTimeTimer = 0f;
                     this.gameObject.SetActive(false);
                 }
                 else
                 {
-                    deathFadeOutTimeTimer += Time.deltaTime;
+                    this.deathFadeOutTimeTimer += Time.deltaTime;
                 }
                 break;
         }
     }
     private void UpdateWallRaycast()
     {
-        rayOrigin = colliderTransform.position + (-transform.right * capsuleCollider2D.size.x * 0.5f);
-        hitWall = Physics2D.Raycast(rayOrigin, -transform.right, wallRayLength, terrainLayer);
-        hitEdge = !Physics2D.Raycast(rayOrigin, -transform.up, edgeRayLength, terrainLayer);
+        this.rayOrigin = this.colliderTransform.position + (-this.transform.right * this.capsuleCollider2D.size.x * 0.5f);
+        this.hitWall = Physics2D.Raycast(this.rayOrigin, -this.transform.right, this.wallRayLength, terrainLayer);
+        this.hitEdge = !Physics2D.Raycast(this.rayOrigin, -this.transform.up, this.edgeRayLength, terrainLayer);
         Debug.DrawRay(rayOrigin, -transform.right * wallRayLength, Color.red);
         Debug.DrawRay(rayOrigin, -transform.up * edgeRayLength, Color.red);
     }
     protected virtual void EnemyPatrol()
     {
-        this.rigidbody2D.velocity = new Vector2(-this.transform.right.x * moveSpeed * patrolSpeed, this.rigidbody2D.velocity.y);
-        if(hitWall || hitEdge) { FlipCharacter(); }
-        if(isDetectPlayer) { this.rigidbody2D.velocity = Vector2.zero; enemyState = EnemyState.ENEMY_CHASING; }
+        this.rigidbody2D.velocity = new Vector2(-this.transform.right.x * this.moveSpeed * this.patrolSpeed, this.rigidbody2D.velocity.y);
+        if(this.hitWall || this.hitEdge) { this.FlipCharacter(); }
+        if(this.isDetectPlayer) { this.rigidbody2D.velocity = Vector2.zero; this.enemyState = EnemyState.ENEMY_CHASING; }
     }
     protected virtual void EnemyChase() {}
     protected virtual void EnemyAttack() {}
     protected virtual void EnemyRest()
     {
-        if(restTimeTimer >= restTime)
+        if(this.restTimeTimer >= this.restTime)
         {
-            restTimeTimer = 0;
-            enemyState = EnemyState.ENEMY_CHASING;
+            this.restTimeTimer = 0;
+            this.enemyState = EnemyState.ENEMY_CHASING;
         }
         else
         {
-            restTimeTimer += Time.deltaTime;
+            this.restTimeTimer += Time.deltaTime;
         }
     }
     protected virtual void EnemyRetreat() {}
     public virtual void DamageEnemyMelee()
     {
-        if(playerTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
-        else { knockbackDirection.x = knockbackForce.x; }
-        if(enemyState != EnemyState.ENEMY_HIT)
+        if(playerTransform.position.x >= this.transform.position.x) { this.knockbackDirection.x = -this.knockbackForce.x; }
+        else { this.knockbackDirection.x = this.knockbackForce.x; }
+        if(this.enemyState != EnemyState.ENEMY_HIT)
         {
-            enemyState = EnemyState.ENEMY_HIT;
-            StartCoroutine(EnemyKnockback());
+            this.enemyState = EnemyState.ENEMY_HIT;
+            StartCoroutine(this.EnemyKnockback());
             if(!spiritArmour.activeSelf)
             {
-                if(currentHealth > 0) { currentHealth -= 1; }
+                if(this.currentHealth > 0) { this.currentHealth -= 1; }
             }
         }
     } // Gets called when enemy is melee attacked by player
@@ -213,25 +213,25 @@ public class EnemyAI : GameCharacter
     {
         if(spiritArmour.activeSelf)
         {
-            knockbackDirection = new Vector2(0f, 0f);
+            this.knockbackDirection = new Vector2(0f, 0f);
             spiritArmour.SetActive(false);
-            StartCoroutine(EnemyKnockback());
+            StartCoroutine(this.EnemyKnockback());
         }
         else
         {
-            if(playerTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; }
-            else { knockbackDirection.x = knockbackForce.x; }
-            StartCoroutine(EnemyKnockback());
-            if(currentHealth > 0) { currentHealth -= 2; }
+            if(playerTransform.position.x >= this.transform.position.x) { this.knockbackDirection.x = -this.knockbackForce.x; }
+            else { this.knockbackDirection.x = this.knockbackForce.x; }
+            StartCoroutine(this.EnemyKnockback());
+            if(this.currentHealth > 0) { this.currentHealth -= 2; }
         }
     } // Gets called when enemy is spirit attacked by player
     protected virtual IEnumerator EnemyKnockback()
     {
         this.rigidbody2D.velocity = Vector2.zero;
-        this.rigidbody2D.AddForce(knockbackDirection, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(knockbackTime);
+        this.rigidbody2D.AddForce(this.knockbackDirection, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(this.knockbackTime);
         this.rigidbody2D.velocity = Vector2.zero;
-        enemyState = EnemyState.ENEMY_CHASING;
+        this.enemyState = EnemyState.ENEMY_CHASING;
     } // Coroutine that runs when enemy is attacked
     private void OnCollisionStay2D(Collision2D collision)
     {
@@ -239,10 +239,10 @@ public class EnemyAI : GameCharacter
     } // Enemy hits player collision check
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("SpiritAttack") && enemyState != EnemyState.ENEMY_HIT)
+        if(collision.gameObject.CompareTag("SpiritAttack") && this.enemyState != EnemyState.ENEMY_HIT)
         {
-            enemyState = EnemyState.ENEMY_HIT;
-            DamageEnemySpirit();
+            this.enemyState = EnemyState.ENEMY_HIT;
+            this.DamageEnemySpirit();
         }
     } // Enemy is hit by spirit attack collision check
     protected virtual void OnDrawGizmos()
