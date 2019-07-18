@@ -1368,8 +1368,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1116137636594599962}
-  - component: {fileID: 1116137636594599963}
   - component: {fileID: 1116137636594599961}
+  - component: {fileID: 1116137636594599963}
   - component: {fileID: 1116137636594599960}
   m_Layer: 10
   m_Name: F1
@@ -1402,19 +1402,6 @@ Transform:
   m_Father: {fileID: 1116137636392273881}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1116137636594599963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1116137636594599965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10828e9abaf6b204d99f456bf5e00542, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parallaxCamera: {fileID: 0}
 --- !u!61 &1116137636594599961
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1441,6 +1428,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 78, y: 23}
   m_EdgeRadius: 0
+--- !u!114 &1116137636594599963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116137636594599965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10828e9abaf6b204d99f456bf5e00542, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parallaxCamera: {fileID: 0}
 --- !u!114 &1116137636594599960
 MonoBehaviour:
   m_ObjectHideFlags: 0

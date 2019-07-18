@@ -10,13 +10,17 @@ public class CameraController : MonoBehaviour
     #region Camera Position Variables
     [SerializeField] private Vector3 cameraOffset = new Vector3(0f, 0f, -100f);
     private Vector3 cameraTargetPosition;
-    [SerializeField] private CameraClampSetter cameraClampSetter;
+    private CameraClampSetter cameraClampSetter;
     private float minX, maxX, minY, maxY;
     #endregion
 
+    public void GetCameraClampSetter(CameraClampSetter clampSetter) { cameraClampSetter = clampSetter; }
     private void Start()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+    private void Update()
+    {
         minX = cameraClampSetter.getMinX() + (this.GetComponent<Camera>().orthographicSize * 16 / 9);
         maxX = cameraClampSetter.getMaxX() - (this.GetComponent<Camera>().orthographicSize * 16 / 9);
         minY = cameraClampSetter.getMinY() + (this.GetComponent<Camera>().orthographicSize);
