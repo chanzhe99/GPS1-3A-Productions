@@ -189,7 +189,8 @@ public class SingScript : GameCharacter
         if(nodeIntervalTimer > nodeInterval)
         {
             nodeIntervalTimer = 0f;
-            nodePosition = (Vector2)transform.position + nodeOffset;
+            if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING) { nodePosition = (Vector2)transform.position + nodeOffset; }
+            if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING || playerState == PlayerState.PLAYER_DASHING || playerState == PlayerState.PLAYER_SPIRIT) { nodePosition = (Vector2)transform.position; }
         }
         else { nodeIntervalTimer += Time.deltaTime; }
         #endregion
@@ -202,7 +203,7 @@ public class SingScript : GameCharacter
         if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
         {
             song.GetComponent<Rigidbody2D>().gravityScale = 0f;
-            song.transform.position = Vector2.MoveTowards(song.transform.position, this.transform.position, moveSpeed * Time.deltaTime);
+            song.transform.position = Vector2.MoveTowards(song.transform.position, nodePosition, moveSpeed * Time.deltaTime);
         }
         #endregion
         #region Set Enemy Layer Collision
