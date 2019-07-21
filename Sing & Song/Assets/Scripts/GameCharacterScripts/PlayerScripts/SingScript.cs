@@ -9,9 +9,9 @@ public class SingScript : GameCharacter
     #region Permission Variables
     [SerializeField] private Image[] abilityHearts;
     [HideInInspector] public bool canDoAction = true;
-    [HideInInspector] public bool canHeal = false;
-    [HideInInspector] public bool canSpiritAttack = false;
-    [HideInInspector] public bool canDash = false;
+    [HideInInspector] public bool canHeal = true;
+    [HideInInspector] public bool canSpiritAttack = true;
+    [HideInInspector] public bool canDash = true;
     #endregion
     #region Input Variables
     private Vector2 input;
@@ -180,10 +180,10 @@ public class SingScript : GameCharacter
             input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // Input for directions
             inputJumpPress = Input.GetButtonDown("JumpButton"); // Input for jump press
             inputJump = Input.GetButton("JumpButton"); // Input for jump
-            if(canHeal) inputHeal = Input.GetButton("HealButton"); // Input for heal
-            if(canDash) inputDash = Input.GetButtonDown("DashButton"); // Input for dash
+            inputHeal = Input.GetButton("HealButton"); // Input for heal
+            inputDash = Input.GetButtonDown("DashButton"); // Input for dash
             inputMeleeAttack = Input.GetButtonDown("MeleeAttackButton"); // Input for melee attack
-            if(canSpiritAttack) inputSpiritAttack = Input.GetButtonDown("SpiritAttackButton"); // Input for spirit attack
+            inputSpiritAttack = Input.GetButtonDown("SpiritAttackButton"); // Input for spirit attack
         }
         inputInteract = Input.GetButtonDown("InteractButton"); // Input for interact
         #endregion
@@ -261,6 +261,7 @@ public class SingScript : GameCharacter
         #endregion
 
         PlayerSwitchState();
+        //print($"playerHeal: {inputHeal}");
         //print($"playerState: {playerState}");
         //print($"inputBuffer: {inputBuffer}");
         //print($"isGrounded: {isGrounded}");
