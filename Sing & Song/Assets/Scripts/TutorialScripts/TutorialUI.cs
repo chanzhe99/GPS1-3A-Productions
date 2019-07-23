@@ -6,6 +6,7 @@ public class TutorialUI : MonoBehaviour
 {
     [SerializeField] private GameObject tutorialUIGameObject;
     [SerializeField] private Animator tutorialUIAnimator;
+    private float closeDialogueTime = 1.0f;
 
     public void ShowTutorialUI()
     {
@@ -19,6 +20,11 @@ public class TutorialUI : MonoBehaviour
     {
         while (true)
         {
+            if (Input.GetButtonDown("Horizontal"))
+            {
+                break;
+            }
+            /*
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 break;
@@ -27,11 +33,12 @@ public class TutorialUI : MonoBehaviour
             {
                 break;
             }
+            */
             yield return null;
         }
 
         
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(closeDialogueTime);
         tutorialUIAnimator.SetBool("IsShowing", false);
     }
 

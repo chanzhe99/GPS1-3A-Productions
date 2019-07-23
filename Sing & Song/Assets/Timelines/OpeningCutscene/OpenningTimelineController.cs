@@ -68,6 +68,8 @@ public class OpenningTimelineController : MonoBehaviour
 
             //! Here for save the isMoviePlayed data
 
+            FindObjectOfType<TutorialUI>().ShowTutorialUI();
+
             playableDirector.stopped -= OnPlayableDirectorStopped;
             DestroyAllOpeningGameObjects();
         }

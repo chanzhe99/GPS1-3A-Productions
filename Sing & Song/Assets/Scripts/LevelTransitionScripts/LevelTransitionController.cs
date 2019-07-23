@@ -19,7 +19,7 @@ public class LevelTransitionController : MonoBehaviour
 
     private float transitionTime = 0.5f;
     private float transitionTimeTimer;
-
+    private float playerMoveInMinusDistanceX = 1.0f;
 
     public int LevelIndex
     {
@@ -37,7 +37,7 @@ public class LevelTransitionController : MonoBehaviour
         enemiesDefaultPosition = new List<Vector2>();
         tempTransferPosition = new Vector2();
 
-        playerMoveInDistanceX = (transform.GetComponent<BoxCollider2D>().size.x / 2) - 1.0f;
+        playerMoveInDistanceX = (transform.GetComponent<BoxCollider2D>().size.x / 2) - playerMoveInMinusDistanceX;
 
         foreach (Transform child in transform)
         {
