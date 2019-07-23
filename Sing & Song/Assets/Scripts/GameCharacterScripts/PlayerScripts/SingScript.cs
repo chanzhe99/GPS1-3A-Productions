@@ -401,16 +401,8 @@ public class SingScript : GameCharacter
     } // Determines what happens in each playerState
     private void PlayerFlip() { if(input.x > 0 && !facingRight || input.x < 0 && facingRight) { FlipCharacter(); } } // Checks direction of player
     private void PlayerMove() { this.rigidbody2D.velocity = new Vector2(input.x * moveSpeed, this.rigidbody2D.velocity.y); } // Makes player move
-    private void PlayerMoveSound()
-    {
-        SoundManagerScripts.PlaySound("playerWalking");
-    }//make player move sound
     private void PlayerJump()
     {
-        if (jumpTime < timeToJumpApex * 0.05f)
-        {
-            SoundManagerScripts.PlaySound("playerJump");
-        }//player jump sound
         if (jumpTime >= timeToJumpApex) { playerState = PlayerState.PLAYER_FALLING; }
         else
         {
@@ -464,7 +456,7 @@ public class SingScript : GameCharacter
         if(enemiesHit.Length != 0)
         {
             this.rigidbody2D.velocity = Vector2.zero;
-            if(meleeAttackTransform.localPosition.y < 0) { this.rigidbody2D.AddForce(new Vector2(0f, knockbackForce.y * 1.5f), ForceMode2D.Impulse); }
+            if (meleeAttackTransform.localPosition.y < 0) { this.rigidbody2D.AddForce(new Vector2(0f, knockbackForce.y * 1.5f), ForceMode2D.Impulse); }
             else
             {
                 if(facingRight) { this.rigidbody2D.AddForce(new Vector2(-knockbackForce.x * 0.5f, 0f), ForceMode2D.Impulse); }
@@ -478,11 +470,6 @@ public class SingScript : GameCharacter
             currentSpirit = (currentSpirit < maximumSpirit) ? currentSpirit += 1 : maximumSpirit;
         }
     } // Makes player use melee attack
-
-    private void PlayerAttackSound()
-    {
-        SoundManagerScripts.PlaySound("playerAttack");
-    }
 
     private void PlayerSpiritAttack()
     {
