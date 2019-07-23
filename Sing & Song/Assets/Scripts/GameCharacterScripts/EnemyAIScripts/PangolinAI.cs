@@ -22,9 +22,13 @@ sealed public class PangolinAI : EnemyAI
     [SerializeField] private float rollTime = 1f;
     private Vector2 rollDirection;
     private float rollTimeTimer = 0f;
+    private bool rolling;
     #endregion
-
-
+    private void FixedUpdate()
+    {
+        if(rolling) { this.rigidbody2D.AddForce(new Vector2(rollDirection.x * 3, this.rigidbody2D.velocity.y), ForceMode2D.Force); }
+        else { }
+    }
 
     protected override void Initialise()
     {
@@ -71,6 +75,7 @@ sealed public class PangolinAI : EnemyAI
         if(rollTimeTimer >= rollTime)
         {
             rollTimeTimer = 0f;
+            rolling = false;
             animator.SetTrigger("uncurl");
             enemyState = EnemyState.ENEMY_RESTING;
         }
@@ -80,11 +85,12 @@ sealed public class PangolinAI : EnemyAI
             if(hitWall)
             {
                 rollTimeTimer = 0f;
+                rolling = false;
                 this.rigidbody2D.velocity = Vector2.zero;
                 this.rigidbody2D.AddForce(new Vector2(-rollDirection.x, rollDirection.y), ForceMode2D.Impulse);
                 enemyState = EnemyState.ENEMY_RESTING;
             }
-            else { this.rigidbody2D.AddForce(new Vector2(rollDirection.x * 3, this.rigidbody2D.velocity.y), ForceMode2D.Force); }
+            else { rolling = true; }
         }
     }
     protected override void EnemyRest()

@@ -424,7 +424,7 @@ MonoBehaviour:
   animator: {fileID: 3825482639445508012}
   rayCount: 5
   spawnFacingRight: 0
-  maximumHealth: 5
+  maximumHealth: 3
   moveSpeed: 3
   attackRange: {x: 8, y: 2}
   knockbackForce: {x: 6, y: 6}
@@ -437,9 +437,9 @@ MonoBehaviour:
   playerDetectionRange: {x: 16, y: 2}
   restTime: 1.5
   retreatTime: 1
-  spinTime: 0.5
+  spinTime: 1
   spinSpeed: 500
-  rollForce: {x: 5, y: 10}
+  rollForce: {x: 15, y: 10}
   rollTime: 0.5
 --- !u!1 &1963478826010602664
 GameObject:

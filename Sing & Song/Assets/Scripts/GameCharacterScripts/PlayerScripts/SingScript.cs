@@ -215,7 +215,6 @@ public class SingScript : GameCharacter
             if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval)
             {
                 meleeAttackIntervalTimer = 0f;
-                animator.SetTrigger("attack");
                 PlayerMeleeAttack();
             }
         }
@@ -457,6 +456,10 @@ public class SingScript : GameCharacter
     } // Makes player dash
     private void PlayerMeleeAttack()
     {
+        if(meleeAttackTransform.localPosition.y == 0f) { animator.SetTrigger("attack"); }
+        if(meleeAttackTransform.localPosition.y > 0f) { animator.SetTrigger("attackUp"); }
+        if(meleeAttackTransform.localPosition.y < 0f) { animator.SetTrigger("attackDown"); }
+
         enemiesHit = Physics2D.OverlapCircleAll(meleeAttackTransform.position, attackRange.x, enemyLayer);
         if(enemiesHit.Length != 0)
         {

@@ -1272,7 +1272,7 @@ Transform:
   m_Children:
   - {fileID: 906201701}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &382215953
 Rigidbody2D:
@@ -2818,7 +2818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 432969f870cd1cd4facbd563fa222d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSize: {x: 72, y: 27}
+  levelSize: {x: 71, y: 27}
 --- !u!114 &648355223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8741,12 +8741,12 @@ PrefabInstance:
     - target: {fileID: 237825931304552224, guid: abc71b261282fcc4094281e6fb956610,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 237825931304552224, guid: abc71b261282fcc4094281e6fb956610,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 237825931304552224, guid: abc71b261282fcc4094281e6fb956610,
         type: 3}
@@ -10110,7 +10110,7 @@ Transform:
   m_Children:
   - {fileID: 3920118415096064777}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &3920118415174553148
 GameObject:
