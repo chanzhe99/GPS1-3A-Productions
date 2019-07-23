@@ -396,6 +396,7 @@ public class SingScript : GameCharacter
     }//make player move sound
     private void PlayerJump()
     {
+        animator.SetTrigger("jump");
         if (jumpTime < timeToJumpApex * 0.05f)
         {
             SoundManagerScripts.PlaySound("playerJump");
