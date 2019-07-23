@@ -16,7 +16,10 @@ public class LevelTransitionController : MonoBehaviour
     private Vector2 tempTransferPosition;
     private float playerMoveInDistanceX;
 
-    
+
+    private float transitionTime = 0.5f;
+    private float transitionTimeTimer;
+
 
     public int LevelIndex
     {
@@ -76,9 +79,10 @@ public class LevelTransitionController : MonoBehaviour
         {
             if (!isNotAbleToSwitchToThis)
             {
-                mainLevelController.currentLevel.setChildrenActive(false);
-                mainLevelController.currentLevel = this;
-                setChildrenActive(true);
+
+                mainLevelController.CurrentLevel.setChildrenActive(false);
+                mainLevelController.SwitchToAnotherLevelAndStartScreenFading(this);
+                this.setChildrenActive(true);
 
                 tempTransferPosition.x = transform.position.x + ((transform.position.x > collision.transform.parent.position.x) ? -playerMoveInDistanceX : playerMoveInDistanceX);
                 tempTransferPosition.y = collision.transform.parent.position.y;
