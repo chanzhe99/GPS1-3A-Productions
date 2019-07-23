@@ -16,16 +16,22 @@ public class MainLevelController : MonoBehaviour
         for (int i=0; i < tempLevelTransitionController.Count; i++)
         {
 
-            tempLevelTransitionController[i].SetUpStart();
+            
 
             if (tempLevelTransitionController[i].LevelIndex == lastCheckPointLevelIndex)
             {
+                tempLevelTransitionController[i].SetUpStart();
+                tempLevelTransitionController[i].SetDisableToSwitch(true);
                 currentLevel = tempLevelTransitionController[i];
                 currentLevel.setChildrenActive(true);
             }
             else
             {
+                tempLevelTransitionController[i].SetUpStart();
+                tempLevelTransitionController[i].SetDisableToSwitch(false);
                 tempLevelTransitionController[i].setChildrenActive(false);
+                
+                
             }
         }
 

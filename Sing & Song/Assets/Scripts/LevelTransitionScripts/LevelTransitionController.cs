@@ -13,6 +13,10 @@ public class LevelTransitionController : MonoBehaviour
     private static string tag_Player = "Player";
 
     private bool isNotAbleToSwitchToThis;
+    private Vector2 tempTransferPosition;
+    private float playerMoveInDistanceX;
+
+    
 
     public int LevelIndex
     {
@@ -28,7 +32,9 @@ public class LevelTransitionController : MonoBehaviour
         gameObjectInLevel = new List<GameObject>();
         enemiesTransform = new List<Transform>();
         enemiesDefaultPosition = new List<Vector2>();
+        tempPosition = new Vector2();
 
+        playerMoveInDistanceX = (transform.GetComponent<BoxCollider2D>().size.x / 2) - 5.0f;
 
         foreach (Transform child in transform)
         {
@@ -40,7 +46,12 @@ public class LevelTransitionController : MonoBehaviour
             enemiesTransform.Add(enemy);
             enemiesDefaultPosition.Add(enemiesTransform[enemiesTransform.Count-1].position);
         }
-        
+
+    }
+
+    public void SetDisableToSwitch(bool isAblemove)
+    {
+        isNotAbleToSwitchToThis = isAblemove;
     }
 
     public void setChildrenActive(bool isActive)
@@ -68,6 +79,12 @@ public class LevelTransitionController : MonoBehaviour
                 mainLevelController.currentLevel.setChildrenActive(false);
                 mainLevelController.currentLevel = this;
                 setChildrenActive(true);
+
+                Debug.Log("It work lah.");
+
+                tempPosition.x = transform.position.x + ((transform.position.x > collision.transform.parent.position.x) ? -playerMoveInDistanceX : playerMoveInDistanceX);
+                tempPosition.y = collision.transform.parent.position.y;
+                collision.transform.parent.position = tempPosition;
                 isNotAbleToSwitchToThis = true;
             }
         }

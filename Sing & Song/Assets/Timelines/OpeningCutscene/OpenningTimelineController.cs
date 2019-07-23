@@ -28,7 +28,7 @@ public class OpenningTimelineController : MonoBehaviour
     private bool isLastOpeningMovie = false;
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         if (isMoviePlayed == false)
         {
