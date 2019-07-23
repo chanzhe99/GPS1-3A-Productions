@@ -305,7 +305,7 @@ MonoBehaviour:
   spiritArmour: {fileID: 5351378824148351389}
   haveSpiritArmour: 0
   spiritArmourRecharge: 10
-  doesPatrol: 0
+  doesPatrol: 1
   playerDetectionRange: {x: 16, y: 2}
   restTime: 1
   retreatTime: 1
