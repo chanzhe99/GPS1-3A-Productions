@@ -19,7 +19,7 @@ public class STARTMENU : MonoBehaviour
         player.GetComponent<SingScript>().enabled = false;
     }
 
-    void Update()
+    /*void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -29,7 +29,7 @@ public class STARTMENU : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
-    }
+    }*/
 
     /*public void StartLoading()
     {
