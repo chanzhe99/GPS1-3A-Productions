@@ -5,8 +5,17 @@ using UnityEngine;
 public class MainLevelController : MonoBehaviour
 {
 
-    [HideInInspector] public LevelTransitionController currentLevel;
+    private LevelTransitionController currentLevel;
     private int lastCheckPointLevelIndex = 1;
+    [SerializeField] private Animator levelTransitionScreenFadingAnimator;
+
+    public LevelTransitionController CurrentLevel
+    {
+        get
+        {
+            return currentLevel;
+        }
+    }
 
     private void Start()
     {
@@ -37,5 +46,15 @@ public class MainLevelController : MonoBehaviour
 
     }
 
+    public void SwitchToAnotherLevelAndStartScreenFading(LevelTransitionController tempLevelTransitionController)
+    {
+        currentLevel = tempLevelTransitionController;
+        levelTransitionScreenFadingAnimator.SetTrigger("StartFading");
+    }
+
+    public void SwitchToAnotherLevel(LevelTransitionController tempLevelTransitionController)
+    {
+        currentLevel = tempLevelTransitionController;
+    }
 
 }
