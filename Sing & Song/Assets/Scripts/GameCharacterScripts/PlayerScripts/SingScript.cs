@@ -210,7 +210,15 @@ public class SingScript : GameCharacter
         #endregion
         #region Update Melee Attack Interval Timer & Position
         if(meleeAttackIntervalTimer < meleeAttackInterval) { meleeAttackIntervalTimer += Time.deltaTime; }
-        if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING || playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING) {if (inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { PlayerMeleeAttack(); } }
+        if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING || playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
+        {
+            if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval)
+            {
+                meleeAttackIntervalTimer = 0f;
+                animator.SetTrigger("attack");
+                PlayerMeleeAttack();
+            }
+        }
         #endregion
         #region Update Spirit Attack Position
         spiritAttack.transform.position = meleeAttackTransform.position;
@@ -258,6 +266,10 @@ public class SingScript : GameCharacter
             //spiritWell.rectTransform.Translate(spiritWellFlowSpeed * Time.deltaTime, 0f, 0f);
             previousSpiritWellPosition = currentSpiritWellPosition.y;
         }
+        #endregion
+        #region Update Animation
+        if(inputJumpPress) { animator.SetTrigger("jump"); }
+        //if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { animator.SetTrigger("attack"); }
         #endregion
 
         PlayerSwitchState();
@@ -396,7 +408,6 @@ public class SingScript : GameCharacter
     }//make player move sound
     private void PlayerJump()
     {
-        animator.SetTrigger("jump");
         if (jumpTime < timeToJumpApex * 0.05f)
         {
             SoundManagerScripts.PlaySound("playerJump");
@@ -446,13 +457,7 @@ public class SingScript : GameCharacter
     } // Makes player dash
     private void PlayerMeleeAttack()
     {
-        //meleeAttackBufferTimer = 0f;
-        //while(meleeAttackBufferTimer < meleeAttackBuffer)
-        //{
-        //    meleeAttackBufferTimer += Time.deltaTime;
         enemiesHit = Physics2D.OverlapCircleAll(meleeAttackTransform.position, attackRange.x, enemyLayer);
-        //    if(enemiesHit.Length != 0) { break; }
-        //} // Ask mr boon if this is a good idea
         if(enemiesHit.Length != 0)
         {
             this.rigidbody2D.velocity = Vector2.zero;

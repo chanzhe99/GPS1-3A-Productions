@@ -34,7 +34,7 @@ public class LevelTransitionController : MonoBehaviour
         enemiesDefaultPosition = new List<Vector2>();
         tempTransferPosition = new Vector2();
 
-        playerMoveInDistanceX = (transform.GetComponent<BoxCollider2D>().size.x / 2) - 5.0f;
+        playerMoveInDistanceX = (transform.GetComponent<BoxCollider2D>().size.x / 2) - 1.0f;
 
         foreach (Transform child in transform)
         {
