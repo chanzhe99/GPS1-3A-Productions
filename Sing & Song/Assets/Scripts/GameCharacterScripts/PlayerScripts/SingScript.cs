@@ -10,8 +10,8 @@ public class SingScript : GameCharacter
     [SerializeField] private Image[] abilityHearts;
     [HideInInspector] public bool canDoAction = true;
     [HideInInspector] public bool canHeal = true;
-    [HideInInspector] public bool canSpiritAttack = true;
     [HideInInspector] public bool canDash = true;
+    [HideInInspector] public bool canSpiritAttack = false;
     #endregion
     #region Input Variables
     private Vector2 input;
