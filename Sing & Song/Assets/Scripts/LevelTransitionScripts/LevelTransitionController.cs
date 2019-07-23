@@ -6,7 +6,13 @@ public class LevelTransitionController : MonoBehaviour
 {
     private MainLevelController mainLevelController;
     private List<GameObject> gameObjectInLevel;
+    private List<Transform> enemiesTransform;
+    private List<Vector2> enemiesDefaultPosition;
     [SerializeField] private int levelIndex;
+    private static string name_EnemyPositions = "EnemyPositions";
+    private static string tag_Player = "Player";
+
+    private bool isNotAbleToSwitchToThis;
 
     public int LevelIndex
     {
@@ -16,17 +22,25 @@ public class LevelTransitionController : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    private void Awake()
+    public void SetUpStart()
     {
         mainLevelController = FindObjectOfType<MainLevelController>();
         gameObjectInLevel = new List<GameObject>();
+        enemiesTransform = new List<Transform>();
+        enemiesDefaultPosition = new List<Vector2>();
 
-        foreach(Transform child in transform)
+
+        foreach (Transform child in transform)
         {
             gameObjectInLevel.Add(child.gameObject);
         }
 
+        foreach (Transform enemy in transform.Find(name_EnemyPositions).transform)
+        {
+            enemiesTransform.Add(enemy);
+            enemiesDefaultPosition.Add(enemiesTransform[enemiesTransform.Count-1].position);
+        }
+        
     }
 
     public void setChildrenActive(bool isActive)
@@ -34,16 +48,36 @@ public class LevelTransitionController : MonoBehaviour
         foreach(GameObject tempGameObject in gameObjectInLevel)
         {
             tempGameObject.SetActive(isActive);
+
+            if (isActive)
+            {
+                for (int i=0; i<enemiesTransform.Count; i++)
+                {
+                    enemiesTransform[i].position = enemiesDefaultPosition[i];
+                }
+            }
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag(tag_Player))
         {
-            mainLevelController.currentLevel.setChildrenActive(false);
-            mainLevelController.currentLevel = this;
-            setChildrenActive(true);
+            if (!isNotAbleToSwitchToThis)
+            {
+                mainLevelController.currentLevel.setChildrenActive(false);
+                mainLevelController.currentLevel = this;
+                setChildrenActive(true);
+                isNotAbleToSwitchToThis = true;
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag(tag_Player))
+        {
+            isNotAbleToSwitchToThis = false;
         }
     }
 

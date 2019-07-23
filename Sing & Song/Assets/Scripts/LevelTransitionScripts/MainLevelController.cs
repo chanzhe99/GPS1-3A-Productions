@@ -16,6 +16,8 @@ public class MainLevelController : MonoBehaviour
         for (int i=0; i < tempLevelTransitionController.Count; i++)
         {
 
+            tempLevelTransitionController[i].SetUpStart();
+
             if (tempLevelTransitionController[i].LevelIndex == lastCheckPointLevelIndex)
             {
                 currentLevel = tempLevelTransitionController[i];
