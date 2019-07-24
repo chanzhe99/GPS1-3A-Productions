@@ -21,9 +21,9 @@ public class CameraController : MonoBehaviour
         maxX = cameraClampSetter.getMaxX() - (this.GetComponent<Camera>().orthographicSize * 16 / 9);
         minY = cameraClampSetter.getMinY() + (this.GetComponent<Camera>().orthographicSize);
         maxY = cameraClampSetter.getMaxY() - (this.GetComponent<Camera>().orthographicSize);
-    }
-    private void FixedUpdate()
-    {
+    //}
+    //private void FixedUpdate()
+    //{
         cameraTargetPosition = playerTransform.position + cameraOffset;
         cameraTargetPosition.x = Mathf.Clamp(cameraTargetPosition.x, minX, maxX);
         cameraTargetPosition.y = Mathf.Clamp(cameraTargetPosition.y, minY, maxY);
