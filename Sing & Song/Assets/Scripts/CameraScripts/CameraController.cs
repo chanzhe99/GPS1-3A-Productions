@@ -17,10 +17,13 @@ public class CameraController : MonoBehaviour
     private void Start() { playerTransform = GameObject.FindGameObjectWithTag("Player").transform; }
     private void Update()
     {
-        minX = cameraClampSetter.getMinX() + (this.GetComponent<Camera>().orthographicSize * 16 / 9);
-        maxX = cameraClampSetter.getMaxX() - (this.GetComponent<Camera>().orthographicSize * 16 / 9);
-        minY = cameraClampSetter.getMinY() + (this.GetComponent<Camera>().orthographicSize);
-        maxY = cameraClampSetter.getMaxY() - (this.GetComponent<Camera>().orthographicSize);
+        if(cameraClampSetter != null)
+        {
+            minX = cameraClampSetter.getMinX() + (this.GetComponent<Camera>().orthographicSize * 16 / 9);
+            maxX = cameraClampSetter.getMaxX() - (this.GetComponent<Camera>().orthographicSize * 16 / 9);
+            minY = cameraClampSetter.getMinY() + (this.GetComponent<Camera>().orthographicSize);
+            maxY = cameraClampSetter.getMaxY() - (this.GetComponent<Camera>().orthographicSize);
+        }
     //}
     //private void FixedUpdate()
     //{

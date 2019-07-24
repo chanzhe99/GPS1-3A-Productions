@@ -10,7 +10,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Animator animator;
     private bool isUsingButton = false;
     private Queue<string> sentences;
-    private SingScript singScript;
+    public SingScript singScript;
 
     public Queue<string> Sentences
     {
@@ -24,7 +24,7 @@ public class DialogueManager : MonoBehaviour
     void Start()
     {
         sentences = new Queue<string>();
-        singScript = GameObject.FindGameObjectWithTag("Player").GetComponent<SingScript>();
+        //singScript = GameObject.FindGameObjectWithTag("Player").GetComponent<SingScript>();
     }
 
     private void Update()
