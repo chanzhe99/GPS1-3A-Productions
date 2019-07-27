@@ -235,7 +235,7 @@ public class EnemyAI : GameCharacter
     } // Coroutine that runs when enemy is attacked
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Player")) { playerScript.DamagePlayer(this.transform); }
+        if(collision.gameObject.CompareTag("Player")) { collision.gameObject.GetComponent<SingScript>().DamagePlayer(this.transform); }
     } // Enemy hits player collision check
     private void OnTriggerStay2D(Collider2D collision)
     {
