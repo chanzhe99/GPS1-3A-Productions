@@ -7,11 +7,12 @@ using UnityEngine.UI;
 public class SingScript : GameCharacter
 {
     #region Permission Variables
+    [Header("Ability Variables")]
     [SerializeField] private Image[] abilityHearts;
     [HideInInspector] public bool canDoAction = true;
-    [HideInInspector] public bool canHeal = true;
-    [HideInInspector] public bool canSpiritAttack = true;
-    [HideInInspector] public bool canDash = true;
+    public bool canHeal = true;
+    public bool canDash = true;
+    private bool canSpiritAttack = false;
     #endregion
     #region Input Variables
     private Vector2 input;
@@ -78,12 +79,15 @@ public class SingScript : GameCharacter
     private bool ignoreEnemyCollision;
     #endregion
     #region Song Node Variables
-    [Header("Song Node Variables")]
+    [Header("Song Variables")]
     [SerializeField] private GameObject song;
+    [SerializeField] private Animator songAnimator;
     [SerializeField] private Vector2 nodeOffsetDefault = new Vector2(1.5f, 0f);
     [SerializeField] private float nodeInterval = 0.15f;
     protected Vector2 nodePosition;
     private Vector2 nodeOffset;
+    private Quaternion songTargetRotation;
+    private float songRotationTime;
     private float nodeIntervalTimer;
     #endregion
     #region UI Variables
@@ -113,8 +117,11 @@ public class SingScript : GameCharacter
     };
     private PlayerState playerState;
     #endregion
+    #region Sound Variables
     [SerializeField] private float JumpSoundTime = 1f;
     private float JumpSoundTimer = 0f;
+    #endregion
+
     protected override void Initialise()
     {
         base.Initialise();
@@ -160,30 +167,23 @@ public class SingScript : GameCharacter
             abilityHearts[0].enabled = true;
             abilityHearts[0].color = new Color32(148, 250, 242, 255);
         }
-        if(canHeal && canSpiritAttack)
+        if(canHeal && canDash)
         {
             abilityHearts[1].enabled = true;
             abilityHearts[0].color = new Color32(255, 255, 255, 255);
             abilityHearts[1].color = new Color32(148, 250, 242, 255);
         }
-        if(canHeal && canSpiritAttack && canDash)
-        {
-            abilityHearts[2].enabled = true;
-            abilityHearts[0].color = new Color32(255, 255, 255, 255);
-            abilityHearts[1].color = new Color32(255, 255, 255, 255);
-            abilityHearts[2].color = new Color32(148, 250, 242, 255);
-        }
         #endregion
         #region Check Inputs
-        if (canDoAction) // Checks for if player is in dialogue mode
+        if(canDoAction) // Checks for if player is in dialogue mode
         {
             input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // Input for directions
             inputJumpPress = Input.GetButtonDown("JumpButton"); // Input for jump press
             inputJump = Input.GetButton("JumpButton"); // Input for jump
-            inputHeal = Input.GetButton("HealButton"); // Input for heal
-            inputDash = Input.GetButtonDown("DashButton"); // Input for dash
+            if(canHeal) inputHeal = Input.GetButton("HealButton"); // Input for heal
+            if(canDash) inputDash = Input.GetButtonDown("DashButton"); // Input for dash
             inputMeleeAttack = Input.GetButtonDown("MeleeAttackButton"); // Input for melee attack
-            inputSpiritAttack = Input.GetButtonDown("SpiritAttackButton"); // Input for spirit attack
+            if(canSpiritAttack) inputSpiritAttack = Input.GetButtonDown("SpiritAttackButton"); // Input for spirit attack
         }
         inputInteract = Input.GetButtonDown("InteractButton"); // Input for interact
         #endregion
@@ -238,15 +238,33 @@ public class SingScript : GameCharacter
         else { nodeIntervalTimer += Time.deltaTime; }
         #endregion
         #region Update Song Position
+        if(this.transform.position.x < song.transform.position.x && song.transform.rotation.eulerAngles.y < 90f)
+        {
+            songTargetRotation = Quaternion.Euler(songTargetRotation.eulerAngles.x, 180f, songTargetRotation.eulerAngles.z);
+            songRotationTime = 0f;
+            StartCoroutine(FlipSongSprite());
+        }
+        if(this.transform.position.x > song.transform.position.x && song.transform.rotation.eulerAngles.y > 90f)
+        {
+            songTargetRotation = Quaternion.Euler(songTargetRotation.eulerAngles.x, 0f, songTargetRotation.eulerAngles.z);
+            songRotationTime = 0f;
+            StartCoroutine(FlipSongSprite());
+        }
         if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING)
         {
             song.GetComponent<Rigidbody2D>().gravityScale = 2f;
-            song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, song.transform.position.y), moveSpeed * Time.deltaTime);
+            if(song.transform.position.x == nodePosition.x) { songAnimator.SetBool("isRunning", false); }
+            else { songAnimator.SetBool("isRunning", true); song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, song.transform.position.y), moveSpeed * Time.deltaTime); }
         }
         if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
         {
+            songAnimator.SetBool("isRunning", false);
             song.GetComponent<Rigidbody2D>().gravityScale = 0f;
             song.transform.position = Vector2.MoveTowards(song.transform.position, nodePosition, moveSpeed * Time.deltaTime);
+        }
+        if(playerState == PlayerState.PLAYER_HEALING)
+        {
+            
         }
         #endregion
         #region Set Enemy Layer Collision
@@ -272,6 +290,7 @@ public class SingScript : GameCharacter
         #endregion
 
         PlayerSwitchState();
+        //print($"canDoAction: {canDoAction}");
         //print($"playerHeal: {inputHeal}");
         //print($"playerState: {playerState}");
         //print($"inputBuffer: {inputBuffer}");
@@ -470,7 +489,6 @@ public class SingScript : GameCharacter
             currentSpirit = (currentSpirit < maximumSpirit) ? currentSpirit += 1 : maximumSpirit;
         }
     } // Makes player use melee attack
-
     private void PlayerSpiritAttack()
     {
         if(spiritAttackDurationTimer >= spiritAttackDuration)
@@ -486,7 +504,6 @@ public class SingScript : GameCharacter
             spiritAttack.SetActive(true);
         }
     } // Makes player use spirit attack
-
     public void DamagePlayer(Transform enemyTransform)
     {
         if(enemyTransform.position.x >= this.transform.position.x) { knockbackDirection.x = -knockbackForce.x; SoundManagerScripts.PlaySound("playerGetHit"); }
@@ -512,4 +529,13 @@ public class SingScript : GameCharacter
         yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
         vulnerable = true;
     } // Coroutine that runs when player is hit
+    IEnumerator FlipSongSprite()
+    {
+        while(songRotationTime < 1f)
+        {
+            songRotationTime += Time.deltaTime;
+            song.transform.rotation = Quaternion.Lerp(song.transform.rotation, songTargetRotation, songRotationTime);
+            yield return null;
+        }
+    }
 }
