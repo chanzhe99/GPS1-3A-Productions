@@ -46,7 +46,8 @@ public class PAUSEMENU : MonoBehaviour
 
     public void QuitToMainMenu()
     {
-        SceneManager.LoadScene(0);
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     

@@ -27,14 +27,14 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.T))
         {
-            if (Input.GetKeyDown(KeyCode.Delete))
+            if (Input.GetKeyDown(KeyCode.Backspace))
             {
                 SaveDataManager.DeleteData(Global.pathOfData_TutorialData);
             }
         }
         else if (Input.GetKey(KeyCode.P))
         {
-            if (Input.GetKeyDown(KeyCode.Delete))
+            if (Input.GetKeyDown(KeyCode.Backspace))
             {
                 SaveDataManager.DeleteData(Global.pathOfData_PlayerSpawnData);
 
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.O))
         {
-            if (Input.GetKeyDown(KeyCode.Delete))
+            if (Input.GetKeyDown(KeyCode.Backspace))
             {
                 SaveDataManager.DeleteData(Global.pathOfData_OpeningCutsceneData);
 
@@ -106,6 +106,18 @@ public class GameManager : MonoBehaviour
 
         openingCutsceneData = new SaveData.OpeningCutsceneData(isOpeningCutsceneMoviePlayed);
         SaveDataManager.SaveData(openingCutsceneData, Global.pathOfData_OpeningCutsceneData);
+    }
+
+    public void DeleteAllGameDatas()
+    {
+        currentPointIndex = -1;
+        lastCheckPointLevelIndex = 1;
+        isTutorialMoviePlayed = false;
+        isOpeningCutsceneMoviePlayed = false;
+
+        SaveDataManager.DeleteData(Global.pathOfData_TutorialData);
+        SaveDataManager.DeleteData(Global.pathOfData_PlayerSpawnData);
+        SaveDataManager.DeleteData(Global.pathOfData_OpeningCutsceneData);
     }
 }
 

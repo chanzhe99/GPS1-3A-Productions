@@ -13,10 +13,48 @@ public class STARTMENU : MonoBehaviour
     private bool calledmenu = false;
     [SerializeField] private GameObject startMenuPanelGameObject;
     [SerializeField] private GameObject player;
+    [SerializeField] private Button continueButton;
+    [SerializeField] private Text continueButtonText;
+    [SerializeField] private Color continueButtonNotInteractableTextColor;
+    private Color continueButtonTextDefualtColor;
+    private string name_PlayerPrefs_OnPlayNewGameState = "OnPlayNewGameState";
 
     private void Start()
     {
+        continueButtonTextDefualtColor = continueButtonText.color;
+
+        if (Global.gameManager.IsTutorialMoviePlayed ==  true)
+        {
+            continueButton.interactable = true;
+            continueButtonText.color = continueButtonTextDefualtColor;
+        }
+        else
+        {
+            continueButton.interactable = false;
+            continueButtonText.color = continueButtonNotInteractableTextColor;
+        }
+
         player.GetComponent<SingScript>().canDoAction = false;
+        
+        if (PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayNewGameState))
+        {
+            Debug.Log("OnPlayNewGameState = " + bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)));
+            if (bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)))
+            {
+                startMenuPanelGameObject.SetActive(false);
+                OpenningTimelineController openningTimelineController = FindObjectOfType<OpenningTimelineController>();
+                if (openningTimelineController != null)
+                {
+                    openningTimelineController.PlayOpeningMovie();
+                }
+
+                PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "false");
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "false");
+        }
     }
 
     /*void Update()
@@ -61,7 +99,7 @@ public class STARTMENU : MonoBehaviour
         Screen.fullScreen = isFullscreen;
     }
 
-    public void StartGame()
+    public void Continue()
     {
         OpenningTimelineController tempOpenningTimelineController = FindObjectOfType<OpenningTimelineController>();
 
@@ -69,6 +107,26 @@ public class STARTMENU : MonoBehaviour
         {
             player.GetComponent<SingScript>().canDoAction = true;
         }
+    }
+
+    public void StartNewGame()
+    {
+        OpenningTimelineController tempOpenningTimelineController = FindObjectOfType<OpenningTimelineController>();
+
+        if (tempOpenningTimelineController == null)
+        {
+            Global.gameManager.DeleteAllGameDatas();
+            Global.gameManager.SaveAllGameDatas();
+
+            PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "true");
+            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        }
+        else
+        {
+            tempOpenningTimelineController.PlayOpeningMovie();
+        }
+
+        
     }
 
 
