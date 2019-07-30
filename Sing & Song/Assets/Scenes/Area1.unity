@@ -2667,7 +2667,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 706100126}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -148.85, y: -3.5800018, z: 0}
+  m_LocalPosition: {x: -20.5, y: -3.5800018, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 1314430073}
@@ -2689,7 +2689,16 @@ MonoBehaviour:
   dialogue:
     name: Stranger
     sentences:
-    - Why hello there
+    - Hello, the island was cursed by the Witch. Everyone is gone.
+    - "The Witch on the mountain\u2019s peak. Nobody knows why she did what she did."
+    - "The path you normally take to reach the mountain\u2019s peak is blocked."
+    - There is, however, another path along the side of the mountain.
+    - Over that way. Are you sure you want to do this, my boy? You're putting your
+      life at risk.
+    - Your journey will be perilous. Here, take this with you.
+    - Use this when you encounter any glowing foes that can't be damaged with your
+      Kris.
+    - It will dispel whatever magic protection they have on them.
 --- !u!61 &706100129
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2714,7 +2723,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
 --- !u!1 &753963704
 GameObject:
