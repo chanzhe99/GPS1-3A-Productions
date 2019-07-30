@@ -12,7 +12,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject singGameObject;
     private float closeDialogueTime = 0.1f;
     private Vector2 tutorialStartPosition;
-    [SerializeField] private float tutorialMoveOutDisappearDistanceX = 5f;
+    [SerializeField] private float tutorialMoveOutDisappearDistanceX;
     [SerializeField] private List<Image> keysImages;
     //[SerializeField] private Image keysImage;
     //[SerializeField] private List<Sprite> keysImageSprites;

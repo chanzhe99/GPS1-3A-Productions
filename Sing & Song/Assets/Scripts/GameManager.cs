@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
 
         tutorialData = new SaveData.TutorialData();
         tutorialData = (SaveData.TutorialData)SaveDataManager.LoadDataGetObject(Global.pathOfData_TutorialData);
-        if (playerSpawnData != null)
+        if (tutorialData != null)
         {
             isTutorialMoviePlayed = tutorialData.isTutorialMoviePlayed;
         }

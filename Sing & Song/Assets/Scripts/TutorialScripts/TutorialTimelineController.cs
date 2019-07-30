@@ -6,6 +6,7 @@ using UnityEngine.Playables;
 
 public class TutorialTimelineController : MonoBehaviour
 {
+    [SerializeField] private GameObject inGameUIGameObject;
     [SerializeField] private GameObject tutorialUIGameObject;
     [SerializeField] private GameObject dogEnemyGameObject;
     private PlayableDirector playableDirector;
@@ -57,6 +58,8 @@ public class TutorialTimelineController : MonoBehaviour
         {
             if (!Global.gameManager.IsTutorialMoviePlayed)
             {
+                inGameUIGameObject.SetActive(false);
+
                 singSpriteAnimator.runtimeAnimatorController = null;
                 songSpriteAnimator.runtimeAnimatorController = null;
                 singGameObject.GetComponent<SingScript>().canDoAction = false;
@@ -158,6 +161,7 @@ public class TutorialTimelineController : MonoBehaviour
         yield return null;
         Global.gameManager.IsTutorialMoviePlayed = true;
         Global.gameManager.SaveAllGameDatas();
+        inGameUIGameObject.SetActive(true);
         DestroyAllTutorialGameObjects();
     }
 
