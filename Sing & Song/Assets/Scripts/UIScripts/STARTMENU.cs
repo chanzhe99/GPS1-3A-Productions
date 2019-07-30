@@ -16,7 +16,7 @@ public class STARTMENU : MonoBehaviour
 
     private void Start()
     {
-        player.GetComponent<SingScript>().enabled = false;
+        player.GetComponent<SingScript>().canDoAction = false;
     }
 
     /*void Update()
@@ -67,7 +67,7 @@ public class STARTMENU : MonoBehaviour
 
         if (tempOpenningTimelineController == null)
         {
-            player.GetComponent<SingScript>().enabled = true;
+            player.GetComponent<SingScript>().canDoAction = true;
         }
     }
 

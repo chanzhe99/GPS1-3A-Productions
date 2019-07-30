@@ -80,6 +80,7 @@ public class SingScript : GameCharacter
     #endregion
     #region Song Node Variables
     [Header("Song Variables")]
+    [HideInInspector] public bool doAnimationFollowPlayerState = true;
     [SerializeField] private GameObject song;
     [SerializeField] private Animator songAnimator;
     [SerializeField] private Vector2 nodeOffsetDefault = new Vector2(1.5f, 0f);
@@ -250,21 +251,24 @@ public class SingScript : GameCharacter
             songRotationTime = 0f;
             StartCoroutine(FlipSongSprite());
         }
-        if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING)
+        if (doAnimationFollowPlayerState)
         {
-            song.GetComponent<Rigidbody2D>().gravityScale = 2f;
-            if(song.transform.position.x == nodePosition.x) { songAnimator.SetBool("isRunning", false); }
-            else { songAnimator.SetBool("isRunning", true); song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, song.transform.position.y), moveSpeed * Time.deltaTime); }
-        }
-        if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
-        {
-            songAnimator.SetBool("isRunning", false);
-            song.GetComponent<Rigidbody2D>().gravityScale = 0f;
-            song.transform.position = Vector2.MoveTowards(song.transform.position, nodePosition, moveSpeed * Time.deltaTime);
-        }
-        if(playerState == PlayerState.PLAYER_HEALING)
-        {
+            if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING)
+            {
+                song.GetComponent<Rigidbody2D>().gravityScale = 2f;
+                if(song.transform.position.x == nodePosition.x) { songAnimator.SetBool("isRunning", false); }
+                else { songAnimator.SetBool("isRunning", true); song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, song.transform.position.y), moveSpeed * Time.deltaTime); }
+            }
+            if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
+            {
+                songAnimator.SetBool("isRunning", false);
+                song.GetComponent<Rigidbody2D>().gravityScale = 0f;
+                song.transform.position = Vector2.MoveTowards(song.transform.position, nodePosition, moveSpeed * Time.deltaTime);
+            }
+            if(playerState == PlayerState.PLAYER_HEALING)
+            {
             
+            }
         }
         #endregion
         #region Set Enemy Layer Collision

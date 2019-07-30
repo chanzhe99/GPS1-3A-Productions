@@ -5,15 +5,6 @@ using UnityEngine.Playables;
 
 public class OpenningTimelineController : MonoBehaviour
 {
-    private bool isMoviePlayed = false; //! This one need to push it in GameManager
-    public bool IsMoviePlayed
-    {
-        get
-        {
-            return isMoviePlayed;
-        }
-    }
-    
     private PlayableDirector playableDirector;
     [SerializeField] private PlayableAsset menuWaiting;
     [SerializeField] private PlayableAsset openingMovie;
@@ -21,6 +12,7 @@ public class OpenningTimelineController : MonoBehaviour
     [SerializeField] private Transform playerPivotPoint;
     [SerializeField] private GameObject boatGameObject;
     [SerializeField] private GameObject inGameUIGameObject;
+    [SerializeField] private GameObject triggerEvent;
     private DialogueTrigger openingDialogueTrigger;
     private DialogueManager dialogueManager;
     private float singDefaultGravityScaleValue;
@@ -30,7 +22,7 @@ public class OpenningTimelineController : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        if (isMoviePlayed == false)
+        if (Global.gameManager.IsOpeningCutsceneMoviePlayed == false)
         {
             openingDialogueTrigger = transform.GetComponentInChildren<DialogueTrigger>();
             dialogueManager = FindObjectOfType<DialogueManager>();
@@ -40,8 +32,7 @@ public class OpenningTimelineController : MonoBehaviour
         }
         else
         {
-            boatGameObject.GetComponent<Animator>().enabled = false;
-            playerPivotPoint.GetComponent<Animator>().enabled = false;
+            Destroy(triggerEvent);
             DestroyAllOpeningGameObjects();
         }
     }
@@ -49,27 +40,36 @@ public class OpenningTimelineController : MonoBehaviour
     public void ShowOpeningDialogue() //! When the player are first time playing this game, and the player press the start game button it will show the cutscene
     {
         openingDialogueTrigger.OpenDialogue(false);
+        StartCoroutine(CheckDialogueEndState());
     }
 
-    public void CheckDialogueEndState() //! For check the dialogue are finish while dialogue button clicked
+    private IEnumerator CheckDialogueEndState() //! For check the dialogue are finish while dialogue button clicked
     {
-        if(dialogueManager.Sentences.Count == 0)
+        while (true)
         {
-            PlayOpeningMovie();
+            if(dialogueManager.IsEndOfDialogue)
+            {
+                PlayOpeningMovie();
+                break;
+            }
+            yield return null;
         }
+        yield return null;
     }
 
     private void OnPlayableDirectorStopped(PlayableDirector aDirector)
     {
         if (playableDirector == aDirector)
         {
-            singGameObject.GetComponent<Transform>().SetParent(null, true);
+            singGameObject.transform.SetParent(null, true);
+            //singGameObject.GetComponent<SingScript>().enabled = true;
             EnableSingController();
 
             //! Here for save the isMoviePlayed data
 
-            FindObjectOfType<TutorialUI>().ShowTutorialUI();
+            FindObjectOfType<TutorialManager>().ShowTutorialUI(TutorialManager.Index_ButtonNameOfTutorial.Horizontal);
 
+            Global.gameManager.IsOpeningCutsceneMoviePlayed = true;
             playableDirector.stopped -= OnPlayableDirectorStopped;
             DestroyAllOpeningGameObjects();
         }
@@ -97,6 +97,7 @@ public class OpenningTimelineController : MonoBehaviour
     private void DisableSingController()
     {
         inGameUIGameObject.SetActive(false);
+        singGameObject.GetComponent<SingScript>().canDoAction = false;
         singGameObject.GetComponent<SingScript>().enabled = false;
         singGameObject.GetComponent<Rigidbody2D>().gravityScale = 0.0f;
     }
@@ -105,14 +106,15 @@ public class OpenningTimelineController : MonoBehaviour
     {
         inGameUIGameObject.SetActive(true);
         singGameObject.GetComponent<SingScript>().enabled = true;
+        singGameObject.GetComponent<SingScript>().canDoAction = true;
         singGameObject.GetComponent<Rigidbody2D>().gravityScale = singDefaultGravityScaleValue;
     }
 
     private void DestroyAllOpeningGameObjects()
     {
-
+        Destroy(boatGameObject.GetComponent<Animator>());
         Destroy(playerPivotPoint.gameObject);
-        Destroy(gameObject);
+        Destroy(this.gameObject);
 
     }
 

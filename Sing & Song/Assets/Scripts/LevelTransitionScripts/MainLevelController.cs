@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class MainLevelController : MonoBehaviour
 {
-
     private LevelTransitionController currentLevel;
-    private int lastCheckPointLevelIndex = 1;
+    
     [SerializeField] private Animator levelTransitionScreenFadingAnimator;
+    [SerializeField] public Transform songTransform;
 
     public LevelTransitionController CurrentLevel
     {
@@ -27,7 +27,7 @@ public class MainLevelController : MonoBehaviour
 
             
 
-            if (tempLevelTransitionController[i].LevelIndex == lastCheckPointLevelIndex)
+            if (tempLevelTransitionController[i].LevelIndex == Global.gameManager.LastCheckPointLevelIndex)
             {
                 tempLevelTransitionController[i].SetUpStart();
                 tempLevelTransitionController[i].SetDisableToSwitch(true);

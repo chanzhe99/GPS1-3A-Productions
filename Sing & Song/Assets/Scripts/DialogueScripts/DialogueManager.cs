@@ -11,6 +11,16 @@ public class DialogueManager : MonoBehaviour
     private bool isUsingButton = false;
     private Queue<string> sentences;
     public SingScript singScript;
+    private bool isEndOfDialogue = true;
+    private bool endWillAssignedToControl = true;
+
+    public bool IsEndOfDialogue
+    {
+        get
+        {
+            return isEndOfDialogue;
+        }
+    }
 
     public Queue<string> Sentences
     {
@@ -33,18 +43,16 @@ public class DialogueManager : MonoBehaviour
         {
             if (Input.GetButtonDown("InteractButton"))
             {
-                if (sentences.Count == 0)
-                {
-                    isUsingButton = true;
-                }
                 DisplayNextSentence();
             }
 
         }
     }
 
-    public void StartDialogue(ObjectDialogue dialogue, bool isClicked)
+    public void StartDialogue(ObjectDialogue dialogue, bool isClicked, bool endWillAssignedToControl)
     {
+        this.endWillAssignedToControl = endWillAssignedToControl;
+        isEndOfDialogue = false;
         singScript.canDoAction = false;
         isUsingButton = isClicked;
         animator.SetBool("IsOpen", true);
@@ -65,13 +73,8 @@ public class DialogueManager : MonoBehaviour
     {
         if(sentences.Count == 0)
         {
-            if(FindObjectOfType<OpenningTimelineController>() != null)
-            {
-                if (!FindObjectOfType<OpenningTimelineController>().IsMoviePlayed)
-                {
-                    FindObjectOfType<OpenningTimelineController>().PlayOpeningMovie();
-                }
-            }
+            isUsingButton = true;
+            isEndOfDialogue = true;
             EndDialogue();
             return;
         }
@@ -93,7 +96,10 @@ public class DialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
-        singScript.canDoAction = true;
+        if (endWillAssignedToControl)
+        {
+            singScript.canDoAction = true;
+        }
         animator.SetBool("IsOpen", false);
     }
 }

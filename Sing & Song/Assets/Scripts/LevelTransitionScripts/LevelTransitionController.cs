@@ -79,6 +79,7 @@ public class LevelTransitionController : MonoBehaviour
         {
             if (!isNotAbleToSwitchToThis)
             {
+                Global.gameManager.LastCheckPointLevelIndex = levelIndex;
 
                 mainLevelController.CurrentLevel.setChildrenActive(false);
                 mainLevelController.SwitchToAnotherLevelAndStartScreenFading(this);
@@ -87,7 +88,10 @@ public class LevelTransitionController : MonoBehaviour
                 tempTransferPosition.x = transform.position.x + ((transform.position.x > collision.transform.parent.position.x) ? -playerMoveInDistanceX : playerMoveInDistanceX);
                 tempTransferPosition.y = collision.transform.parent.position.y;
                 collision.transform.parent.position = tempTransferPosition;
+                mainLevelController.songTransform.position = tempTransferPosition;
                 isNotAbleToSwitchToThis = true;
+
+                
             }
         }
     }
