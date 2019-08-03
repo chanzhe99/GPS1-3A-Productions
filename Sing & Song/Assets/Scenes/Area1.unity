@@ -14484,7 +14484,6 @@ GameObject:
   - component: {fileID: 3920118415174553147}
   - component: {fileID: 4287346010896588508}
   - component: {fileID: 3920118415174553149}
-  - component: {fileID: 3920118415174553150}
   m_Layer: 8
   m_Name: Sing
   m_TagString: Player
@@ -14549,25 +14548,6 @@ MonoBehaviour:
   spiritWell: {fileID: 653399414}
   spiritWellFlowSpeed: 500
   JumpSoundTime: 1
---- !u!95 &3920118415174553150
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3920118415174553148}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!212 &3920118415362323233
 SpriteRenderer:
   m_ObjectHideFlags: 0
