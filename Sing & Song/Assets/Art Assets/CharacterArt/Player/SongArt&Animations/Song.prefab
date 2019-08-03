@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943266217079607}
   - component: {fileID: 4666943266217079604}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: front_leg_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,8 +66,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 8
   m_Sprite: {fileID: -5715282030955704913, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -90,8 +90,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4666943266331153707}
-  - component: {fileID: 7588552788804417367}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: SongCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,29 +105,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4666943266331153706}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4666943268012677159}
   m_Father: {fileID: 4666943267505944000}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &7588552788804417367
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4666943266331153706}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.0026093607, y: -0.15134515}
-  m_Size: {x: 0.9947818, y: 0.8747604}
-  m_Direction: 1
 --- !u!1 &4666943266517347595
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,7 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943266517347592}
   - component: {fileID: 4666943266517347593}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: front_ear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,8 +177,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 11
   m_Sprite: {fileID: -1668885547595796836, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -219,7 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943266539246856}
   - component: {fileID: 4666943266539246857}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,8 +262,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 15
   m_Sprite: {fileID: -1084363434630534660, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -304,7 +287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943266550958230}
   - component: {fileID: 4666943266550958231}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: front_hand_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,8 +342,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 7
   m_Sprite: {fileID: -1221193512927393058, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -384,7 +367,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943266573238844}
   - component: {fileID: 4666943266573238845}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -445,8 +428,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: -3728670041807789268, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -470,7 +453,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943266884411057}
   - component: {fileID: 4666943266884411062}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: back_leg_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,8 +508,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: -267920533688703438, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -550,7 +533,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943266903555787}
   - component: {fileID: 4666943266903555784}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: back_leg_ 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,8 +589,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: -8817603952380105231, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -631,7 +614,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943267030433936}
   - component: {fileID: 4666943267030433937}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: necklace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,8 +669,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 20
   m_Sprite: {fileID: -2118770749959851009, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -711,7 +694,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943267108945858}
   - component: {fileID: 4666943267108945856}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -766,8 +749,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 9
   m_Sprite: {fileID: 6241371065001421046, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -791,7 +774,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943267167728480}
   - component: {fileID: 4666943267167728481}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: back_ear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -846,8 +829,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: -6043952555067182999, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -871,7 +854,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943267280799606}
   - component: {fileID: 4666943267280799607}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: front_hand_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -927,8 +910,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 7
   m_Sprite: {fileID: -5423427011572183393, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -952,7 +935,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943267496608266}
   - component: {fileID: 4666943267496608267}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: pupil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1007,8 +990,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -8652407893097463458, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -1031,8 +1014,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4666943267505944000}
-  - component: {fileID: 6942274579064280079}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Song
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1054,27 +1036,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &6942274579064280079
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4666943267505944003}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 2
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
 --- !u!1 &4666943267825562976
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,7 +1046,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943267825562977}
   - component: {fileID: 4666943267825562982}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: back_hand_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1141,8 +1102,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 6
   m_Sprite: {fileID: -8010991874124283152, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -1166,7 +1127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943267955361368}
   - component: {fileID: 4666943267955361369}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: front_leg_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1221,8 +1182,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 8
   m_Sprite: {fileID: 6999772551554815379, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -1246,7 +1207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943267958624572}
   - component: {fileID: 4666943267958624573}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: back_hand_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1301,8 +1262,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 6
   m_Sprite: {fileID: 5251434167736075027, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
@@ -1325,8 +1286,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4666943268012677159}
+  - component: {fileID: 4666943268012677156}
   - component: {fileID: 4666943268012677157}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: SongSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1348,6 +1310,22 @@ Transform:
   m_Father: {fileID: 4666943266331153707}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &4666943268012677156
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4666943268012677158}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 0}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!95 &4666943268012677157
 Animator:
   serializedVersion: 3
@@ -1377,7 +1355,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4666943268019995582}
   - component: {fileID: 4666943268019995583}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: sclera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1432,8 +1410,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -1720060556307663780, guid: 9bfc757630490694c961a2ab8095ec89,
     type: 3}
