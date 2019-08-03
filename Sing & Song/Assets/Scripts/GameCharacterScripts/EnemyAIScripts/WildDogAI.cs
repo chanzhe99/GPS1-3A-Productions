@@ -22,10 +22,13 @@ public class WildDogAI : EnemyAI
     }
     protected override void EnemyChase()
     {
+        animator.SetBool("isResting", false);
+        animator.SetBool("isRunning", true);
         canLunge = Physics2D.OverlapBox(this.colliderTransform.position, attackRange, 0f, playerLayer);
         if(canLunge)
         {
-            if(playerTransform.position.x > this.transform.position.x) { lungeDirection.x = lungeForce.x; }
+            animator.SetBool("isRunning", false);
+            if (playerTransform.position.x > this.transform.position.x) { lungeDirection.x = lungeForce.x; }
             else { lungeDirection.x = -lungeForce.x; }
             enemyState = EnemyState.ENEMY_ATTACKING;
         }
@@ -33,12 +36,15 @@ public class WildDogAI : EnemyAI
     }
     protected override void EnemyAttack()
     {
+        animator.SetTrigger("attack");
         if(!isLunge) { isLunge = true; StartCoroutine(Lunge()); SoundManagerScripts.PlaySound("wilddogAttack"); }//wild dog attack sound
     }
     protected override void EnemyRetreat()
     {
-        if (retreatTimeTimer >= retreatTime)
+        if(retreatTimeTimer >= retreatTime)
         {
+            animator.SetBool("isRunning", false);
+            FlipCharacter();
             retreatTimeTimer = 0;
             enemyState = EnemyState.ENEMY_RESTING;
         }
@@ -50,6 +56,7 @@ public class WildDogAI : EnemyAI
     }
     protected override void EnemyRest()
     {
+        animator.SetBool("isResting", true);
         this.rigidbody2D.velocity = new Vector2(Vector2.zero.x, this.rigidbody2D.velocity.y);
         base.EnemyRest();
     }
@@ -58,6 +65,8 @@ public class WildDogAI : EnemyAI
         rigidbody2D.AddForce(lungeDirection, ForceMode2D.Impulse);
         yield return new WaitForSeconds(0.5f);
         rigidbody2D.velocity = Vector2.zero;
+        FlipCharacter();
+        animator.SetBool("isRunning", true);
         enemyState = EnemyState.ENEMY_RETREATING;
         isLunge = false;
     }
