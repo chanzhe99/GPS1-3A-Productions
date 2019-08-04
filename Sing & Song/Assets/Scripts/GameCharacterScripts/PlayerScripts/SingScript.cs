@@ -289,7 +289,7 @@ public class SingScript : GameCharacter
         }
         #endregion
         #region Update Animation
-        if(inputJumpPress) { animator.SetTrigger("jump"); }
+        if(inputJumpPress && isGrounded) { animator.SetTrigger("jump"); }
         //if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { animator.SetTrigger("attack"); }
         #endregion
 
