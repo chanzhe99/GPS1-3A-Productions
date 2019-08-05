@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8244043100581041034}
   - component: {fileID: 8244043100581041044}
   m_Layer: 0
-  m_Name: TriggerEvent
+  m_Name: TriggerDialogueEvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,6 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3507f906aa8792469d49b46767474ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayOneTime: 0
   dialogue:
     name: Sing
     sentences: []

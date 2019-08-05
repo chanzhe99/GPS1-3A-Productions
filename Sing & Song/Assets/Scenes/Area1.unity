@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 99538895}
   - component: {fileID: 99538897}
   m_Layer: 0
-  m_Name: TriggerEvent
+  m_Name: TriggerDialogueEvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2996,7 +2996,7 @@ GameObject:
   - component: {fileID: 706100129}
   - component: {fileID: 706100128}
   m_Layer: 0
-  m_Name: TriggerEvent
+  m_Name: TriggerDialogueEvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30603,6 +30603,10 @@ MonoBehaviour:
   - {fileID: 8434300236416533843}
   - {fileID: 1132121745}
   - {fileID: 1619034025}
+  tutorialDialogue:
+  - Use the arrow keys to move
+  - Use the Z key to jump
+  - Use the X key to attack
 --- !u!1 &8991713422237438050
 GameObject:
   m_ObjectHideFlags: 0

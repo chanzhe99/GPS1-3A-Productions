@@ -17,7 +17,7 @@ public class TutorialManager : MonoBehaviour
     //[SerializeField] private Image keysImage;
     //[SerializeField] private List<Sprite> keysImageSprites;
 
-    private List<string> tutorialDialogue = new List<string> {
+    [SerializeField] private List<string> tutorialDialogue = new List<string> {
         "Use the arrow keys to move",  // Left and Right arrow button dialogue
         "Use the Z key to jump",  // Z button dialogue
         "Use the X key to attack"  // X button dialogue
