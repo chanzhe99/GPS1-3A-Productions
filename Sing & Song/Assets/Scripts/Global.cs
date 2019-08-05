@@ -5,4 +5,6 @@
     public static readonly string pathOfData_PlayerSpawnData = "/data/PlayerSpawnData.dat";
     public static readonly string pathOfData_TutorialData = "/data/TutorialData.dat";
     public static readonly string pathOfData_OpeningCutsceneData = "/data/OpeningCutsceneData.dat";
+
+    public static readonly string tag_Player = "Player";
 }

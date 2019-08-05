@@ -17,11 +17,12 @@ public class TutorialTimelineController : MonoBehaviour
     [SerializeField] private Animator songSpriteAnimator;
     private RuntimeAnimatorController singDefalutRuntimeAnimatorController;
     private RuntimeAnimatorController songDefalutRuntimeAnimatorController;
-    [SerializeField] private TutorialTrigger tutotrialTrigger;
+    [SerializeField] private GameObject attackTutorialTriggerEventGameObject;
     [SerializeField] private DialogueManager dialogueManager;
     [SerializeField] private TutorialManager tutorialManager;
+    [SerializeField] private List<DialogueTrigger> tutorialStartedDialogueTriggers;
     [SerializeField] private List<DialogueTrigger> tutorialEndDialogueTriggers;
-    private int currentTutorialEndDialogueIndex = 0;
+    private int currentTutorialDialogueIndex = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -39,22 +40,9 @@ public class TutorialTimelineController : MonoBehaviour
         }
     }
 
-    private void OnPlayableDirectorStopped(PlayableDirector aDirector)
-    {
-        if (playableDirector == aDirector)
-        {
-            singGameObject.GetComponent<SingScript>().doAnimationFollowPlayerState = true;
-
-            StopAllCoroutines();
-            StartCoroutine(CheckCurrentTutorialEndDialogueEnded());
-
-            playableDirector.stopped -= OnPlayableDirectorStopped;
-        }
-    }
-
     public void StartTutorialMovie()
     {
-        if (tutotrialTrigger != null)
+        if (tutorialStartedDialogueTriggers != null)
         {
             if (!Global.gameManager.IsTutorialMoviePlayed)
             {
@@ -64,10 +52,9 @@ public class TutorialTimelineController : MonoBehaviour
                 songSpriteAnimator.runtimeAnimatorController = null;
                 singGameObject.GetComponent<SingScript>().canDoAction = false;
                 singGameObject.GetComponent<SingScript>().doAnimationFollowPlayerState = false;
+                songGameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
                 playableDirector.Play(attackToturialMovie, DirectorWrapMode.None);
-
-                playableDirector.stopped += OnPlayableDirectorStopped;
             }
         }
     }
@@ -75,13 +62,38 @@ public class TutorialTimelineController : MonoBehaviour
     public void PauseTheMovie()
     {
         playableDirector.Pause();
-        tutotrialTrigger.PlayTutorialDialogue();
 
+        currentTutorialDialogueIndex = 0;
+        StopAllCoroutines();
+        StartCoroutine(CheckCurrentTutorialStartedDialogueEnded());
+    }
+
+    private IEnumerator CheckCurrentTutorialStartedDialogueEnded()
+    {
         singSpriteAnimator.runtimeAnimatorController = singDefalutRuntimeAnimatorController;
         songSpriteAnimator.runtimeAnimatorController = songDefalutRuntimeAnimatorController;
 
-        StopAllCoroutines();
-        StartCoroutine(CheckTutorialDialogueEnd());
+        while (true)
+        {
+            if (dialogueManager.IsEndOfDialogue)
+            {
+                if (currentTutorialDialogueIndex < tutorialStartedDialogueTriggers.Count)
+                {
+                    tutorialStartedDialogueTriggers[currentTutorialDialogueIndex].OpenDialogue(false, false);
+                    currentTutorialDialogueIndex++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            yield return null;
+        }
+
+        yield return null;
+        singSpriteAnimator.runtimeAnimatorController = null;
+        songSpriteAnimator.runtimeAnimatorController = null;
+        playableDirector.Resume();
     }
 
     public void RequestPressAttackButtonToContinue()
@@ -92,35 +104,6 @@ public class TutorialTimelineController : MonoBehaviour
 
         StopAllCoroutines();
         StartCoroutine(CheckAttackButtonPressed());
-    }
-
-    private void PlayTutorialEndDialogue()
-    {
-        if(currentTutorialEndDialogueIndex == (tutorialEndDialogueTriggers.Count - 1))
-        {
-            tutorialEndDialogueTriggers[currentTutorialEndDialogueIndex].OpenDialogue(false);
-        }
-        else
-        {
-            tutorialEndDialogueTriggers[currentTutorialEndDialogueIndex].OpenDialogue(false, false);
-        }
-    }
-
-    private IEnumerator CheckTutorialDialogueEnd()
-    {
-        while (true)
-        {
-            if(dialogueManager.IsEndOfDialogue)
-            {
-                singSpriteAnimator.runtimeAnimatorController = null;
-                songSpriteAnimator.runtimeAnimatorController = null;
-
-                playableDirector.Resume();
-                break;
-            }
-            yield return null;
-        }
-        yield return null;
     }
 
     private IEnumerator CheckAttackButtonPressed()
@@ -137,6 +120,31 @@ public class TutorialTimelineController : MonoBehaviour
         }
         yield return null;
     }
+
+    public void EndOfTutorial()
+    {
+        if (singGameObject.GetComponent<SingScript>() != null)
+        {
+            singGameObject.GetComponent<SingScript>().doAnimationFollowPlayerState = true;
+        }
+
+        currentTutorialDialogueIndex = 0;
+        StopAllCoroutines();
+        StartCoroutine(CheckCurrentTutorialEndDialogueEnded());
+    }
+
+    private void PlayTutorialEndDialogue()
+    {
+        if (currentTutorialDialogueIndex == (tutorialEndDialogueTriggers.Count - 1))
+        {
+            tutorialEndDialogueTriggers[currentTutorialDialogueIndex].OpenDialogue(false);
+        }
+        else
+        {
+            tutorialEndDialogueTriggers[currentTutorialDialogueIndex].OpenDialogue(false, false);
+        }
+    }
+
     private IEnumerator CheckCurrentTutorialEndDialogueEnded()
     {
         singSpriteAnimator.runtimeAnimatorController = singDefalutRuntimeAnimatorController;
@@ -146,10 +154,10 @@ public class TutorialTimelineController : MonoBehaviour
         {
             if (dialogueManager.IsEndOfDialogue)
             {
-                if(currentTutorialEndDialogueIndex < tutorialEndDialogueTriggers.Count)
+                if(currentTutorialDialogueIndex < tutorialEndDialogueTriggers.Count)
                 {
                     PlayTutorialEndDialogue();
-                    currentTutorialEndDialogueIndex++;
+                    currentTutorialDialogueIndex++;
                 }
                 else
                 {
@@ -170,7 +178,8 @@ public class TutorialTimelineController : MonoBehaviour
         Destroy(tutorialUIGameObject);
         Destroy(tutorialManager.gameObject);
         Destroy(dogEnemyGameObject);
-        Destroy(tutotrialTrigger.gameObject);
+        Destroy(attackTutorialTriggerEventGameObject);
         Destroy(this.gameObject);
     }
+
 }

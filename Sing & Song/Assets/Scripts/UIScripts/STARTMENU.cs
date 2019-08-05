@@ -13,6 +13,7 @@ public class STARTMENU : MonoBehaviour
     private bool calledmenu = false;
     [SerializeField] private GameObject startMenuPanelGameObject;
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject inGameUIGameObject;
     [SerializeField] private Button continueButton;
     [SerializeField] private Text continueButtonText;
     [SerializeField] private Color continueButtonNotInteractableTextColor;
@@ -42,10 +43,10 @@ public class STARTMENU : MonoBehaviour
             if (bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)))
             {
                 startMenuPanelGameObject.SetActive(false);
-                OpenningTimelineController openningTimelineController = FindObjectOfType<OpenningTimelineController>();
-                if (openningTimelineController != null)
+                OpeningTimelineController openingTimelineController = FindObjectOfType<OpeningTimelineController>();
+                if (openingTimelineController != null)
                 {
-                    openningTimelineController.PlayOpeningMovie();
+                    openingTimelineController.ShowOpeningDialogue();
                 }
 
                 PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "false");
@@ -101,19 +102,20 @@ public class STARTMENU : MonoBehaviour
 
     public void Continue()
     {
-        OpenningTimelineController tempOpenningTimelineController = FindObjectOfType<OpenningTimelineController>();
+        OpeningTimelineController tempOpeningTimelineController = FindObjectOfType<OpeningTimelineController>();
 
-        if (tempOpenningTimelineController == null)
+        if (tempOpeningTimelineController == null)
         {
             player.GetComponent<SingScript>().canDoAction = true;
+            inGameUIGameObject.SetActive(true);
         }
     }
 
     public void StartNewGame()
     {
-        OpenningTimelineController tempOpenningTimelineController = FindObjectOfType<OpenningTimelineController>();
+        OpeningTimelineController tempOpeningTimelineController = FindObjectOfType<OpeningTimelineController>();
 
-        if (tempOpenningTimelineController == null)
+        if (tempOpeningTimelineController == null)
         {
             Global.gameManager.DeleteAllGameDatas();
             Global.gameManager.SaveAllGameDatas();
@@ -123,7 +125,7 @@ public class STARTMENU : MonoBehaviour
         }
         else
         {
-            tempOpenningTimelineController.PlayOpeningMovie();
+            tempOpeningTimelineController.ShowOpeningDialogue();
         }
 
         

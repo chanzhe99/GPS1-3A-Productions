@@ -21,7 +21,7 @@ public class CameraClampSetter : MonoBehaviour
         if(collision.gameObject.CompareTag("Player")) { cameraController.GetCameraClampSetter(this.GetComponent<CameraClampSetter>()); }
     }
     public float getMinX() { return minX = levelCenter.x - (levelSize.x * 0.5f); }
-    public float getMinY() { return minX = levelCenter.y - (levelSize.y * 0.5f); }
+    public float getMinY() { return minY = levelCenter.y - (levelSize.y * 0.5f); }
     public float getMaxX() { return maxX = levelCenter.x + (levelSize.x * 0.5f); }
     public float getMaxY() { return maxY = levelCenter.y + (levelSize.y * 0.5f); }
 

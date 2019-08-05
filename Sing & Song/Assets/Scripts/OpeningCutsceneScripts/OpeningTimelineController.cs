@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class OpenningTimelineController : MonoBehaviour
+public class OpeningTimelineController : MonoBehaviour
 {
     private PlayableDirector playableDirector;
     [SerializeField] private PlayableAsset menuWaiting;
@@ -57,23 +57,18 @@ public class OpenningTimelineController : MonoBehaviour
         yield return null;
     }
 
-    private void OnPlayableDirectorStopped(PlayableDirector aDirector)
+    public void EndOfOpeningCutscene()
     {
-        if (playableDirector == aDirector)
-        {
-            singGameObject.transform.SetParent(null, true);
-            //singGameObject.GetComponent<SingScript>().enabled = true;
-            EnableSingController();
+        singGameObject.transform.SetParent(null, true);
+        //singGameObject.GetComponent<SingScript>().enabled = true;
+        EnableSingController();
 
-            //! Here for save the isMoviePlayed data
+        //! Here for save the isMoviePlayed data
 
-            FindObjectOfType<TutorialManager>().ShowTutorialUI(TutorialManager.Index_ButtonNameOfTutorial.Horizontal);
+        FindObjectOfType<TutorialManager>().ShowTutorialUI(TutorialManager.Index_ButtonNameOfTutorial.Horizontal);
 
-            Global.gameManager.IsOpeningCutsceneMoviePlayed = true;
-            playableDirector.stopped -= OnPlayableDirectorStopped;
-            DestroyAllOpeningGameObjects();
-        }
-            
+        Global.gameManager.IsOpeningCutsceneMoviePlayed = true;
+        DestroyAllOpeningGameObjects();
     }
 
     private void PlayMenuWaiting()
@@ -90,8 +85,6 @@ public class OpenningTimelineController : MonoBehaviour
         playableDirector.Play(openingMovie, DirectorWrapMode.None);
 
         DisableSingController();
-
-        playableDirector.stopped += OnPlayableDirectorStopped;
     }
 
     private void DisableSingController()
