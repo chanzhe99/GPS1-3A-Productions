@@ -576,7 +576,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Game Saved!
+  m_Text: Game Saved
 --- !u!1 &7591971017352831920
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,7 +655,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Saved Point!
+  m_Text: Checkpoint
 --- !u!1 &8939086356385429983
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +734,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Press F key to save  the game.
+  m_Text: Press F to save the game
 --- !u!1 &9123161101854809036
 GameObject:
   m_ObjectHideFlags: 0
