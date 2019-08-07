@@ -45,6 +45,9 @@ TagManager:
   - name: Background
     uniqueID: 920196321
     locked: 0
+  - name: RockLayer
+    uniqueID: 2846324439
+    locked: 0
   - name: Midground
     uniqueID: 1897512587
     locked: 0
