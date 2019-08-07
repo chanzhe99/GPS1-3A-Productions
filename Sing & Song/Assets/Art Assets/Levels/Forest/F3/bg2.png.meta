@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 37280f8bed423124d8956c63c3eee169
+guid: cac8233139f49eb41bd1c24061116c5d
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -75,7 +75,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 583b6a418581d64408acf615b9efe7cf
+    spriteID: 1a5315ef7c8a85f44b8f799d644368a7
     internalID: 0
     vertices: []
     indices: 
