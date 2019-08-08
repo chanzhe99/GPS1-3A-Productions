@@ -8,7 +8,7 @@ public class RockScript : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Player")
+        if(other.CompareTag("Player"))
         {
             rockAnimator.SetBool("isSaving", true);
             print(rockAnimator.GetBool("isSaving"));
@@ -19,7 +19,7 @@ public class RockScript : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        if(other.CompareTag("Player"))
         {
             rockAnimator.SetBool("isSaving", false);
             print(rockAnimator.GetBool("isSaving"));
