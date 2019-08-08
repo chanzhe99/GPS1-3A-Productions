@@ -79,7 +79,7 @@ public class TutorialTimelineController : MonoBehaviour
             {
                 if (currentTutorialDialogueIndex < tutorialStartedDialogueTriggers.Count)
                 {
-                    tutorialStartedDialogueTriggers[currentTutorialDialogueIndex].OpenDialogue(false, false);
+                    tutorialStartedDialogueTriggers[currentTutorialDialogueIndex].OpenDialogue(true, false);
                     currentTutorialDialogueIndex++;
                 }
                 else
@@ -137,11 +137,11 @@ public class TutorialTimelineController : MonoBehaviour
     {
         if (currentTutorialDialogueIndex == (tutorialEndDialogueTriggers.Count - 1))
         {
-            tutorialEndDialogueTriggers[currentTutorialDialogueIndex].OpenDialogue(false);
+            tutorialEndDialogueTriggers[currentTutorialDialogueIndex].OpenDialogue(true);
         }
         else
         {
-            tutorialEndDialogueTriggers[currentTutorialDialogueIndex].OpenDialogue(false, false);
+            tutorialEndDialogueTriggers[currentTutorialDialogueIndex].OpenDialogue(true, false);
         }
     }
 

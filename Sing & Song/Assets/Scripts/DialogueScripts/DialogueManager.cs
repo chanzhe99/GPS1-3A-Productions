@@ -13,6 +13,7 @@ public class DialogueManager : MonoBehaviour
     public SingScript singScript;
     private bool isEndOfDialogue = true;
     private bool endWillAssignedToControl = true;
+    private bool hasMultipleDialogue = false;
 
     public bool IsEndOfDialogue
     {
@@ -39,7 +40,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (!isUsingButton)
+        if (isUsingButton)
         {
             if (Input.GetButtonDown("InteractButton"))
             {
@@ -49,12 +50,13 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(ObjectDialogue dialogue, bool isClicked, bool endWillAssignedToControl)
+    public void StartDialogue(ObjectDialogue dialogue, bool isClicked, bool endWillAssignedToControl, bool stillHaveDialogue = false)
     {
         this.endWillAssignedToControl = endWillAssignedToControl;
         isEndOfDialogue = false;
         singScript.canDoAction = false;
         isUsingButton = isClicked;
+        hasMultipleDialogue = stillHaveDialogue;
         animator.SetBool("IsOpen", true);
 
         nameText.text = dialogue.name;
@@ -75,7 +77,10 @@ public class DialogueManager : MonoBehaviour
         {
             isUsingButton = true;
             isEndOfDialogue = true;
-            EndDialogue();
+            if (!hasMultipleDialogue)
+            {
+                EndDialogue();
+            }
             return;
         }
 

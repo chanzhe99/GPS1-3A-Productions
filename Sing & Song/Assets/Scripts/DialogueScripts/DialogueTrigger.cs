@@ -17,7 +17,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (hit.CompareTag("Player"))
         {
-            OpenDialogue(false);
+            OpenDialogue(true);
             if (isPlayOneTime)
             {
                 if (GetComponent<Collider2D>() != null)
@@ -30,9 +30,9 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    public void OpenDialogue(bool isClicked = true, bool endWillAssignedToControl = true)
+    public void OpenDialogue(bool isClicked = true, bool endWillAssignedToControl = true, bool stillHaveDialogue = false)
     {
         Debug.Log(gameObject.name);
-        FindObjectOfType<DialogueManager>().StartDialogue(dialogue, isClicked, endWillAssignedToControl);
+        FindObjectOfType<DialogueManager>().StartDialogue(dialogue, isClicked, endWillAssignedToControl, stillHaveDialogue);
     }
 }
