@@ -161,6 +161,29 @@ public class SingScript : GameCharacter
     } // Initialises player variables
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.F1))
+        {
+            if(!animator.GetBool("isResting"))
+            {
+                animator.SetBool("isResting", true);
+                songAnimator.SetBool("isResting", true);
+            }
+            else
+            {
+                animator.SetBool("isResting", false);
+                songAnimator.SetBool("isResting", false);
+            }
+        }
+        if(Input.GetKey(KeyCode.O))
+        {
+            songAnimator.SetBool("isHealing", true);
+        }
+        else
+        {
+            songAnimator.SetBool("isHealing", false);
+        }
+
+
         #region Check Permissions
         if(!canDoAction) this.playerState = PlayerState.PLAYER_IDLE;
         if(canHeal)
@@ -233,6 +256,7 @@ public class SingScript : GameCharacter
         if(nodeIntervalTimer > nodeInterval)
         {
             nodeIntervalTimer = 0f;
+            //nodePosition = (Vector2)transform.position + nodeOffset;
             if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING) { nodePosition = (Vector2)transform.position + nodeOffset; }
             if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING || playerState == PlayerState.PLAYER_DASHING || playerState == PlayerState.PLAYER_SPIRIT) { nodePosition = (Vector2)transform.position; }
         }
@@ -251,23 +275,32 @@ public class SingScript : GameCharacter
             songRotationTime = 0f;
             StartCoroutine(FlipSongSprite());
         }
-        if (doAnimationFollowPlayerState)
+        if(doAnimationFollowPlayerState)
         {
             if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING)
             {
                 song.GetComponent<Rigidbody2D>().gravityScale = 2f;
                 if(song.transform.position.x == nodePosition.x) { songAnimator.SetBool("isRunning", false); }
-                else { songAnimator.SetBool("isRunning", true); song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, song.transform.position.y), moveSpeed * Time.deltaTime); }
+                else
+                {
+                    songAnimator.SetBool("isRunning", true);
+                    song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, song.transform.position.y), moveSpeed * Time.deltaTime);
+                }
             }
             if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
             {
                 songAnimator.SetBool("isRunning", false);
-                song.GetComponent<Rigidbody2D>().gravityScale = 0f;
-                song.transform.position = Vector2.MoveTowards(song.transform.position, nodePosition, moveSpeed * Time.deltaTime);
+                song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(this.transform.position.x, song.transform.position.y), moveSpeed * Time.deltaTime);
+                //song.GetComponent<Rigidbody2D>().gravityScale = 0f;
+                //song.transform.position = Vector2.MoveTowards(song.transform.position, nodePosition, moveSpeed * Time.deltaTime);
             }
             if(playerState == PlayerState.PLAYER_HEALING)
             {
-            
+                songAnimator.SetBool("isHealing", true);
+            }
+            if(playerState == PlayerState.PLAYER_DASHING)
+            {
+                song.transform.position = this.transform.position;
             }
         }
         #endregion
@@ -322,7 +355,11 @@ public class SingScript : GameCharacter
                 spiritAttack.transform.localRotation = (input.y > 0) ? Quaternion.Euler(0f, 0f, -90f) : Quaternion.Euler(0f, 0f, 0f);
                 if (!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
                 else if(input.x != 0) { playerState = PlayerState.PLAYER_RUNNING; }
-                else if(inputJumpPress && isGrounded) { playerState = PlayerState.PLAYER_JUMPING; }
+                else if(inputJumpPress && isGrounded)
+                {
+                    StartCoroutine(SongJump());
+                    playerState = PlayerState.PLAYER_JUMPING;
+                }
                 else if(inputHeal && currentSpirit >= spiritDrainToUse)
                 {
                     if(inputBuffer >= inputBufferTime)
@@ -346,7 +383,11 @@ public class SingScript : GameCharacter
                 spiritAttack.transform.localRotation = (input.y > 0) ? Quaternion.Euler(0f, 0f, -90f) : Quaternion.Euler(0f, 0f, 0f);
                 if (!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
                 else if(input.x == 0) { playerState = PlayerState.PLAYER_IDLE; }
-                else if(inputJumpPress && isGrounded) { playerState = PlayerState.PLAYER_JUMPING; }
+                else if(inputJumpPress && isGrounded)
+                {
+                    StartCoroutine(SongJump());
+                    playerState = PlayerState.PLAYER_JUMPING;
+                }
                 else if(inputHeal && currentSpirit >= spiritDrainToUse)
                 {
                     if(inputBuffer >= inputBufferTime)
@@ -403,6 +444,7 @@ public class SingScript : GameCharacter
                 else if(!inputHeal || currentSpirit <= 0 || finishedHeal && currentSpirit < spiritDrainToUse || finishedHeal && currentHealth >= maximumHealth)
                 {
                     spiritDrain = 0;
+                    songAnimator.SetBool("isHealing", false);
                     playerState = PlayerState.PLAYER_IDLE;
                 }
                 else if(inputHeal && currentSpirit >= spiritDrainToUse && finishedHeal) { playerState = PlayerState.PLAYER_HEALING; }
@@ -522,6 +564,7 @@ public class SingScript : GameCharacter
     } // Gets called when player is hit by enemy
     IEnumerator PlayerKnockback()
     {
+        animator.SetTrigger("hurt");
         Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(hitImpactTime);
         Time.timeScale = 1;
@@ -541,5 +584,10 @@ public class SingScript : GameCharacter
             song.transform.rotation = Quaternion.Lerp(song.transform.rotation, songTargetRotation, songRotationTime);
             yield return null;
         }
+    }
+    IEnumerator SongJump()
+    {
+        yield return new WaitForSeconds(nodeInterval);
+        song.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpVelocity * 1.25f), ForceMode2D.Impulse);
     }
 }

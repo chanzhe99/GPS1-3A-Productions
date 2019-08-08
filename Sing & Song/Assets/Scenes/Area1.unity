@@ -6013,36 +6013,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9074244432522378449, guid: 6120f77a7ca7038429c667078d8597f8,
-        type: 3}
-      propertyPath: pointIndex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2946068898962850410, guid: 6120f77a7ca7038429c667078d8597f8,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2946068898962850410, guid: 6120f77a7ca7038429c667078d8597f8,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2946068898962850410, guid: 6120f77a7ca7038429c667078d8597f8,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2946068898962850410, guid: 6120f77a7ca7038429c667078d8597f8,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2946068898962850410, guid: 6120f77a7ca7038429c667078d8597f8,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6120f77a7ca7038429c667078d8597f8, type: 3}
 --- !u!4 &1230327515 stripped
@@ -16482,7 +16452,7 @@ Transform:
   - {fileID: 3920118415362323234}
   m_Father: {fileID: 3920118414891975798}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.52}
 --- !u!1 &3920118414235911146
 GameObject:
   m_ObjectHideFlags: 0
@@ -16965,7 +16935,7 @@ Transform:
   - {fileID: 3920118415601916923}
   m_Father: {fileID: 3920118414235911145}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.70000005}
 --- !u!1 &3920118414641869688
 GameObject:
   m_ObjectHideFlags: 0
@@ -17487,7 +17457,7 @@ MonoBehaviour:
   song: {fileID: 4666943266864052661}
   songAnimator: {fileID: 4666943266355762259}
   nodeOffsetDefault: {x: 1.5, y: 0}
-  nodeInterval: 0.3
+  nodeInterval: 0.2
   healthCrystals:
   - {fileID: 1729720602}
   - {fileID: 651876252}
@@ -17802,7 +17772,7 @@ Transform:
   - {fileID: 3920118414493361166}
   m_Father: {fileID: 3920118414641869671}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.56}
 --- !u!1 &3920118415601916924
 GameObject:
   m_ObjectHideFlags: 0
@@ -25213,6 +25183,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074244432522378449, guid: 6120f77a7ca7038429c667078d8597f8,
+        type: 3}
+      propertyPath: pointIndex
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6120f77a7ca7038429c667078d8597f8, type: 3}
