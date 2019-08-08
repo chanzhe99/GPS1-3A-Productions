@@ -2490,6 +2490,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parallaxFactor: 0.1
+--- !u!1 &486460000 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1872292599943565059, guid: 1dfce5252bcab5942ab56aab411b0cc2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1394207948}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &486460001
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486460000}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.09207153, y: 1.7657859}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.9997544}
+  m_EdgeRadius: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4148,7 +4180,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 789909392}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 205.6, y: 0, z: 0}
+  m_LocalPosition: {x: 205.6, y: 0.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2113143663}
@@ -6179,15 +6211,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1314430073}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_UseFullKinematicContacts
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1872292599943565059, guid: 1dfce5252bcab5942ab56aab411b0cc2,
         type: 3}
       propertyPath: m_Name
       value: RockShadow
-      objectReference: {fileID: 0}
-    - target: {fileID: 1872292599943565059, guid: 1dfce5252bcab5942ab56aab411b0cc2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1872292599943565056, guid: 1dfce5252bcab5942ab56aab411b0cc2,
         type: 3}
@@ -6243,16 +6278,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1872292600042655265, guid: 1dfce5252bcab5942ab56aab411b0cc2,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1872292600042655265, guid: 1dfce5252bcab5942ab56aab411b0cc2,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.27
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dfce5252bcab5942ab56aab411b0cc2, type: 3}
@@ -22091,7 +22116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5523168105945894498}
   - component: {fileID: 5523168105945894499}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlashSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22143,7 +22168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5523168106915519041}
   - component: {fileID: 5523168106915519042}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: slash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22221,7 +22246,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5523168107183787927}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22235,7 +22260,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5523168107183787926}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -22314,7 +22339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5523168107440730376}
   - component: {fileID: 5523168107440730377}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: New Sprite Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
