@@ -1274,6 +1274,87 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &264323742
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 264323743}
+  - component: {fileID: 264323745}
+  - component: {fileID: 264323744}
+  m_Layer: 0
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &264323743
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264323742}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.33333334, y: 0.33333334, z: 1}
+  m_Children:
+  - {fileID: 725754867}
+  m_Father: {fileID: 706100127}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.048, y: 0.091}
+  m_SizeDelta: {x: 4.725, y: 2.582}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &264323744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264323742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1024
+--- !u!223 &264323745
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264323742}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 896282687
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &264412390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3566,9 +3647,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 706100126}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20.5, y: -3.5800018, z: 0}
+  m_LocalPosition: {x: -9.27, y: -3.89, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 264323743}
   m_Father: {fileID: 1314430073}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3581,23 +3663,60 @@ MonoBehaviour:
   m_GameObject: {fileID: 706100126}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3507f906aa8792469d49b46767474ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 01ef6400930e4464c81bee37888e6829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayOneTime: 0
-  dialogue:
-    name: Stranger
+  button: {fileID: 725754868}
+  dialogues:
+  - name: Sing
     sentences:
-    - Hello, the island was cursed by the Witch. Everyone is gone.
-    - "The Witch on the mountain\u2019s peak. Nobody knows why she did what she did."
-    - "The path you normally take to reach the mountain\u2019s peak is blocked."
-    - There is, however, another path along the side of the mountain.
-    - Over that way. Are you sure you want to do this, my boy? You're putting your
-      life at risk.
-    - Your journey will be perilous. Here, take this with you.
-    - Use this when you encounter any glowing foes that can't be damaged with your
-      Kris.
-    - It will dispel whatever magic protection they have on them.
+    - Assalamualaikum, what happened to the village?
+  - name: Stranger
+    sentences:
+    - Walaikumsalam, the island was cursed by the Witch. Everyone is gone.
+  - name: Sing
+    sentences:
+    - Witch? What witch? Why did she curse the island?
+  - name: Stranger
+    sentences:
+    - "The Witch on the mountain\u2019s peak. Nobody knows why."
+  - name: Sing
+    sentences:
+    - Have you seen my wife? Where is she?
+  - name: Stranger
+    sentences:
+    - "Oh your wife? I don\u2019t know\u2026\n"
+    - But she was last seen going up the mountain....
+  - name: Sing
+    sentences:
+    - "Up the mountain?? Where the Witch is? WHY?\r"
+  - name: Stranger
+    sentences:
+    - "Uh\u2026. I don\u2019t know\u2026"
+  - name: Sing
+    sentences:
+    - "I must find her, she might be in trouble. \r"
+    - "Tell me how to get to the mountain top.\r\n"
+  - name: Stranger
+    sentences:
+    - "Up the mountain?? Are you insane?? You could die! \r\n"
+    - "You don\u2019t know what the Witch is capable of!\r\n"
+  - name: Sing
+    sentences:
+    - "I have to find my wife. Tell me how to get there.\r\n"
+  - name: Stranger
+    sentences:
+    - "\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\n"
+    - "Alright. Past this cave there\u2019s an entrance that leads up to the mountain."
+    - "But beware, inside the cave there are monsters.\r\n"
+  - name: Sing
+    sentences:
+    - "I don\u2019t care. I will find a way."
+  - name: Stranger
+    sentences:
+    - "Take this with you. I found it at the cave entrance. It might be useful.\r\n"
+    - "May Allah bless your journey.\r\n"
+  dialogueManager: {fileID: 221683070046684452}
 --- !u!61 &706100129
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3624,6 +3743,62 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
+--- !u!1 &725754866
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 725754867}
+  - component: {fileID: 725754868}
+  m_Layer: 0
+  m_Name: TriggerDialogueAnimator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &725754867
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725754866}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2016697482}
+  m_Father: {fileID: 264323743}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &725754868
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725754866}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7fcec6e09e8b1fb458ab3f6b0db511d0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &753963704
 GameObject:
   m_ObjectHideFlags: 0
@@ -6011,6 +6186,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 4262921825251281984, guid: 6120f77a7ca7038429c667078d8597f8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6120f77a7ca7038429c667078d8597f8, type: 3}
 --- !u!4 &1230327515 stripped
@@ -8285,6 +8465,80 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelSize: {x: 79.23178, y: 20.1}
+--- !u!1 &2016697481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2016697482}
+  - component: {fileID: 2016697484}
+  - component: {fileID: 2016697483}
+  m_Layer: 0
+  m_Name: Button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2016697482
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016697481}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 725754867}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1.351, y: 1.351}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2016697483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016697481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 913c7c90f6461e240a5ec97a59423403, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!222 &2016697484
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016697481}
+  m_CullTransparentMesh: 0
 --- !u!1 &2044573576
 GameObject:
   m_ObjectHideFlags: 0
@@ -13149,6 +13403,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2293440251781074765}
   - component: {fileID: 2293440251781074766}
+  - component: {fileID: 2293440251781074769}
+  - component: {fileID: 2293440251781074768}
   m_Layer: 0
   m_Name: StorytellerCollider
   m_TagString: Untagged
@@ -13156,6 +13412,47 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2293440251781074768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2293440251781074767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ef6400930e4464c81bee37888e6829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
+  dialogues: []
+  dialogueManager: {fileID: 0}
+--- !u!61 &2293440251781074769
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2293440251781074767}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5, y: 5}
+  m_EdgeRadius: 0
 --- !u!4 &2293440252764036904
 Transform:
   m_ObjectHideFlags: 0

@@ -39,7 +39,7 @@ public class OpeningTimelineController : MonoBehaviour
 
     public void ShowOpeningDialogue() //! When the player are first time playing this game, and the player press the start game button it will show the cutscene
     {
-        openingDialogueTrigger.OpenDialogue(false);
+        openingDialogueTrigger.OpenDialogue(true);
         StartCoroutine(CheckDialogueEndState());
     }
 
