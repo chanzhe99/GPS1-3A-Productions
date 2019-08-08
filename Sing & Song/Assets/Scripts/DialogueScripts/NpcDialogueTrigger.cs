@@ -56,32 +56,34 @@ public class NpcDialogueTrigger : MonoBehaviour
 
         while (onReadDialogue)
         {
-            if (Input.GetButtonDown("InteractButton") && dialogueManager.IsEndOfDialogue)
+            if(dialogueManager != null)
             {
-                button.SetBool("IsNear", false);
+                if (Input.GetButtonDown("InteractButton") && dialogueManager.IsEndOfDialogue)
+                {   
+                    button.SetBool("IsNear", false);
 
-                while (true)
-                {
-                    if (currentDialogueIndex > (dialogues.Count - 1 ) && dialogueManager.IsEndOfDialogue)
+                    while (true)
                     {
-                        onReadDialogue = false;
-                        break;
-                    }
-                    else if (dialogueManager.IsEndOfDialogue)
-                    {
-                        if ((currentDialogueIndex < (dialogues.Count - 1)))
+                        if (currentDialogueIndex > (dialogues.Count - 1) && dialogueManager.IsEndOfDialogue)
                         {
-                            OpenDialogue(dialogues[currentDialogueIndex], true, true, true);
+                            onReadDialogue = false;
+                            break;
                         }
-                        else
+                        else if (dialogueManager.IsEndOfDialogue)
                         {
-                            OpenDialogue(dialogues[currentDialogueIndex], true, true, false);
+                            if ((currentDialogueIndex < (dialogues.Count - 1)))
+                            {
+                                OpenDialogue(dialogues[currentDialogueIndex], true, true, true);
+                            }
+                            else
+                            {
+                                OpenDialogue(dialogues[currentDialogueIndex], true, true, false);
+                            }
+                            currentDialogueIndex++;
                         }
-                        currentDialogueIndex++;
+                        yield return null;
                     }
-                    yield return null;
                 }
-                
             }
             yield return null;
         }
