@@ -31,7 +31,7 @@ public class NpcDialogueTrigger : MonoBehaviour
         if (hit.CompareTag("Player"))
         {
             isCollidingPlayer = true;
-            button.SetBool("IsNear", true);
+            if(button != null) { button.SetBool("IsNear", true); }
             //please press button notification active to true
             StopAllCoroutines();
             StartCoroutine(DetectButtonDown());
@@ -43,7 +43,7 @@ public class NpcDialogueTrigger : MonoBehaviour
         if (hit.CompareTag("Player"))
         {
             isCollidingPlayer = false;
-            button.SetBool("IsNear", false);
+            if(button != null) { button.SetBool("IsNear", false); }
             //please press button notification active to false
             StopAllCoroutines();
         }
