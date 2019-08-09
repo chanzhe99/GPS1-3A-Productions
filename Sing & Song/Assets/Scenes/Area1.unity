@@ -8129,8 +8129,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -22.3284, y: -5.92271}
-      - {x: -22.357056, y: -9.986842}
+    - - {x: -24.006271, y: -5.9569526}
+      - {x: -24.000687, y: -10.021085}
       - {x: 22.318558, y: -10.001521}
       - {x: 22.322449, y: 6.7931676}
       - {x: 22.105759, y: 6.8009787}
@@ -22158,7 +22158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4666943266864052662
 Transform:
   m_ObjectHideFlags: 0
