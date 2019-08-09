@@ -12,6 +12,7 @@ public class RockfallHitDetecter : MonoBehaviour
     private Collider2D playerCollider2D;
     private float originalColorAlpha;
     private bool onDisappearing = false;
+    [SerializeField] private float turnToTranparentSpeed;
     [SerializeField] private Vector2 bounceForce;
 
     private void Start()
@@ -92,7 +93,7 @@ public class RockfallHitDetecter : MonoBehaviour
             tempSlowlyDisappearColor.r = rockfallSpriteRenderer.color.r;
             tempSlowlyDisappearColor.g = rockfallSpriteRenderer.color.g;
             tempSlowlyDisappearColor.b = rockfallSpriteRenderer.color.b;
-            tempSlowlyDisappearColor.a = rockfallSpriteRenderer.color.a - Time.deltaTime;
+            tempSlowlyDisappearColor.a = rockfallSpriteRenderer.color.a - (turnToTranparentSpeed * Time.deltaTime);
 
             if (tempSlowlyDisappearColor.a > 0.0f)
             {

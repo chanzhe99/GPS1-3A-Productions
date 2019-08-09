@@ -372,6 +372,7 @@ public class RhinoAI : EnemyAI
             animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
             isFinishPhaseCharge = true;
             onPreAttackAnimationFinish = false;
+            indexOfWhichRockIsFalling = 0;
             animator.SetBool(nameAnimatorBool_ContinueAttack, true);
 
             //for testing
@@ -407,11 +408,6 @@ public class RhinoAI : EnemyAI
 
                         currentNumberOfRockfalls++;
                         onPreAttackAnimationFinish = false;
-
-                        if (currentNumberOfRockfalls >= (maxNumberOfRockfalls - 1))
-                        {
-                            animator.SetBool(nameAnimatorBool_ContinueAttack, false);
-                        }
                     }
                     else
                     {
@@ -423,7 +419,7 @@ public class RhinoAI : EnemyAI
 
             if (currentNumberOfRockfalls >= maxNumberOfRockfalls)
             {
-                
+                animator.SetBool(nameAnimatorBool_ContinueAttack, false);
                 //for testing
                 //spriteRenderer.color = originialColor;
                 //rigidbody2D.AddForce(new Vector2(0, 3), ForceMode2D.Impulse);

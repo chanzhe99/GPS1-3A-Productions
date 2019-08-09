@@ -7,4 +7,6 @@
     public static readonly string pathOfData_OpeningCutsceneData = "/data/OpeningCutsceneData.dat";
 
     public static readonly string tag_Player = "Player";
+
+    public enum SceneIndex{ Splash, Area1 }
 }

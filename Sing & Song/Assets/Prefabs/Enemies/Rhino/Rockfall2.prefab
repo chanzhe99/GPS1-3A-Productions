@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1633e99ae5eca4a46a82362c5665eb81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnToTranparentSpeed: 2
   bounceForce: {x: 3, y: 6}
 --- !u!1 &7871689652613094583
 GameObject:

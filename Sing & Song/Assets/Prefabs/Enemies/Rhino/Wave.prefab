@@ -173,6 +173,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177a060f47daadd43a57b653d6a93a18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeedX: 10
+  moveSpeedX: 15
   existTime: 2
   waveAnimator: {fileID: 8960606675797272899}
