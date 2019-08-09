@@ -19102,8 +19102,8 @@ MonoBehaviour:
   - {fileID: 1386068142}
   - {fileID: 1044902457}
   canDoAction: 1
-  canHeal: 0
-  canDash: 0
+  canHeal: 1
+  canDash: 1
   maximumSpirit: 9
   jumpHeight: 4.5
   timeToJumpApex: 0.35
