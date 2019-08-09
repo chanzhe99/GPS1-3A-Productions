@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class RhinoAI : EnemyAI
@@ -722,6 +723,12 @@ public class RhinoAI : EnemyAI
         }
         Destroy(enemyEtherealArmourGameObject);
         Debug.Log("delete rhino enemy ethereal armour");
+    }
+
+    protected override void RhinoDie()
+    {
+        base.RhinoDie();
+        SceneManager.LoadSceneAsync(2, LoadSceneMode.Single);
     }
 
     private void OnDrawGizmos()

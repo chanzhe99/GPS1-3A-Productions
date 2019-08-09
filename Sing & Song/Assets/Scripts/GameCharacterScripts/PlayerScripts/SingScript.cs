@@ -355,7 +355,7 @@ public class SingScript : GameCharacter
             case PlayerState.PLAYER_IDLE:
                 animator.SetBool("isRunning", false);
                 PlayerFlip();
-                meleeAttackTransform.localPosition = (input.y > 0) ? Vector2.up * 2f : Vector2.left;
+                meleeAttackTransform.localPosition = (input.y > 0) ? Vector2.up * 2f : Vector2.left * 1.5f;
                 spiritAttack.transform.localRotation = (input.y > 0) ? Quaternion.Euler(0f, 0f, -90f) : Quaternion.Euler(0f, 0f, 0f);
                 if (!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
                 else if(input.x != 0) { playerState = PlayerState.PLAYER_RUNNING; }
@@ -383,7 +383,7 @@ public class SingScript : GameCharacter
                 animator.SetBool("isRunning", true);
                 PlayerFlip();
                 PlayerMove();
-                meleeAttackTransform.localPosition = (input.y > 0) ? Vector2.up * 2f : Vector2.left;
+                meleeAttackTransform.localPosition = (input.y > 0) ? Vector2.up * 2f : Vector2.left * 1.5f;
                 spiritAttack.transform.localRotation = (input.y > 0) ? Quaternion.Euler(0f, 0f, -90f) : Quaternion.Euler(0f, 0f, 0f);
                 if (!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
                 else if(input.x == 0) { playerState = PlayerState.PLAYER_IDLE; }
@@ -412,7 +412,7 @@ public class SingScript : GameCharacter
                 PlayerFlip();
                 PlayerMove();
                 PlayerJump();
-                meleeAttackTransform.localPosition = (input.y != 0) ? Vector2.up * input.y * 2f : Vector2.left;
+                meleeAttackTransform.localPosition = (input.y != 0) ? Vector2.up * input.y * 2f : Vector2.left * 1.5f;
                 spiritAttack.transform.localRotation = (input.y != 0) ? Quaternion.Euler(0f, 0f, input.y * -90f) : Quaternion.Euler(0f, 0f, 0f);
                 if (!inputJump || isHitCeiling) { playerState = PlayerState.PLAYER_FALLING; }
                 else if(inputDash && dashIntervalTimer >= dashInterval && !dashedInAir)
@@ -426,7 +426,7 @@ public class SingScript : GameCharacter
                 animator.SetBool("isRunning", false);
                 PlayerFlip();
                 PlayerMove();
-                meleeAttackTransform.localPosition = (input.y != 0) ? Vector2.up * input.y * 2f : Vector2.left;
+                meleeAttackTransform.localPosition = (input.y != 0) ? Vector2.up * input.y * 2f : Vector2.left * 1.5f;
                 spiritAttack.transform.localRotation = (input.y != 0) ? Quaternion.Euler(0f, 0f, input.y * -90f) : Quaternion.Euler(0f, 0f, 0f);
                 if (isGrounded)
                 {

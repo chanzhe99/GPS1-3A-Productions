@@ -175,6 +175,7 @@ public class EnemyAI : GameCharacter
                 {
                     this.deathFadeOutTimeTimer = 0f;
                     this.gameObject.SetActive(false);
+                    RhinoDie();
                 }
                 else
                 {
@@ -185,6 +186,7 @@ public class EnemyAI : GameCharacter
     }
 
     protected virtual void EnemyDieSound() { }
+    protected virtual void RhinoDie() { }
 
     private void UpdateWallRaycast()
     {
