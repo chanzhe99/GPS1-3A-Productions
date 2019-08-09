@@ -5,6 +5,7 @@ using UnityEngine.Playables;
 
 public class BossFightManager : MonoBehaviour
 {
+    [SerializeField] private GameObject inGameUIGameObject;
     [SerializeField] private GameObject bossFightTriggerGameObject;
     private PlayableDirector playableDirector;
     [SerializeField] private PlayableAsset bossFightPreMovie;
@@ -23,6 +24,8 @@ public class BossFightManager : MonoBehaviour
 
     public void PlayBossFightMovie()
     {
+        singScript.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        inGameUIGameObject.SetActive(false);
         singScript.canDoAction = false;
         singSpriteAnimator.runtimeAnimatorController = null;
         playableDirector.Play(bossFightPreMovie, DirectorWrapMode.None);
@@ -35,6 +38,7 @@ public class BossFightManager : MonoBehaviour
 
     public void EndOfBossFightMovie()
     {
+        inGameUIGameObject.SetActive(true);
         singSpriteAnimator.runtimeAnimatorController = singDefalutRuntimeAnimatorController;
         singScript.canDoAction = true;
         rhinoAI.ableDoEnemyState = true;

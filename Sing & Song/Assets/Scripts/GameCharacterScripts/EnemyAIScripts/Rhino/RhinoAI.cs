@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class RhinoAI : EnemyAI
@@ -40,6 +39,8 @@ public class RhinoAI : EnemyAI
     //For check pre-war action got working or not, can delete it when you put in the animation.
     [SerializeField] private GameObject headGameObjectOfAllSpriteRenderers;
     private List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
+    [SerializeField] private float dieTransparentColorSpeed;
+    private Color tempDieTransparentColor;
     [SerializeField] private Color getDamageColor;
     [SerializeField] private Color getNotDamageColor;
     private List<Color> originialColor = new List<Color>();
@@ -55,16 +56,6 @@ public class RhinoAI : EnemyAI
     };
     [SerializeField] private BossPhaseAttack bossPhaseAttack;
 
-    private string nameAnimatorInteger_AttackType = "AttackType";
-    private string nameAnimatorTrigger_DoAgain = "DoAgain";
-    private string nameAnimatorTrigger_Roar = "Roar";
-
-    //private string nameAnimatorTrigger_RockType = "RockType";
-    private string nameAnimatorBool_Phase2 = "Phase2";
-    private string nameAnimatorBool_OnStompWave = "OnStompWave";
-    private string nameAnimatorBool_ContinueAttack = "ContinueAttack";
-
-    
     #region Phase 1 Attack 1 variable required
     [Header("Phase 1 Attack 1 variables :")]
     //[SerializeField] protected float Phase1_Attack1_ChargeTime;
@@ -149,7 +140,7 @@ public class RhinoAI : EnemyAI
 
     protected override void Initialise()
     {
-        isAwayChangePlayer = false;
+        isAwayCheckPlayer = false;
         base.Initialise();
         terrainLayer = LayerMask.GetMask("Terrain");
         enemyTransform = transform;
@@ -204,7 +195,7 @@ public class RhinoAI : EnemyAI
             {
                 //pre-war animation run here
                 //spriteRenderer.color = Color.blue;
-                animator.SetTrigger(nameAnimatorTrigger_Roar);
+                animator.SetTrigger(Global.nameAnimatorTrigger_RhinoAI_Roar);
             }
 
             if (rhinoPre_WarActionTimeTimer >= rhinoPre_WarActionTime)
@@ -240,7 +231,7 @@ public class RhinoAI : EnemyAI
             Debug.Log(bossPhaseAttack);
         }
 
-        animator.SetBool(nameAnimatorBool_Phase2, onPhase2);
+        animator.SetBool(Global.nameAnimatorBool_RhinoAI_Phase2, onPhase2);
 
         enemyState = EnemyState.ENEMY_ATTACKING;
 
@@ -280,7 +271,7 @@ public class RhinoAI : EnemyAI
         if (!isFinishPhaseCharge)
         {
             //call animation here
-            animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
+            animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
             isFinishPhaseCharge = true;
             onPreAttackAnimationFinish = false;
 
@@ -302,7 +293,7 @@ public class RhinoAI : EnemyAI
                     //spriteRenderer.color = originialColor;
 
                     bossPhaseAttack = BossPhaseAttack.None;
-                    animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
+                    animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
 
                     enemyState = EnemyState.ENEMY_RESTING;
 
@@ -320,10 +311,10 @@ public class RhinoAI : EnemyAI
         if (!isFinishPhaseCharge)
         {
             //call animation here
-            animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
+            animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
             isFinishPhaseCharge = true;
             onPreAttackAnimationFinish = false;
-            animator.SetBool(nameAnimatorBool_ContinueAttack, true);
+            animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, true);
 
             //for testing
             //spriteRenderer.color = Color.green;
@@ -344,13 +335,13 @@ public class RhinoAI : EnemyAI
 
             if (currentNumberOfStomWave >= maxNumberOfStomWave)
             {
-                animator.SetBool(nameAnimatorBool_ContinueAttack, false);
+                animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, false);
                 //for testing
                 //spriteRenderer.color = originialColor;
                 //rigidbody2D.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
 
                 bossPhaseAttack = BossPhaseAttack.None;
-                animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
+                animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
 
                 // set values back to defalut
                 //phaseChargeTimeTimer = temporarilyStomWaveColdDownTimer = 0.0f;
@@ -370,11 +361,11 @@ public class RhinoAI : EnemyAI
         if (!isFinishPhaseCharge)
         {
             //call animation here
-            animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
+            animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
             isFinishPhaseCharge = true;
             onPreAttackAnimationFinish = false;
             indexOfWhichRockIsFalling = 0;
-            animator.SetBool(nameAnimatorBool_ContinueAttack, true);
+            animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, true);
 
             //for testing
             //spriteRenderer.color = Color.red;
@@ -420,13 +411,13 @@ public class RhinoAI : EnemyAI
 
             if (currentNumberOfRockfalls >= maxNumberOfRockfalls)
             {
-                animator.SetBool(nameAnimatorBool_ContinueAttack, false);
+                animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, false);
                 //for testing
                 //spriteRenderer.color = originialColor;
                 //rigidbody2D.AddForce(new Vector2(0, 3), ForceMode2D.Impulse);
 
                 bossPhaseAttack = BossPhaseAttack.None;
-                animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
+                animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
 
                 enemyState = EnemyState.ENEMY_RESTING;
 
@@ -445,7 +436,7 @@ public class RhinoAI : EnemyAI
         {
 
             //call animation here
-            animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
+            animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
             isFinishPhaseCharge = true;
             onPreAttackAnimationFinish = false;
             isEtherealArmourFinish = false;
@@ -478,7 +469,7 @@ public class RhinoAI : EnemyAI
                     //spriteRenderer.color = originialColor;
 
                     bossPhaseAttack = BossPhaseAttack.None;
-                    animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
+                    animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
 
                     enemyState = EnemyState.ENEMY_RESTING;
 
@@ -497,12 +488,12 @@ public class RhinoAI : EnemyAI
         if (!isFinishPhaseCharge)
         {
             //call animation here
-            animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
+            animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
             isFinishPhaseCharge = true;
             onPreAttackAnimationFinish = false;
             onStompWave = false;
-            animator.SetBool(nameAnimatorBool_OnStompWave, onStompWave);
-            animator.SetBool(nameAnimatorBool_ContinueAttack, true);
+            animator.SetBool(Global.nameAnimatorBool_RhinoAI_OnStompWave, onStompWave);
+            animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, true);
 
             //for testing
             //spriteRenderer.color = Color.cyan;
@@ -540,7 +531,7 @@ public class RhinoAI : EnemyAI
                             
                             onPreAttackAnimationFinish = false;
                             onStompWave = true;
-                            animator.SetBool(nameAnimatorBool_OnStompWave, onStompWave);
+                            animator.SetBool(Global.nameAnimatorBool_RhinoAI_OnStompWave, onStompWave);
                         }
                         else
                         {
@@ -561,7 +552,7 @@ public class RhinoAI : EnemyAI
 
                     onPreAttackAnimationFinish = false;
                     onStompWave = false;
-                    animator.SetBool(nameAnimatorBool_OnStompWave, onStompWave);
+                    animator.SetBool(Global.nameAnimatorBool_RhinoAI_OnStompWave, onStompWave);
 
                     currentNumberOfStomWaveAndRockfalls++;
                 }
@@ -569,13 +560,13 @@ public class RhinoAI : EnemyAI
 
             if (currentNumberOfStomWaveAndRockfalls >= maxNumberOfStomWaveAndRockfalls)
             {
-                animator.SetBool(nameAnimatorBool_ContinueAttack, false);
+                animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, false);
                 //for testing
                 //spriteRenderer.color = originialColor;
                 //rigidbody2D.AddForce(new Vector2(0, 3), ForceMode2D.Impulse);
 
                 bossPhaseAttack = BossPhaseAttack.None;
-                animator.SetInteger(nameAnimatorInteger_AttackType, (int)bossPhaseAttack);
+                animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
 
                 enemyState = EnemyState.ENEMY_RESTING;
 
@@ -618,21 +609,6 @@ public class RhinoAI : EnemyAI
     public void SetIsEtherealArmourFinishTrue()
     {
         isEtherealArmourFinish = true;
-    }
-
-    public void RedoAnimationAgain() {
-
-        if(bossPhaseAttack != BossPhaseAttack.None && bossPhaseAttack != BossPhaseAttack.Phase2_Attack2)
-        {
-            animator.SetTrigger(nameAnimatorTrigger_DoAgain);
-        }
-        /*
-        if(bossPhaseAttack == BossPhaseAttack.Phase2_Attack2 && onStompWave == false)
-        {
-            Debug.Log(nameof(onStompWave) + onStompWave);
-            animator.SetTrigger(nameAnimatorTrigger_DoAgain);
-        }
-        */
     }
 
     public override void DamageEnemyMelee()
@@ -708,6 +684,24 @@ public class RhinoAI : EnemyAI
         yield return null;
     }
 
+    protected override void EnemyDieColorChange()
+    {
+        foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
+        {
+            tempDieTransparentColor.r = tempSpriteRenderer.color.r;
+            tempDieTransparentColor.g = tempSpriteRenderer.color.g;
+            tempDieTransparentColor.b = tempSpriteRenderer.color.b;
+            tempDieTransparentColor.a = tempSpriteRenderer.color.a - (dieTransparentColorSpeed * Time.deltaTime);
+            tempSpriteRenderer.color = tempDieTransparentColor;
+            Debug.Log(tempSpriteRenderer.color);
+        }
+        if(spriteRenderers[spriteRenderers.Count-1].color.a <= 0.0f)
+        {
+            Global.gameManager.TimeToEndAndSayThankYou();
+            this.gameObject.SetActive(false);
+        }
+    }
+
     private void OnDestroy()
     {
         //For clear residuary rockfalls when the boss is die, because the player only can fight this boss one time, if the player still can fight again this boss then delete this whole OnDestroy() function.
@@ -723,12 +717,6 @@ public class RhinoAI : EnemyAI
         }
         Destroy(enemyEtherealArmourGameObject);
         Debug.Log("delete rhino enemy ethereal armour");
-    }
-
-    protected override void RhinoDie()
-    {
-        base.RhinoDie();
-        SceneManager.LoadSceneAsync(2, LoadSceneMode.Single);
     }
 
     private void OnDrawGizmos()

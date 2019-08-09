@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private float endSceneTransitionTime;
+    [SerializeField] private AudioSource audioSourceBGM;
+    [SerializeField] private GameObject trasitionFadeGameObject;
+    private Animator trasitionFadeAnimator;
+
     public SingScript playerScript;
     public GameObject songGameObject;
     private List<CheckPoint> checkPoints;
@@ -52,6 +58,9 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        trasitionFadeGameObject.SetActive(true);
+        trasitionFadeAnimator = trasitionFadeGameObject.GetComponent<Animator>();
+        trasitionFadeAnimator.SetTrigger(Global.nameAnimatorTrigger_TrasitionFade_FadeIn);
         if (Global.gameManager == null) { Global.gameManager = this; }
         else { Destroy(gameObject); return; }
 
@@ -118,6 +127,33 @@ public class GameManager : MonoBehaviour
         SaveDataManager.DeleteData(Global.pathOfData_TutorialData);
         SaveDataManager.DeleteData(Global.pathOfData_PlayerSpawnData);
         SaveDataManager.DeleteData(Global.pathOfData_OpeningCutsceneData);
+    }
+
+    public void TimeToEndAndSayThankYou()
+    {
+        playerScript.canDoAction = false;
+        playerScript.doAnimationFollowPlayerState = false;
+
+        StopAllCoroutines();
+        StartCoroutine(EndSceneTransitionTime());
+    }
+
+    private IEnumerator EndSceneTransitionTime()
+    {
+        trasitionFadeGameObject.SetActive(true);
+        trasitionFadeAnimator.SetTrigger(Global.nameAnimatorTrigger_TrasitionFade_FadeOut);
+        yield return null;
+        while (true)
+        {
+            audioSourceBGM.volume -= Time.deltaTime;
+            if (audioSourceBGM.volume <= 0.0f)
+            {
+                break;
+            }
+            yield return null;
+        }
+        yield return new WaitForSeconds(endSceneTransitionTime);
+        SceneManager.LoadSceneAsync((int)Global.SceneIndex.EndScene, LoadSceneMode.Single);
     }
 }
 

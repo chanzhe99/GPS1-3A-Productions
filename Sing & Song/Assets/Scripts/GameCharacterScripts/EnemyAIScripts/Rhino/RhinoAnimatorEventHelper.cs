@@ -21,11 +21,6 @@ public class RhinoAnimatorEventHelper : MonoBehaviour
         rhinoAI.SetOnPreAttackAnimationFinishTrue();
     }
 
-    public void DoItAgain()
-    {
-        rhinoAI.RedoAnimationAgain();
-    }
-
     public void PlaySound(string name)
     {
         SoundManagerScripts.PlaySound(name);

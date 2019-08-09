@@ -6,19 +6,28 @@ using UnityEngine.SceneManagement;
 public class SplashScreenController : MonoBehaviour
 {
     private Animator splashScreenAnimator;
-    private string nameAnimatorBool_PassSplashScreen = "PassSplashScreen";
-
+    
+    private enum SplashState { KDU_Logo, ThreeA_Production_Logo };
+    private SplashState splashState = SplashState.KDU_Logo;
     private void Start()
     {
         splashScreenAnimator = this.GetComponent<Animator>();
-        splashScreenAnimator.SetBool(nameAnimatorBool_PassSplashScreen, false);
     }
 
     private void Update()
     {
-        if (Input.anyKeyDown)
+        if (Input.anyKeyDown && splashState <= SplashState.ThreeA_Production_Logo)
         {
-            splashScreenAnimator.SetBool(nameAnimatorBool_PassSplashScreen, true);
+            switch (splashState)
+            {
+                case SplashState.KDU_Logo:
+                    splashScreenAnimator.SetTrigger(Global.nameAnimatorTrigger_SplashScreen_PassKDU_Logo);
+                    break;
+                case SplashState.ThreeA_Production_Logo:
+                    splashScreenAnimator.SetTrigger(Global.nameAnimatorTrigger_SplashScreen_Pass3A_Production_Logo);
+                    break;
+            }
+            splashState++;
         }
     }
 

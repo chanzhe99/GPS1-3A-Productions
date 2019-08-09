@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyAI : GameCharacter
 {
-    protected bool isAwayChangePlayer = true;
+    protected bool isAwayCheckPlayer = true;
 
     #region Component Variables
     [Header("Component Variables")]
@@ -110,7 +110,7 @@ public class EnemyAI : GameCharacter
         UpdateWallRaycast();
         #endregion
         #region Check Aggro
-        if (isAwayChangePlayer)
+        if (isAwayCheckPlayer)
         {
             this.isDetectPlayer = Physics2D.OverlapBox(this.colliderTransform.position, this.playerDetectionRange, 0f, playerLayer);
             if (this.enemyState != EnemyState.ENEMY_PATROLLING)
@@ -146,7 +146,7 @@ public class EnemyAI : GameCharacter
                 break;
             case EnemyState.ENEMY_CHASING:
                 //Debug.LogError("Remember to set it back");
-                if (isAwayChangePlayer)
+                if (isAwayCheckPlayer)
                 {
                     if (playerTransform.position.x > this.transform.position.x && this.facingRight == false || playerTransform.position.x < this.transform.position.x && this.facingRight) { this.FlipCharacter(); }
                 }
@@ -168,14 +168,23 @@ public class EnemyAI : GameCharacter
                 {
                     this.animator.SetTrigger("die");
                     EnemyDieSound();
-                    //capsuleCollider2D.enabled = false; // for testing
-                    //rigidbody2D.gravityScale = 0.0f; // for testing
+                    if (!isAwayCheckPlayer)
+                    {
+                        //rigidbody2D.gravityScale = 0.0f; // for testing
+                        capsuleCollider2D.enabled = false; // for testing
+                    }
                 }
                 if (this.deathFadeOutTimeTimer >= this.deathFadeOutTime)
                 {
-                    this.deathFadeOutTimeTimer = 0f;
-                    this.gameObject.SetActive(false);
-                    RhinoDie();
+                    if (isAwayCheckPlayer)
+                    {
+                        this.deathFadeOutTimeTimer = 0f;
+                        this.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        EnemyDieColorChange();
+                    }
                 }
                 else
                 {
@@ -186,7 +195,7 @@ public class EnemyAI : GameCharacter
     }
 
     protected virtual void EnemyDieSound() { }
-    protected virtual void RhinoDie() { }
+    protected virtual void EnemyDieColorChange() { }
 
     private void UpdateWallRaycast()
     {
@@ -257,18 +266,36 @@ public class EnemyAI : GameCharacter
         this.rigidbody2D.velocity = Vector2.zero;
         this.enemyState = EnemyState.ENEMY_CHASING;
     } // Coroutine that runs when enemy is attacked
+    
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Player")) { collision.gameObject.GetComponent<SingScript>().DamagePlayer(this.transform); }
+        if (isAwayCheckPlayer)
+        {
+            if (collision.gameObject.CompareTag("Player")) { collision.gameObject.GetComponent<SingScript>().DamagePlayer(this.transform); }
+        }
     } // Enemy hits player collision check
+    
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("SpiritAttack") && this.enemyState != EnemyState.ENEMY_HIT)
+        if (isAwayCheckPlayer)
         {
-            this.enemyState = EnemyState.ENEMY_HIT;
-            this.DamageEnemySpirit();
+            if (collision.CompareTag("SpiritAttack") && this.enemyState != EnemyState.ENEMY_HIT)
+            {
+
+                this.enemyState = EnemyState.ENEMY_HIT;
+                this.DamageEnemySpirit();
+            }
+        }
+        else
+        {
+            if (collision.CompareTag("Player"))
+            {
+                Debug.Log("detect IN!");
+                playerScript.DamagePlayer(this.transform);
+            }
         }
     } // Enemy is hit by spirit attack collision check
+
     protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
