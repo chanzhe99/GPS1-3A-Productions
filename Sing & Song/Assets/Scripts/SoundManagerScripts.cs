@@ -46,6 +46,13 @@ public class SoundManagerScripts : MonoBehaviour
         sounds.Add(new Audios("wilddogAttack", Resources.Load<AudioClip>("wilddogAttack")));
         sounds.Add(new Audios("flyinglemurAttack", Resources.Load<AudioClip>("flyinglemurAttack")));
         sounds.Add(new Audios("pangolinAttackRolling", Resources.Load<AudioClip>("pangolinAttackRolling")));
+
+        sounds.Add(new Audios("rhino_charge_sound", Resources.Load<AudioClip>("rhino_charge_sound")));
+        sounds.Add(new Audios("rhino_die_sound", Resources.Load<AudioClip>("rhino_die_sound")));
+        sounds.Add(new Audios("rhino_fallingrock_sound", Resources.Load<AudioClip>("rhino_fallingrock_sound")));
+        sounds.Add(new Audios("rhino_heavystomp_sound", Resources.Load<AudioClip>("rhino_heavystomp_sound")));
+        sounds.Add(new Audios("rhino_roar_sound", Resources.Load<AudioClip>("rhino_roar_sound")));
+        sounds.Add(new Audios("rhino_stomping_sound", Resources.Load<AudioClip>("rhino_stomping_sound")));
         audioSource = transform.Find("SFXSource").GetComponent<AudioSource>();
     }
 

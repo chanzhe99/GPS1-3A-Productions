@@ -32,6 +32,11 @@ public class CheckPoint : MonoBehaviour
 
     private string layerMaskPlayer = "Player";
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
+    }
+
     void Update()
     {
         isPlayerInArea = Physics2D.OverlapBox(transform.position, boxSizeVector2, 0.0f, LayerMask.GetMask(layerMaskPlayer));

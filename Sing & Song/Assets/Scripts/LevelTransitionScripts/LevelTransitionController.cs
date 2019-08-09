@@ -44,10 +44,14 @@ public class LevelTransitionController : MonoBehaviour
             gameObjectInLevel.Add(child.gameObject);
         }
 
-        foreach (Transform enemy in transform.Find(name_EnemyPositions).transform)
+        Transform tempTransform = transform.Find(name_EnemyPositions);
+        if (tempTransform != null)
         {
-            enemiesTransform.Add(enemy);
-            enemiesDefaultPosition.Add(enemiesTransform[enemiesTransform.Count-1].position);
+            foreach (Transform enemy in tempTransform)
+            {
+                enemiesTransform.Add(enemy);
+                enemiesDefaultPosition.Add(enemiesTransform[enemiesTransform.Count-1].position);
+            }
         }
 
     }

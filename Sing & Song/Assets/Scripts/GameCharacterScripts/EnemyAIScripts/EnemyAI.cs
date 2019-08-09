@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyAI : GameCharacter
 {
+    protected bool isAwayChangePlayer = true;
+
     #region Component Variables
     [Header("Component Variables")]
     [SerializeField] protected Transform enemySpriteTransform;
@@ -86,13 +88,13 @@ public class EnemyAI : GameCharacter
     private void Update()
     {
         #region Check Health
-        if(this.currentHealth <= 0f) { this.enemyState = EnemyState.ENEMY_DEAD; }
+        if (this.currentHealth <= 0f) { this.enemyState = EnemyState.ENEMY_DEAD; }
         //if respawn, spawn at spawnposition
         #endregion
         #region Recharge Spirit Armour
         if (haveSpiritArmour && !spiritArmour.activeSelf)
         {
-            if(spiritArmourRechargeTimer >= spiritArmourRecharge)
+            if (spiritArmourRechargeTimer >= spiritArmourRecharge)
             {
                 spiritArmourRechargeTimer = 0f;
                 spiritArmour.SetActive(true);
@@ -108,20 +110,25 @@ public class EnemyAI : GameCharacter
         UpdateWallRaycast();
         #endregion
         #region Check Aggro
-        this.isDetectPlayer = Physics2D.OverlapBox(this.colliderTransform.position, this.playerDetectionRange, 0f, playerLayer);
-        if(this.enemyState != EnemyState.ENEMY_PATROLLING)
+        if (isAwayChangePlayer)
         {
-            if(this.isDetectPlayer) { this.stopAggroTimeTimer = 0; }
-            else
+            this.isDetectPlayer = Physics2D.OverlapBox(this.colliderTransform.position, this.playerDetectionRange, 0f, playerLayer);
+            if (this.enemyState != EnemyState.ENEMY_PATROLLING)
             {
-                if(this.stopAggroTimeTimer >= this.stopAggroTime)
+                if (this.isDetectPlayer) { this.stopAggroTimeTimer = 0; }
+                else
                 {
-                    this.enemyState = EnemyState.ENEMY_PATROLLING;
-                    this.stopAggroTimeTimer = 0;
+                    if (this.stopAggroTimeTimer >= this.stopAggroTime)
+                    {
+                        this.enemyState = EnemyState.ENEMY_PATROLLING;
+                        this.stopAggroTimeTimer = 0;
+                    }
+                    else { this.stopAggroTimeTimer += Time.deltaTime; }
                 }
-                else { this.stopAggroTimeTimer += Time.deltaTime; }
             }
+
         }
+        
         #endregion
         
         EnemySwitchState();
@@ -138,7 +145,11 @@ public class EnemyAI : GameCharacter
                 this.EnemyPatrol();
                 break;
             case EnemyState.ENEMY_CHASING:
-                if (playerTransform.position.x > this.transform.position.x && this.facingRight == false || playerTransform.position.x < this.transform.position.x && this.facingRight) { this.FlipCharacter(); }
+                //Debug.LogError("Remember to set it back");
+                if (isAwayChangePlayer)
+                {
+                    if (playerTransform.position.x > this.transform.position.x && this.facingRight == false || playerTransform.position.x < this.transform.position.x && this.facingRight) { this.FlipCharacter(); }
+                }
                 this.EnemyChase();
                 break;
             case EnemyState.ENEMY_ATTACKING:
@@ -153,7 +164,13 @@ public class EnemyAI : GameCharacter
             case EnemyState.ENEMY_HIT:
                 break;
             case EnemyState.ENEMY_DEAD:
-                this.animator.SetTrigger("die");
+                if(this.deathFadeOutTimeTimer == 0)
+                {
+                    this.animator.SetTrigger("die");
+                    EnemyDieSound();
+                    //capsuleCollider2D.enabled = false; // for testing
+                    //rigidbody2D.gravityScale = 0.0f; // for testing
+                }
                 if (this.deathFadeOutTimeTimer >= this.deathFadeOutTime)
                 {
                     this.deathFadeOutTimeTimer = 0f;
@@ -166,9 +183,14 @@ public class EnemyAI : GameCharacter
                 break;
         }
     }
+
+    protected virtual void EnemyDieSound() { }
+
     private void UpdateWallRaycast()
     {
-        this.rayOrigin = this.colliderTransform.position + (-this.transform.right * this.capsuleCollider2D.size.x * 0.5f);
+        //change this.colliderTransform.position to this.capsuleCollider2D.bounds.center
+        //this.rayOrigin = this.colliderTransform.position + (-this.transform.right * this.capsuleCollider2D.size.x * 0.5f);
+        this.rayOrigin = this.capsuleCollider2D.bounds.center + (-this.transform.right * this.capsuleCollider2D.size.x * 0.5f);
         this.hitWall = Physics2D.Raycast(this.rayOrigin, -this.transform.right, this.wallRayLength, terrainLayer);
         this.hitEdge = !Physics2D.Raycast(this.rayOrigin, -this.transform.up, this.edgeRayLength, terrainLayer);
         Debug.DrawRay(rayOrigin, -transform.right * wallRayLength, Color.red);

@@ -18,7 +18,11 @@ public class STARTMENU : MonoBehaviour
     [SerializeField] private Text continueButtonText;
     [SerializeField] private Color continueButtonNotInteractableTextColor;
     private Color continueButtonTextDefualtColor;
+    [SerializeField] private Animator levelTransitionScreenFadingAnimator;
     private string name_PlayerPrefs_OnPlayNewGameState = "OnPlayNewGameState";
+    private string name_PlayerPrefs_OnPlayerRevive = "OnPlayerRevive";
+
+    private string nameAnimatorTrigger_StartFading = "StartFading";
 
     private void Start()
     {
@@ -50,11 +54,26 @@ public class STARTMENU : MonoBehaviour
                 }
 
                 PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "false");
+                PlayerPrefs.DeleteKey(name_PlayerPrefs_OnPlayNewGameState);
             }
         }
         else
         {
             PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "false");
+        }
+
+        if (PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayerRevive))
+        {
+            if (bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayerRevive)))
+            {
+                levelTransitionScreenFadingAnimator.SetTrigger(nameAnimatorTrigger_StartFading);
+                inGameUIGameObject.SetActive(true);
+                FindObjectOfType<SingScript>().canDoAction = true;
+                Time.timeScale = 1.0f;
+                startMenuPanelGameObject.SetActive(false);
+                PlayerPrefs.SetString(name_PlayerPrefs_OnPlayerRevive, "false");
+                PlayerPrefs.DeleteKey(name_PlayerPrefs_OnPlayerRevive);
+            }
         }
     }
 
@@ -127,10 +146,13 @@ public class STARTMENU : MonoBehaviour
         {
             tempOpeningTimelineController.ShowOpeningDialogue();
         }
-
-        
     }
 
+    public void PlayerRevive()
+    {
+        PlayerPrefs.SetString(name_PlayerPrefs_OnPlayerRevive, "true");
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+    }
 
     /*public void OnStartGame(string sceneName)
     {

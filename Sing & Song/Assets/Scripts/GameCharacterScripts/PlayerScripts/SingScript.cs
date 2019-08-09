@@ -216,7 +216,11 @@ public class SingScript : GameCharacter
         VerticalCollisionDetection();
         #endregion
         #region Check Health
-        if(currentHealth <= 0) { /*restart from checkpoint*/ }
+        if(currentHealth <= 0)
+        {
+            currentHealth = maximumHealth;
+            FindObjectOfType<STARTMENU>().PlayerRevive();
+        }
         #endregion
         #region Check Spirit
         if (currentSpirit > maximumSpirit) { currentSpirit = maximumSpirit; }
