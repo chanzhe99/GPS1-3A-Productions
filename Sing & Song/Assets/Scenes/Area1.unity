@@ -1193,57 +1193,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parallaxFactor: 0.05
---- !u!1 &237309114
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 237309115}
-  - component: {fileID: 237309116}
-  m_Layer: 0
-  m_Name: DialogueSing-1 (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &237309115
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 237309114}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 247909982}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &237309116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 237309114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3507f906aa8792469d49b46767474ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPlayOneTime: 1
-  dialogue:
-    name: Sing
-    sentences:
-    - That was close!
-    - Are you okay?
-    - That necklace.......
-    - That's my wife's necklace! Where did you get that?
 --- !u!1 &247909981
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,6 +1205,7 @@ GameObject:
   - component: {fileID: 247909985}
   - component: {fileID: 247909984}
   - component: {fileID: 247909983}
+  - component: {fileID: 247909986}
   m_Layer: 0
   m_Name: BossFightManager
   m_TagString: Untagged
@@ -1276,7 +1226,6 @@ Transform:
   m_Children:
   - {fileID: 976391224}
   - {fileID: 1294408662}
-  - {fileID: 237309115}
   m_Father: {fileID: 1626698506}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1298,7 +1247,6 @@ MonoBehaviour:
   rhinoAI: {fileID: 114854982}
   singScript: {fileID: 3920118415174553149}
   singSpriteAnimator: {fileID: 3920118414891975800}
-  dialogueTriggers: []
 --- !u!114 &247909984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1357,6 +1305,25 @@ PlayableDirector:
     value: {fileID: 976391225}
   m_ExposedReferences:
     m_References: []
+--- !u!95 &247909986
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247909981}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &264323742
 GameObject:
   m_ObjectHideFlags: 0
@@ -2594,7 +2561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &468658406
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20019,6 +19986,7 @@ GameObject:
   - component: {fileID: 4190623349457577617}
   - component: {fileID: 4190623349457577711}
   - component: {fileID: 4190623349457577712}
+  - component: {fileID: 4190623349457577713}
   m_Layer: 0
   m_Name: OpeningCutsceneManager
   m_TagString: Untagged
@@ -20076,6 +20044,25 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
+--- !u!95 &4190623349457577713
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4190623349457577710}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4190623350251169995
 GameObject:
   m_ObjectHideFlags: 0
@@ -23572,6 +23559,7 @@ GameObject:
   - component: {fileID: 5589830210350998376}
   - component: {fileID: 5589830210350998377}
   - component: {fileID: 5589830210350998378}
+  - component: {fileID: 5589830210350998379}
   m_Layer: 0
   m_Name: TutorialTimelineManager
   m_TagString: Untagged
@@ -23605,7 +23593,7 @@ PlayableDirector:
   m_GameObject: {fileID: 5589830210350998374}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 0}
+  m_PlayableAsset: {fileID: 11400000, guid: 32103d1ff2d875b4db40fb3a0542c1c0, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -23724,6 +23712,25 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
+--- !u!95 &5589830210350998379
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5589830210350998374}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!212 &5652413285076548939
 SpriteRenderer:
   m_ObjectHideFlags: 0

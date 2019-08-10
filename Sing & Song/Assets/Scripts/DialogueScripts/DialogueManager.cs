@@ -9,7 +9,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Text dialogueText;
     [SerializeField] private Animator animator;
     private bool isUsingButton = false;
-    private Queue<string> sentences;
+    private Queue<string> sentences = new Queue<string>();
     public SingScript singScript;
     private bool isEndOfDialogue = true;
     private bool endWillAssignedToControl = true;
@@ -34,13 +34,12 @@ public class DialogueManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sentences = new Queue<string>();
         //singScript = GameObject.FindGameObjectWithTag("Player").GetComponent<SingScript>();
     }
 
     private void Update()
     {
-        if (isUsingButton)
+        if (isUsingButton && !isEndOfDialogue)
         {
             if (Input.GetButtonDown("InteractButton"))
             {

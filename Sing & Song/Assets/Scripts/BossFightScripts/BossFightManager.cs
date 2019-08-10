@@ -13,7 +13,7 @@ public class BossFightManager : MonoBehaviour
     [SerializeField] private SingScript singScript;
     [SerializeField] private Animator singSpriteAnimator;
     private RuntimeAnimatorController singDefalutRuntimeAnimatorController;
-    [SerializeField] private List<DialogueTrigger> dialogueTriggers = new List<DialogueTrigger>();
+    //[SerializeField] private List<DialogueTrigger> dialogueTriggers = new List<DialogueTrigger>();
 
     // Start is called before the first frame update
     private void Start()
@@ -30,12 +30,12 @@ public class BossFightManager : MonoBehaviour
         singSpriteAnimator.runtimeAnimatorController = null;
         playableDirector.Play(bossFightPreMovie, DirectorWrapMode.None);
     }
-
+    /*
     public void PlayDialogue(int whichDialogueIndex)
     {
         dialogueTriggers[whichDialogueIndex].OpenDialogue();
     }
-
+    */
     public void EndOfBossFightMovie()
     {
         inGameUIGameObject.SetActive(true);

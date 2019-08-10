@@ -38,12 +38,12 @@ public class STARTMENU : MonoBehaviour
             continueButton.interactable = false;
             continueButtonText.color = continueButtonNotInteractableTextColor;
         }
-
+        
         player.GetComponent<SingScript>().canDoAction = false;
         
         if (PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayNewGameState))
         {
-            //Debug.Log("OnPlayNewGameState = " + bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)));
+            Debug.Log("OnPlayNewGameState = " + bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)));
             if (bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)))
             {
                 startMenuPanelGameObject.SetActive(false);
@@ -54,14 +54,13 @@ public class STARTMENU : MonoBehaviour
                 }
 
                 PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "false");
-                PlayerPrefs.DeleteKey(name_PlayerPrefs_OnPlayNewGameState);
             }
         }
         else
         {
             PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "false");
         }
-
+        
         if (PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayerRevive))
         {
             if (bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayerRevive)))
@@ -72,9 +71,9 @@ public class STARTMENU : MonoBehaviour
                 Time.timeScale = 1.0f;
                 startMenuPanelGameObject.SetActive(false);
                 PlayerPrefs.SetString(name_PlayerPrefs_OnPlayerRevive, "false");
-                PlayerPrefs.DeleteKey(name_PlayerPrefs_OnPlayerRevive);
             }
         }
+        
     }
 
     /*void Update()

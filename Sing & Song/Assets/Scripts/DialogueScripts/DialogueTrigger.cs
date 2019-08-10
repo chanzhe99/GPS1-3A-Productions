@@ -32,7 +32,7 @@ public class DialogueTrigger : MonoBehaviour
 
     public void OpenDialogue(bool isClicked = true, bool endWillAssignedToControl = true, bool stillHaveDialogue = false)
     {
-        Debug.Log(gameObject.name);
+        //Debug.Log(gameObject.name);
         FindObjectOfType<DialogueManager>().StartDialogue(dialogue, isClicked, endWillAssignedToControl, stillHaveDialogue);
     }
 }
