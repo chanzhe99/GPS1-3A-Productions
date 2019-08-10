@@ -158,6 +158,11 @@ public class SingScript : GameCharacter
         spiritWellAlpha = spiritWell.color.a;
         //spiritWellEdge = 500f;
         #endregion
+        # region Initialise Player Health To Be Full When Each Game Load Again
+
+            currentHealth = maximumHealth;
+
+        #endregion
     } // Initialises player variables
     private void Update()
     {
@@ -218,7 +223,6 @@ public class SingScript : GameCharacter
         #region Check Health
         if(currentHealth <= 0)
         {
-            currentHealth = maximumHealth;
             FindObjectOfType<STARTMENU>().PlayerRevive();
         }
         #endregion

@@ -11,7 +11,7 @@ public class RockScript : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             rockAnimator.SetBool("isSaving", true);
-            print(rockAnimator.GetBool("isSaving"));
+            //print(rockAnimator.GetBool("isSaving"));
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -22,7 +22,7 @@ public class RockScript : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             rockAnimator.SetBool("isSaving", false);
-            print(rockAnimator.GetBool("isSaving"));
+            //print(rockAnimator.GetBool("isSaving"));
         }
     }
 }

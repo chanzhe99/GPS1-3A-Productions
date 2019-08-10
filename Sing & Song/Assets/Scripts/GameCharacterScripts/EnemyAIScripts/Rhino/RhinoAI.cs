@@ -7,159 +7,152 @@ public class RhinoAI : EnemyAI
     public bool ableDoEnemyState = false;
 
     #region General position and count distance variable
-    [Space(6.0f)][Header("Rhino AI Details:")]
-    [SerializeField] private Transform rockfallSourceOriginPoint;
-    [SerializeField] private float halfLengthOfRockfallAppearField;
-    private Transform enemyTransform;
-    #endregion
-
-    #region Raycast check ground and wall variable
-    //[SerializeField] private Transform raycastOriginPoint;
-    //private float raycastCheckGroundDistance = 0.7f;
-    //private float raycastCheckWallDistance = 0.1f;
-    //private LayerMask terrainLayer;
+        [Space(6.0f)][Header("Rhino AI Details:")]
+        [SerializeField] private Transform rockfallSourceOriginPoint;
+        [SerializeField] private float halfLengthOfRockfallAppearField;
+        private Transform enemyTransform;
     #endregion
 
     #region Boolean variable
-    //private bool onGround;
-    //private bool facingWall;
-    private bool isSkillHitPlayer;
-    private bool isSkillHitWall;
-    private bool onPhase2 = false;
-    private bool isFinishPhaseCharge = false;
-    private bool onPreAttackAnimationFinish = false;
+        private bool onPhase2 = false;
+        private bool isFinishPhaseCharge = false;
+        private bool onPreAttackAnimationFinish = false;
     #endregion
 
     #region General timer Variable
-    [SerializeField] protected float rhinoPre_WarActionTime;
-    protected float rhinoPre_WarActionTimeTimer = 0.0f;
-    protected float phaseChargeTimeTimer = 0.0f;
+        [SerializeField] private float rhinoPre_WarActionTime;
+        private float rhinoPre_WarActionTimeTimer = 0.0f;
     #endregion
 
-    //For check pre-war action got working or not, can delete it when you put in the animation.
-    [SerializeField] private GameObject headGameObjectOfAllSpriteRenderers;
-    private List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
-    [SerializeField] private float dieTransparentColorSpeed;
-    private Color tempDieTransparentColor;
-    [SerializeField] private Color getDamageColor;
-    [SerializeField] private Color getNotDamageColor;
-    private List<Color> originialColor = new List<Color>();
+    #region Enemy SpriteRenderer color detail
+        //For check pre-war action got working or not, can delete it when you put in the animation.
+        [SerializeField] private GameObject headGameObjectOfAllSpriteRenderers;
+        private List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
+        [SerializeField] private float dieTransparentColorSpeed;
+        private Color tempDieTransparentColor;
+        [SerializeField] private Color getDamageColor;
+        [SerializeField] private Color getNotDamageColor;
+        private List<Color> originialColor = new List<Color>();
+    #endregion
 
-    private enum BossPhaseAttack
-    {
-        None,
-        Phase1_Attack1,
-        Phase1_Attack2,
-        Phase1_Attack3,
-        Phase2_Attack1,
-        Phase2_Attack2,
-    };
-    [SerializeField] private BossPhaseAttack bossPhaseAttack;
+    #region Boss Phase Attack State
+        private enum BossPhaseAttack
+        {
+            None,
+            Phase1_Attack1,
+            Phase1_Attack2,
+            Phase1_Attack3,
+            Phase2_Attack1,
+            Phase2_Attack2,
+        };
+        private BossPhaseAttack bossPhaseAttack;
+    #endregion
 
     #region Phase 1 Attack 1 variable required
-    [Header("Phase 1 Attack 1 variables :")]
-    //[SerializeField] protected float Phase1_Attack1_ChargeTime;
-    private Vector2 enemyTowardsPositon;
+        [Header("Phase 1 Attack 1 variables :")]
+
+        // For Compute And Set The Rhino Next Movement
+        // It Actually Just For Create The Variable In Memory One Time, So The Memory Not Need Create The Variable Every Time(each frame)
+        private Vector2 enemyTowardsPositon; // (save a bit memory usage frequency)
     #endregion
 
     #region Phase 1 Attack 2 variable required 
-    [Header("Phase 1 Attack 2 variables :")]
-    //[SerializeField] protected float Phase1_Attack2_ChargeTime;
-    //[SerializeField] protected float Phase1_Attack2_TemporarilyStomWaveColdDown;
-    //protected float temporarilyStomWaveColdDownTimer = 0.0f;
-    [SerializeField] private GameObject wavePrefab;
-    private List<GameObject> waveGameObjects = new List<GameObject>();
-    private Vector2 waveSpawnOriginPosition;
-    //[SerializeField] private Vector2 stompWaveMaxSize;
-    //[SerializeField] private Vector2 stompWaveMinSize;
-    //private Vector2 stompWaveCurrentSize;
-    //private Vector2 timeForStomWaveSize;
-    //[SerializeField] private Vector2 StomWaveSizeXExpansionSpeed;
-    [SerializeField] private int maxNumberOfStomWave;
-    private int currentNumberOfStomWave;
-    //private Vector2 stomWavePosition;
+        [Header("Phase 1 Attack 2 variables :")]
+
+        // Stom Wave Prefab And Wave Game Objects
+        [SerializeField] private GameObject wavePrefab;
+        private List<GameObject> waveGameObjects = new List<GameObject>();
+
+        // Stom Wave Number Of Times Detail
+        [SerializeField] private int maxNumberOfStomWave;
+        private int currentNumberOfStomWave;
+
+        // Stom Wave Game Objects Spawn Origin
+        private Vector2 waveSpawnOriginPosition;
     #endregion
-    
+
     #region Phase 1 Attack 3 variable required
-    [Header("Phase 1 Attack 3 variables :")]
-    //[SerializeField] protected float Phase1_Attack3_ChargeTime;
-    private List<Vector2> rockfallFixedDifferentAppearPosition = new List<Vector2>();
-    private List<Vector2> tempRockfallFixedDifferentAppearPosition = new List<Vector2>();
-    //[SerializeField] protected float Phase1_Attack3_TemporarilyRockfallsColdDown;
-    //protected float temporarilyRockfallsColdDownTimer = 0.0f;
-    [SerializeField] private List<GameObject> rockfallPrefabs;
-    [SerializeField] private int eachRoundHowManyRockfalls;
-    [SerializeField] private int maxNumberOfRockfalls;
-    private int currentNumberOfRockfalls;
-    private List<GameObject> rocksOfFalls = new List<GameObject>();
-    private int indexOfWhichRockIsFalling;
-    [SerializeField] private float eachRockOfFallIntervalTime;
-    private float eachRockOfFallIntervalTimeTimer;
+        [Header("Phase 1 Attack 3 variables :")]
+
+        // Different 3 Shpae Of Rockfall Prefab And Rockfall GameObjects
+        [SerializeField] private List<GameObject> rockfallPrefabs = new List<GameObject>();
+        private List<GameObject> rocksOfFalls = new List<GameObject>();
+
+        // Setting Rockfall Fixed Appear Position
+        private List<Vector2> rockfallFixedDifferentAppearPosition = new List<Vector2>(); // Set Original Positions To Get The Memory Address For Random
+        private List<Vector2> tempRockfallFixedDifferentAppearPosition = new List<Vector2>(); // Random Original Positions
+
+        // Rockfalls Number Of Times Detail
+        [SerializeField] private int maxNumberOfRockfalls;
+        private int currentNumberOfRockfalls;
+
+        // Each Rockfall Have How Many Rock Fall Down
+        [SerializeField] private int eachRoundHowManyRockfalls;
+
+        // For Set Each Round‘s Which Rockfall Appear On Which Different Random Fixed Position
+        private int indexOfWhichRockIsFalling;
+
+        // Each Round of Each Rockfall interval
+        [SerializeField] private float eachRockOfFallIntervalTime;
+        private float eachRockOfFallIntervalTimeTimer;
     #endregion
     
     #region Phase 2 Attack 1 variable required
-    [Header("Phase 2 Attack 1 variables :")]
-    //[SerializeField] protected float Phase2_Attack1_ChargeTime;
-    [SerializeField] private GameObject enemyEtherealArmourPrefab;
-    private GameObject enemyEtherealArmourGameObject;
-    private bool isEtherealArmourFinish = false;
-    //[SerializeField] private Transform enemyEtherealArmourRaycastOriginPoint;
-    //private float enemyEtherealArmourRaycastCheckWallDistance = 0.1f;
-    private Transform enemyEtherealArmourTransform;
-    //[SerializeField] private Vector2 checkEnemyEtherealArmourHitPlayerBoxSize;
+        [Header("Phase 2 Attack 1 variables :")]
+
+        // Rhino Ethereal Armour Prefab And Ethereal Armour Game Object
+        [SerializeField] private GameObject enemyEtherealArmourPrefab;
+        private GameObject enemyEtherealArmourGameObject;
+
+        // For Check The Rhino Ethereal Armour Game Object Is Disable Display or not
+        private bool isEtherealArmourFinish = false;
+
+        // For Set The Rhino Ethereal Armour Appear Position
+        private Transform enemyEtherealArmourTransform;
     #endregion
 
     #region Phase 2 Attack 2 variable required
-    [Header("Phase 2 Attack 2 variables :")]
-    //[SerializeField] protected float phase2_Attack2_ChargeTime;
-    //[SerializeField] protected float phase2_Attack2_TemporarilyStomWaveColdDown;
-    //[SerializeField] private Vector2 stompWaveMaxSizePhase2;
-    //[SerializeField] private Vector2 stompWaveMinSizePhase2;
-    //private Vector2 stompWaveCurrentSizePhase2;
-    //private Vector2 timeForStomWaveSizePhase2;
-    //[SerializeField] private Vector2 StomWaveSizeXExpansionSpeedPhase2;
-    [SerializeField] private int maxNumberOfStomWaveAndRockfalls;
-    private int currentNumberOfStomWaveAndRockfalls;
-    [SerializeField] private float eachRockOfFallIntervalPhase2Time;
-    private float eachRockOfFallIntervalPhase2TimeTimer;
-    private bool onStompWave = true;
-    //[Space(15f)]
-    //[SerializeField] protected float phase2_Attack2_TemporarilyRockfallsColdDown;
-    //[SerializeField] private float eachRockOfFallIntervalTimePhase2;
+        [Header("Phase 2 Attack 2 variables :")]
+
+        // Stom Wave With Rockfalls Number Of Times Detail
+        [SerializeField] private int maxNumberOfStomWaveAndRockfalls;
+        private int currentNumberOfStomWaveAndRockfalls;
+
+        // Each Round of Phase2 Each Rockfall interval
+        [SerializeField] private float eachRockOfFallIntervalPhase2Time;
+        private float eachRockOfFallIntervalPhase2TimeTimer;
+
+        // For Check Phase 2 Attack 2's Current Attack Type Is Stomp Wave Or Rockfall
+        private bool onStompWave = true;
     #endregion
 
-    /* For refer
-        Phase 1
-            Charges towards player
-            Stomp the ground to perform attack wave
-            Stomp the ground and make rocks fall from the top
-        Phase 2
-            Charges towards player with projection of it’s ethereal armour before following up with the actual Rhino
-            Stomps the ground - Combo of attack wave and rocks falling
-    */
+    // For Reference Rhino's Attack Types
+    // 
+    //  Phase 1
+    //      Charges towards player
+    //      Stomp the ground to perform attack wave
+    //      Stomp the ground and make rocks fall from the top
+    //      
+    //  Phase 2
+    //      Charges towards player with projection of it’s ethereal armour before following up with the actual Rhino
+    //      Stomps the ground - Combo of attack wave and rocks falling
 
     protected override void Initialise()
     {
         isAwayCheckPlayer = false;
+
         base.Initialise();
         terrainLayer = LayerMask.GetMask("Terrain");
         enemyTransform = transform;
-        //originialColor = spriteRenderer.color;
-        //enemyEtherealArmourPrefab = Instantiate(enemyEtherealArmourPrefab, colliderTransform.position, enemyTransform.rotation);
-        //enemyEtherealArmourRaycastOriginPoint = enemyEtherealArmourPrefab.GetComponentInChildren<Transform>();
-        //enemyEtherealArmourTransform = enemyEtherealArmourPrefab.GetComponent<Transform>();
-
-        //enemyTransform.rotation = Quaternion.Euler(enemyTransform.rotation.x, facingRight ? 180.0f : 0.0f, enemyTransform.rotation.z);
 
         for (int i=0; i < eachRoundHowManyRockfalls; i++)
         {
-            //rocksOfFall[i] = Instantiate(rockfallPrefab, Vector2.zero, Quaternion.identity); //Same as this, for others to refer
             rocksOfFalls.Add(Instantiate(rockfallPrefabs[Random.Range(0, 3)], Vector2.zero, Quaternion.identity));
             rocksOfFalls[i].SetActive(false);
         }
 
-        Vector2 tempValue;
-        for (int i = 0; i < eachRoundHowManyRockfalls; i++)
+        Vector2 tempValue = new Vector2(); // The whole game only use one time, so crete it here more save memory usage frequency 
+        for (int i = 0; i < (eachRoundHowManyRockfalls); i++)
         {
             tempValue.x = rockfallSourceOriginPoint.position.x - halfLengthOfRockfallAppearField;
             tempValue.x = tempValue.x + (((rockfallSourceOriginPoint.position.x + halfLengthOfRockfallAppearField) - (rockfallSourceOriginPoint.position.x - halfLengthOfRockfallAppearField)) / (eachRoundHowManyRockfalls-1)) * i;
@@ -172,10 +165,11 @@ public class RhinoAI : EnemyAI
             waveGameObjects.Add(Instantiate(wavePrefab, Vector2.zero, Quaternion.identity));
             waveGameObjects[i].gameObject.SetActive(false);
         }
+
         GameObject tempGameObject = Instantiate(enemyEtherealArmourPrefab, Vector2.zero, Quaternion.identity);
         enemyEtherealArmourGameObject = tempGameObject;
-        enemyEtherealArmourTransform = enemyEtherealArmourGameObject.transform;
         enemyEtherealArmourGameObject.GetComponent<RhinoEtherealArmourController>().rhinoAI = this.GetComponent<RhinoAI>();
+        enemyEtherealArmourTransform = enemyEtherealArmourGameObject.transform;
         enemyEtherealArmourGameObject.SetActive(false);
 
         foreach (SpriteRenderer tempSpriteRenderer in headGameObjectOfAllSpriteRenderers.GetComponentsInChildren<SpriteRenderer>())
@@ -183,8 +177,6 @@ public class RhinoAI : EnemyAI
             spriteRenderers.Add(tempSpriteRenderer);
             originialColor.Add(tempSpriteRenderer.color);
         }
-
-        tempRockfallFixedDifferentAppearPosition.AddRange(rockfallFixedDifferentAppearPosition);
     }
 
     protected override void EnemyPatrol()
@@ -194,33 +186,21 @@ public class RhinoAI : EnemyAI
             if (rhinoPre_WarActionTimeTimer.Equals(0.0f))
             {
                 //pre-war animation run here
-                //spriteRenderer.color = Color.blue;
                 animator.SetTrigger(Global.nameAnimatorTrigger_RhinoAI_Roar);
             }
 
-            if (rhinoPre_WarActionTimeTimer >= rhinoPre_WarActionTime)
-            {
-                //spriteRenderer.color = originialColor;
-
-                enemyState = EnemyState.ENEMY_CHASING;
-
-            }
-            else
-            {
-                rhinoPre_WarActionTimeTimer += 1.0f * Time.deltaTime;
-            }
+            if (rhinoPre_WarActionTimeTimer >= rhinoPre_WarActionTime) { enemyState = EnemyState.ENEMY_CHASING; }
+            else { rhinoPre_WarActionTimeTimer += Time.deltaTime; }
         }
     }
 
     protected override void EnemyChase()
     {
-        //onGround = Physics2D.Raycast(raycastOriginPoint.position, Vector2.down, raycastCheckGroundDistance, terrainLayer);
         if(currentHealth < (int)(maximumHealth / 2) && onPhase2 == false)
         {
             onPhase2 = true;
         }
         
-
         if (onPhase2.Equals(false))
         {
             bossPhaseAttack = (BossPhaseAttack)Random.Range((int)BossPhaseAttack.Phase1_Attack1, (int)BossPhaseAttack.Phase1_Attack3 + 1);
@@ -234,35 +214,31 @@ public class RhinoAI : EnemyAI
         animator.SetBool(Global.nameAnimatorBool_RhinoAI_Phase2, onPhase2);
 
         enemyState = EnemyState.ENEMY_ATTACKING;
-
     }
 
     protected override void EnemyAttack()
     {
-        //if (onPhase2 == false)//this if else statement for double comfirm and for understand how it work only, you can keep using it or delete it and put the down and inside else"case BossPhaseAttack.Phase2_Attack1:" until "break;" and "case BossPhaseAttack.Phase2_Attack2:" until "break;" to upside, it won't happen any issue.
+        switch (bossPhaseAttack)
         {
-            switch (bossPhaseAttack)
-            {
-                case BossPhaseAttack.Phase1_Attack1:
-                    Phase1_FirstAttackMode();
-                break;
+            case BossPhaseAttack.Phase1_Attack1:
+                Phase1_FirstAttackMode();
+            break;
 
-                case BossPhaseAttack.Phase1_Attack2:
-                    Phase1_SecondAttackMode();
-                break;
+            case BossPhaseAttack.Phase1_Attack2:
+                Phase1_SecondAttackMode();
+            break;
 
-                case BossPhaseAttack.Phase1_Attack3:
-                    Phase1_ThirdAttackMode();
-                break;
+            case BossPhaseAttack.Phase1_Attack3:
+                Phase1_ThirdAttackMode();
+            break;
                 
-                case BossPhaseAttack.Phase2_Attack1:
-                    Phase2_FirstAttackMode();
-                break;
+            case BossPhaseAttack.Phase2_Attack1:
+                Phase2_FirstAttackMode();
+            break;
 
-                case BossPhaseAttack.Phase2_Attack2:
-                    Phase2_SecondAttackMode();
-                break;
-            }
+            case BossPhaseAttack.Phase2_Attack2:
+                Phase2_SecondAttackMode();
+            break;
         }
     }
 
@@ -274,9 +250,6 @@ public class RhinoAI : EnemyAI
             animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
             isFinishPhaseCharge = true;
             onPreAttackAnimationFinish = false;
-
-            //for testing
-            //spriteRenderer.color = Color.yellow;
         }
         else{
             if (onPreAttackAnimationFinish)
@@ -289,18 +262,14 @@ public class RhinoAI : EnemyAI
                 }
                 else
                 {
-                    //for testing
-                    //spriteRenderer.color = originialColor;
-
                     bossPhaseAttack = BossPhaseAttack.None;
                     animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
-
-                    enemyState = EnemyState.ENEMY_RESTING;
 
                     // set values back to defalut
                     isFinishPhaseCharge = false;
                     onPreAttackAnimationFinish = false;
-                    return;
+
+                    enemyState = EnemyState.ENEMY_RESTING;
                 }
             }
         }
@@ -315,9 +284,6 @@ public class RhinoAI : EnemyAI
             isFinishPhaseCharge = true;
             onPreAttackAnimationFinish = false;
             animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, true);
-
-            //for testing
-            //spriteRenderer.color = Color.green;
         }
         else
         {
@@ -336,22 +302,16 @@ public class RhinoAI : EnemyAI
             if (currentNumberOfStomWave >= maxNumberOfStomWave)
             {
                 animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, false);
-                //for testing
-                //spriteRenderer.color = originialColor;
-                //rigidbody2D.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
 
                 bossPhaseAttack = BossPhaseAttack.None;
                 animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
 
                 // set values back to defalut
-                //phaseChargeTimeTimer = temporarilyStomWaveColdDownTimer = 0.0f;
-
-                enemyState = EnemyState.ENEMY_RESTING;
-
                 currentNumberOfStomWave = 0;
                 isFinishPhaseCharge = false;
                 onPreAttackAnimationFinish = false;
-                return;
+
+                enemyState = EnemyState.ENEMY_RESTING;
             }
         }
     }
@@ -367,8 +327,10 @@ public class RhinoAI : EnemyAI
             indexOfWhichRockIsFalling = 0;
             animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, true);
 
-            //for testing
-            //spriteRenderer.color = Color.red;
+            if (tempRockfallFixedDifferentAppearPosition.Count <= 0)
+            {
+                tempRockfallFixedDifferentAppearPosition.AddRange(rockfallFixedDifferentAppearPosition);
+            }
         }
         else
         {
@@ -385,7 +347,6 @@ public class RhinoAI : EnemyAI
                     int whichPosition = Random.Range(0, tempRockfallFixedDifferentAppearPosition.Count); // random the current rockfall position without overlap the same position in a round
 
                     // set the rock appaer to the position and default rotate
-                    //rocksOfFalls[indexOfWhichRockIsFalling].transform.TransformPoint();
                     rocksOfFalls[indexOfWhichRockIsFalling].transform.SetPositionAndRotation(tempRockfallFixedDifferentAppearPosition[whichPosition], Quaternion.identity);
 
                     rocksOfFalls[indexOfWhichRockIsFalling].SetActive(true);
@@ -412,20 +373,16 @@ public class RhinoAI : EnemyAI
             if (currentNumberOfRockfalls >= maxNumberOfRockfalls)
             {
                 animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, false);
-                //for testing
-                //spriteRenderer.color = originialColor;
-                //rigidbody2D.AddForce(new Vector2(0, 3), ForceMode2D.Impulse);
 
                 bossPhaseAttack = BossPhaseAttack.None;
                 animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
-
-                enemyState = EnemyState.ENEMY_RESTING;
 
                 // set values back to defalut
                 currentNumberOfRockfalls = 0;
                 isFinishPhaseCharge = false;
                 onPreAttackAnimationFinish = false;
-                return;
+
+                enemyState = EnemyState.ENEMY_RESTING;
             }
         }
     }
@@ -440,9 +397,6 @@ public class RhinoAI : EnemyAI
             isFinishPhaseCharge = true;
             onPreAttackAnimationFinish = false;
             isEtherealArmourFinish = false;
-
-            //for testing
-            //spriteRenderer.color = Color.black;
         }
         else
         {
@@ -465,19 +419,15 @@ public class RhinoAI : EnemyAI
                 }
                 else
                 {
-                    //for testing
-                    //spriteRenderer.color = originialColor;
-
                     bossPhaseAttack = BossPhaseAttack.None;
                     animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
-
-                    enemyState = EnemyState.ENEMY_RESTING;
 
                     // set values back to defalut
                     isFinishPhaseCharge = false;
                     onPreAttackAnimationFinish = false;
                     isEtherealArmourFinish = false;
-                    return;
+
+                    enemyState = EnemyState.ENEMY_RESTING;
                 }
             }
         }
@@ -495,14 +445,15 @@ public class RhinoAI : EnemyAI
             animator.SetBool(Global.nameAnimatorBool_RhinoAI_OnStompWave, onStompWave);
             animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, true);
 
-            //for testing
-            //spriteRenderer.color = Color.cyan;
+            if (tempRockfallFixedDifferentAppearPosition.Count <= 0)
+            {
+                tempRockfallFixedDifferentAppearPosition.AddRange(rockfallFixedDifferentAppearPosition);
+            }
         }
         else
         {
             if (onStompWave.Equals(false))
             {
-
                 if (onPreAttackAnimationFinish)
                 {
                     if (eachRockOfFallIntervalPhase2TimeTimer < eachRockOfFallIntervalPhase2Time)
@@ -516,7 +467,6 @@ public class RhinoAI : EnemyAI
                         int whichPosition = Random.Range(0, tempRockfallFixedDifferentAppearPosition.Count); // random the current rockfall position without overlap the same position in a round
 
                         // set the rock appaer to the position and default rotate
-                        //rocksOfFalls[indexOfWhichRockIsFalling].transform.TransformPoint();
                         rocksOfFalls[indexOfWhichRockIsFalling].transform.SetPositionAndRotation(tempRockfallFixedDifferentAppearPosition[whichPosition], Quaternion.identity);
 
                         rocksOfFalls[indexOfWhichRockIsFalling].SetActive(true);
@@ -561,36 +511,21 @@ public class RhinoAI : EnemyAI
             if (currentNumberOfStomWaveAndRockfalls >= maxNumberOfStomWaveAndRockfalls)
             {
                 animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, false);
-                //for testing
-                //spriteRenderer.color = originialColor;
-                //rigidbody2D.AddForce(new Vector2(0, 3), ForceMode2D.Impulse);
 
                 bossPhaseAttack = BossPhaseAttack.None;
                 animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
-
-                enemyState = EnemyState.ENEMY_RESTING;
 
                 // set values back to defalut
                 currentNumberOfStomWaveAndRockfalls = 0;
                 isFinishPhaseCharge = false;
                 onPreAttackAnimationFinish = false;
-                return;
+
+                enemyState = EnemyState.ENEMY_RESTING;
             }
 
         }
     }
-    /*
-    protected override void EnemyRest()
-    {
-        StartCoroutine(Resting());
-    }
 
-    private IEnumerator Resting()
-    {
-        yield return new WaitForSeconds(5.0f);
-        //enemyState = EnemyState.ENEMY_CHASING;
-    }
-    */
     public void RhinoFliping()
     {
         FlipCharacter();
@@ -620,16 +555,20 @@ public class RhinoAI : EnemyAI
                 if (this.currentHealth > 0)
                 {
                     this.currentHealth -= 1;
-                    StopAllCoroutines();
-                    StartCoroutine(DamageColorChange());
+                    StopCoroutine("DamageColorChange");
+                    StopCoroutine("NotDamageColorChange");
+
+                    StartCoroutine("DamageColorChange");
                 }
 
             }
         }
         else
         {
-            StopAllCoroutines();
-            StartCoroutine(NotDamageColorChange());
+            StopCoroutine("DamageColorChange");
+            StopCoroutine("NotDamageColorChange");
+
+            StartCoroutine("NotDamageColorChange");
         }
     }
 
@@ -640,15 +579,19 @@ public class RhinoAI : EnemyAI
             if (this.currentHealth > 0)
             {
                 this.currentHealth -= 2;
-                StopAllCoroutines();
-                StartCoroutine(DamageColorChange());
+                StopCoroutine("DamageColorChange");
+                StopCoroutine("NotDamageColorChange");
+
+                StartCoroutine("DamageColorChange");
             }
             
         }
         else
         {
-            StopAllCoroutines();
-            StartCoroutine(NotDamageColorChange());
+            StopCoroutine("DamageColorChange");
+            StopCoroutine("NotDamageColorChange");
+
+            StartCoroutine("NotDamageColorChange");
         }
     }
 
@@ -670,6 +613,7 @@ public class RhinoAI : EnemyAI
         }
         yield return null;
     }
+
     private IEnumerator NotDamageColorChange()
     {
         foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
@@ -693,7 +637,6 @@ public class RhinoAI : EnemyAI
             tempDieTransparentColor.b = tempSpriteRenderer.color.b;
             tempDieTransparentColor.a = tempSpriteRenderer.color.a - (dieTransparentColorSpeed * Time.deltaTime);
             tempSpriteRenderer.color = tempDieTransparentColor;
-            Debug.Log(tempSpriteRenderer.color);
         }
         if(spriteRenderers[spriteRenderers.Count-1].color.a <= 0.0f)
         {
@@ -719,49 +662,20 @@ public class RhinoAI : EnemyAI
         Debug.Log("delete rhino enemy ethereal armour");
     }
 
-    private void OnDrawGizmos()
+    protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        if (this.colliderTransform != null)
-        {
-            //Gizmos.DrawWireCube(this.colliderTransform.position, playerDetectionRange); // do if check != NULL
-            //Gizmos.DrawWireSphere(this.colliderTransform.position, attackRange);
-        }
-        /*
-        // For see normal detector
-        Gizmos.DrawRay(raycastOriginPoint.position, Vector2.down * raycastCheckGroundDistance);
-        Gizmos.DrawRay(raycastOriginPoint.position, transform.right * raycastCheckWallDistance);
-
-        // For see the line of fallrock length of Cave top 
-        if(onPhase2 == false)
-        {
-            Gizmos.color = Color.white;
-            Gizmos.DrawRay(rockfallSourceOriginPoint.position, Vector2.left * halfLengthOfRockfallAppearField);
-            Gizmos.DrawRay(rockfallSourceOriginPoint.position, Vector2.right * halfLengthOfRockfallAppearField);
-
-            // For see the Box size of stom wave
-            Gizmos.color = Color.green;
-            stomWavePosition.x = enemyTransform.position.x;
-            stomWavePosition.y = enemyTransform.position.y + (stompWaveCurrentSize.y / 2);
-            Gizmos.DrawWireCube(stomWavePosition, stompWaveCurrentSize);
-        }
-        else
-        {
         
-            // For see the Box size of Enemy Ethereal Armour
-            Gizmos.color = Color.black;
-            Gizmos.DrawWireCube(enemyEtherealArmourTransform.position, checkEnemyEtherealArmourHitPlayerBoxSize);
-        
-            // For see the Box size of phase 2 stom wave
-            Gizmos.color = Color.cyan;
-            stomWavePosition.x = enemyTransform.position.x;
-            stomWavePosition.y = enemyTransform.position.y + (stompWaveCurrentSizePhase2.y / 2);
-            Gizmos.DrawWireCube(stomWavePosition, stompWaveCurrentSizePhase2);
-            Gizmos.DrawRay(rockfallSourceOriginPoint.position, Vector2.left * halfLengthOfRockfallAppearField);
-            Gizmos.DrawRay(rockfallSourceOriginPoint.position, Vector2.right * halfLengthOfRockfallAppearField);
-            */
+        //if (this.colliderTransform != null)
+        //{
+        //    Gizmos.DrawWireCube(this.colliderTransform.position, playerDetectionRange);
+        //    Gizmos.DrawWireCube(this.colliderTransform.position, attackRange);
         //}
+        // For see the line of fallrock length of Cave top 
+        Gizmos.color = Color.white;
+        Gizmos.DrawRay(rockfallSourceOriginPoint.position, Vector2.left * halfLengthOfRockfallAppearField);
+        Gizmos.DrawRay(rockfallSourceOriginPoint.position, Vector2.right * halfLengthOfRockfallAppearField);
         
     }
-
+    
 }

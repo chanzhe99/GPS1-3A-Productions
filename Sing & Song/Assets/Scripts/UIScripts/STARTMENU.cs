@@ -43,7 +43,7 @@ public class STARTMENU : MonoBehaviour
         
         if (PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayNewGameState))
         {
-            Debug.Log("OnPlayNewGameState = " + bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)));
+            //Debug.Log("OnPlayNewGameState = " + bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)));
             if (bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)))
             {
                 startMenuPanelGameObject.SetActive(false);
