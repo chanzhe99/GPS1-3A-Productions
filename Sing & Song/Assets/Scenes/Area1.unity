@@ -1241,6 +1241,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f023acd2ebdc8c4bac238997b27673a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rhinoBossFightAudioClip: {fileID: 8300000, guid: ab1748679fac7a44fadfff175ba9aafe,
+    type: 3}
+  backgroundMusicAudioSource: {fileID: 7332003663411659394}
   inGameUIGameObject: {fileID: 1914419389}
   bossFightTriggerGameObject: {fileID: 3569264827220831978}
   bossFightPreMovie: {fileID: 11400000, guid: 8a9c927515767ff41ba12fc5ea703ba0, type: 2}
@@ -1262,11 +1265,43 @@ MonoBehaviour:
   m_Events:
     m_Signals:
     - {fileID: 11400000, guid: e4c45e06d69a0d44783edef63ea83177, type: 2}
+    - {fileID: 11400000, guid: f4f0e86da6f562e438b1c84c9d21afa8, type: 2}
+    - {fileID: 11400000, guid: 48b1448017e482643bb3476fccd97f8d, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 247909983}
           m_MethodName: EndOfBossFightMovie
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 247909983}
+          m_MethodName: StartBossFightBackgroundMusic
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 247909983}
+          m_MethodName: StopForestBackgroundMusic
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -20028,6 +20063,7 @@ MonoBehaviour:
   m_Events:
     m_Signals:
     - {fileID: 11400000, guid: 789cf0b31cd97fb43b691c3ff1280cec, type: 2}
+    - {fileID: 11400000, guid: f4f0e86da6f562e438b1c84c9d21afa8, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -20042,6 +20078,10 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    - m_PersistentCalls:
+        m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
 --- !u!95 &4190623349457577713
@@ -23593,7 +23633,7 @@ PlayableDirector:
   m_GameObject: {fileID: 5589830210350998374}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 32103d1ff2d875b4db40fb3a0542c1c0, type: 2}
+  m_PlayableAsset: {fileID: 0}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1

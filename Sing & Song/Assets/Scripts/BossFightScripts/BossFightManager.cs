@@ -5,6 +5,8 @@ using UnityEngine.Playables;
 
 public class BossFightManager : MonoBehaviour
 {
+    [SerializeField] private AudioClip rhinoBossFightAudioClip;
+    [SerializeField] private AudioSource backgroundMusicAudioSource;
     [SerializeField] private GameObject inGameUIGameObject;
     [SerializeField] private GameObject bossFightTriggerGameObject;
     private PlayableDirector playableDirector;
@@ -36,6 +38,18 @@ public class BossFightManager : MonoBehaviour
         dialogueTriggers[whichDialogueIndex].OpenDialogue();
     }
     */
+
+    public void StopForestBackgroundMusic()
+    {
+        backgroundMusicAudioSource.Stop();
+    }
+
+    public void StartBossFightBackgroundMusic()
+    {
+        backgroundMusicAudioSource.clip = rhinoBossFightAudioClip;
+        backgroundMusicAudioSource.Play();
+    }
+
     public void EndOfBossFightMovie()
     {
         inGameUIGameObject.SetActive(true);
