@@ -611,6 +611,17 @@ public class RhinoAI : EnemyAI
         {
                 spriteRenderers[i].color = originialColor[i];
         }
+        yield return new WaitForSeconds(0.05f);
+
+        foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
+        {
+            tempSpriteRenderer.color = getDamageColor;
+        }
+        yield return new WaitForSeconds(0.05f);
+        for (int i = 0; i < spriteRenderers.Count; i++)
+        {
+            spriteRenderers[i].color = originialColor[i];
+        }
         yield return null;
     }
 
@@ -648,7 +659,7 @@ public class RhinoAI : EnemyAI
     private void OnDestroy()
     {
         //For clear residuary rockfalls when the boss is die, because the player only can fight this boss one time, if the player still can fight again this boss then delete this whole OnDestroy() function.
-        for (int i = 0; i < eachRoundHowManyRockfalls; i++)
+        for (int i = 0; i < rocksOfFalls.Count; i++)
         {
             Destroy(rocksOfFalls[i]);
             Debug.Log("delete rocks fall");

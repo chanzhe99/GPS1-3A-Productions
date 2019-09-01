@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class SaveDataManager
 {
-    private static object dataObject;
+    private static object dataObject = null;
 
     public static void SaveData(object saveData, string path)
     {
@@ -84,6 +84,8 @@ public class SaveDataManager
         }
         else
         {
+
+            dataObject = null;
             Debug.LogWarning("#Warning ! Empty File Path( " + Application.persistentDataPath + path + " ) - Load data failed!");
 
         }

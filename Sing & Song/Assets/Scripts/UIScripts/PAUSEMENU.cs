@@ -20,14 +20,14 @@ public class PAUSEMENU : MonoBehaviour
             if (!paused)
             {
                 Pause();
-                Debug.Log("pause");
+                //Debug.Log("pause");
             }
             else
             {
                 Resume();
-                Debug.Log("onStarting");
+                //Debug.Log("onStarting");
             }
-            Debug.Log("can detecd the key down");
+            //Debug.Log("can detecd the key down");
         }
     }
     public void Resume()

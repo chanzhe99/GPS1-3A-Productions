@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.Audio;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,7 +16,7 @@ public class STARTMENU : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject inGameUIGameObject;
     [SerializeField] private Button continueButton;
-    [SerializeField] private Text continueButtonText;
+    [SerializeField] private TextMeshProUGUI continueButtonText;
     [SerializeField] private Color continueButtonNotInteractableTextColor;
     private Color continueButtonTextDefualtColor;
     [SerializeField] private Animator levelTransitionScreenFadingAnimator;
@@ -43,7 +44,7 @@ public class STARTMENU : MonoBehaviour
         
         if (PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayNewGameState))
         {
-            Debug.Log("OnPlayNewGameState = " + bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)));
+            //Debug.Log("OnPlayNewGameState = " + bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)));
             if (bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)))
             {
                 startMenuPanelGameObject.SetActive(false);
@@ -104,7 +105,7 @@ public class STARTMENU : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
-        Debug.Log("Quit Game");
+        //Debug.Log("Quit Game");
     }
 
     //this funtion in the option menu

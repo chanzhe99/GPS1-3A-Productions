@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private Text nameText;
-    [SerializeField] private Text dialogueText;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private Animator animator;
     private bool isUsingButton = false;
     private Queue<string> sentences = new Queue<string>();
