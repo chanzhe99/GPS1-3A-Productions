@@ -7,7 +7,7 @@ public class BossFightManager : MonoBehaviour
 {
     [SerializeField] private AudioClip rhinoBossFightAudioClip;
     [SerializeField] private AudioSource backgroundMusicAudioSource;
-    [SerializeField] private GameObject inGameUIGameObject;
+    //[SerializeField] private GameObject inGameUIGameObject;
     [SerializeField] private GameObject bossFightTriggerGameObject;
     private PlayableDirector playableDirector;
     [SerializeField] private PlayableAsset bossFightPreMovie;
@@ -31,8 +31,8 @@ public class BossFightManager : MonoBehaviour
     public void PlayBossFightMovie()
     {
         singScript.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        inGameUIGameObject.SetActive(false);
-        singScript.canDoAction = false;
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, false);
+        singScript.CanDoAction = false;
         rhinoAI.ableDoEnemyState = false;
         singSpriteAnimator.runtimeAnimatorController = null;
         rhinoBossSpriteAnimator.runtimeAnimatorController = null;
@@ -58,10 +58,10 @@ public class BossFightManager : MonoBehaviour
 
     public void EndOfBossFightMovie()
     {
-        inGameUIGameObject.SetActive(true);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, true);
         singSpriteAnimator.runtimeAnimatorController = singDefalutRuntimeAnimatorController;
         rhinoBossSpriteAnimator.runtimeAnimatorController = rhinoBossDefalutRuntimeAnimatorController;
-        singScript.canDoAction = true;
+        singScript.CanDoAction = true;
         rhinoAI.ableDoEnemyState = true;
 
         DestroyAll();

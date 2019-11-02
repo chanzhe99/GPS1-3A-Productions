@@ -5,6 +5,18 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class GameCharacter : MonoBehaviour
 {
+    #region Sprite Renderer Color Details
+    [Header("Hurt Color Detials : ")]
+        [SerializeField] protected GameObject headGameObjectOfAllSpriteRenderers;
+        protected List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
+        [SerializeField] protected float dieTransparentColorSpeed;
+        protected Color tempDieTransparentColor;
+        [SerializeField] protected Color getDamageColor;// = new Color(248, 99, 64, 50);
+        //[SerializeField] private Color getNotDamageColor;
+        protected List<Color> originialColor = new List<Color>();
+        protected float[] colorChangeTime = { 0.15f, 0.05f, 0.05f };
+        protected WaitForSeconds[] waitForSeconds;
+    #endregion
     #region Component Variables
     [Header("Animator Component")]
     [SerializeField] protected Animator animator;
@@ -94,6 +106,17 @@ public class GameCharacter : MonoBehaviour
         Physics2D.IgnoreLayerCollision(8, 11, true);
         Physics2D.IgnoreLayerCollision(9, 11, true);
         DetermineStartingDirection();
+
+        #region Initialise Sprite Renderer Color Details
+            if (headGameObjectOfAllSpriteRenderers == null) headGameObjectOfAllSpriteRenderers = gameObject;
+            foreach (SpriteRenderer tempSpriteRenderer in headGameObjectOfAllSpriteRenderers.GetComponentsInChildren<SpriteRenderer>())
+            {
+                spriteRenderers.Add(tempSpriteRenderer);
+                originialColor.Add(tempSpriteRenderer.color);
+            }
+            WaitForSeconds[] tempWaitForSeconds = { new WaitForSeconds(colorChangeTime[0]), new WaitForSeconds(colorChangeTime[1]), new WaitForSeconds(colorChangeTime[2]) };
+            waitForSeconds = tempWaitForSeconds;
+        #endregion
     }
     protected void DetermineStartingDirection()
     {
@@ -152,6 +175,18 @@ public class GameCharacter : MonoBehaviour
         rotationTime = 0f;
         StartCoroutine(FlipCharacterSprite());
     } // Sets character's rotation
+
+    public void FlipCharacter(object invoker, bool facingRight)
+    {
+        if (typeof(RockScript).IsAssignableFrom(invoker.GetType()))
+        {
+            this.facingRight = facingRight;
+            targetRotation = Quaternion.Euler(targetRotation.eulerAngles.x, facingRight ? 180.0f : 0.0f, targetRotation.eulerAngles.z);
+            rotationTime = 0f;
+            StartCoroutine(FlipCharacterSprite());
+        }
+    } // Sets character's rotation and only let the RockScript class can invoking this functions
+
     private IEnumerator FlipCharacterSprite()
     {
         while(rotationTime < 1f)
@@ -161,4 +196,40 @@ public class GameCharacter : MonoBehaviour
             yield return null;
         }
     } // Makes character's sprite flip with flip effect
+
+    protected void GetDamageEffect()
+    {
+        if (this.currentHealth > 0)
+        {
+            StopCoroutine("DamageColorChange");
+            StartCoroutine("DamageColorChange");
+        }
+    } // Makes character's sprite get damage with hurt effect
+    private IEnumerator DamageColorChange()
+    {
+        EachPartOfBodyColorChange(getDamageColor);
+        yield return waitForSeconds[0];
+        EachPartOfBodyColorChange(originialColor.ToArray());
+        yield return waitForSeconds[1];
+        EachPartOfBodyColorChange(getDamageColor);
+        yield return waitForSeconds[2];
+        EachPartOfBodyColorChange(originialColor.ToArray());
+
+        yield return null;
+    } // Hurt effect color change coroutine
+    private void EachPartOfBodyColorChange(Color colorChange)
+    {
+        foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
+        {
+            tempSpriteRenderer.color = colorChange;
+        }
+    } // Change whole body's color to a Color type variable
+    private void EachPartOfBodyColorChange(Color[] colorsChange)
+    {
+        for (int i = 0; i < spriteRenderers.Count; i++)
+        {
+            spriteRenderers[i].color = colorsChange[i];
+        }
+    } // Change whole body's color take an array Color type variable
+
 }

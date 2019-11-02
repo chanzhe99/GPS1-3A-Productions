@@ -1,6 +1,9 @@
-﻿public class Global
+﻿using UnityEngine;
+
+public class Global
 {
     public static GameManager gameManager;
+    public static UIActiveManager userInterfaceActiveManager;
 
     public static readonly string pathOfData_PlayerSpawnData = "/data/PlayerSpawnData.dat";
     public static readonly string pathOfData_TutorialData = "/data/TutorialData.dat";
@@ -21,5 +24,19 @@
     public static readonly string nameAnimatorBool_RhinoAI_Phase2 = "Phase2";
     public static readonly string nameAnimatorBool_RhinoAI_OnStompWave = "OnStompWave";
     public static readonly string nameAnimatorBool_RhinoAI_ContinueAttack = "ContinueAttack";
+    public static readonly string nameAnimatorBool_Sing_IsRunning = "isRunning";
+    public static readonly string nameAnimatorBool_Song_IsRunning = "isRunning";
+    public static readonly string nameAnimatorBool_Song_IsHealing = "isHealing";
+
+    public static readonly string[] nameInputs = { "Horizontal", "Vertical", "InteractButton", "JumpButton", "HealButton", "DashButton", "MeleeAttackButton", "SpiritAttackButton" };
+
+    public static readonly string nameAnimatorLayer_SpecialAnimationLayer = "Special Animation Layer";
+
+    public static readonly string nameGameObject_UI = "UI";
+    public static readonly string[] nameGameObject_Menus = { "PauseMenuUI", "TutorialUI", "AbilityGainUI", "InGameUI", "DialogueUI", "StartMenuUI" };
+
     public enum SceneIndex{ Splash, Area1, EndScene }
+    public enum InputsType { Horizontal, Vertical, InteractButton, JumpButton, HealButton, DashButton, MeleeAttackButton, SpiritAttackButton, Length };
+    public enum MenusType { PauseMenuUI, TutorialUI, AbilityGainUI, InGameUI, DialogueUI, StartMenuUI };
 }
+

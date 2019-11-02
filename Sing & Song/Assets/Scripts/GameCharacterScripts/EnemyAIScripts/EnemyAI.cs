@@ -68,7 +68,7 @@ public class EnemyAI : GameCharacter
     {
         base.Initialise();
         #region Initialise Player Component Variables
-        playerObject = GameObject.FindGameObjectWithTag("Player");
+        playerObject = FindObjectOfType<SingScript>().gameObject;//GameObject.FindGameObjectWithTag("Player");
         playerTransform = playerObject.GetComponent<Transform>();
         playerScript = playerObject.GetComponent<SingScript>();
         #endregion
@@ -173,6 +173,10 @@ public class EnemyAI : GameCharacter
                         //rigidbody2D.gravityScale = 0.0f; // for testing
                         capsuleCollider2D.enabled = false; // for testing
                     }
+                    else
+                    {
+                        Physics2D.IgnoreCollision(this.GetComponentInChildren<Collider2D>(), playerObject.GetComponentInChildren<Collider2D>());
+                    }
                 }
                 if (this.deathFadeOutTimeTimer >= this.deathFadeOutTime)
                 {
@@ -230,16 +234,27 @@ public class EnemyAI : GameCharacter
     protected virtual void EnemyRetreat() {}
     public virtual void DamageEnemyMelee()
     {
-        if(playerTransform.position.x >= this.transform.position.x) { this.knockbackDirection.x = -this.knockbackForce.x; }
-        else { this.knockbackDirection.x = this.knockbackForce.x; }
-        if(this.enemyState != EnemyState.ENEMY_HIT)
+        if (isAwayCheckPlayer)
         {
-            this.enemyState = EnemyState.ENEMY_HIT;
-            StartCoroutine(this.EnemyKnockback());
-            if(!spiritArmour.activeSelf)
+            if(playerTransform.position.x >= this.transform.position.x) { this.knockbackDirection.x = -this.knockbackForce.x; }
+            else { this.knockbackDirection.x = this.knockbackForce.x; }
+            if(this.enemyState != EnemyState.ENEMY_HIT)
             {
-                if(this.currentHealth > 0) { this.currentHealth -= 1; }
+                this.enemyState = EnemyState.ENEMY_HIT;
+                StartCoroutine(this.EnemyKnockback());
+                if(!spiritArmour.activeSelf)
+                {
+                    if(this.currentHealth > 0)
+                    {
+                        GetDamageEffect();
+                        this.currentHealth -= 1;
+                    }
+                }
             }
+        }
+        else
+        {
+            GetDamageEffect();
         }
     } // Gets called when enemy is melee attacked by player
     protected virtual void DamageEnemySpirit()
@@ -269,15 +284,15 @@ public class EnemyAI : GameCharacter
     
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (isAwayCheckPlayer)
+        if (isAwayCheckPlayer && currentHealth > 0.0f)
         {
-            if (collision.gameObject.CompareTag("Player")) { collision.gameObject.GetComponent<SingScript>().DamagePlayer(this.transform); }
+            if (collision.gameObject.CompareTag("Player")) { playerScript.DamagePlayer(this.transform); }
         }
     } // Enemy hits player collision check
     
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (isAwayCheckPlayer)
+        if (isAwayCheckPlayer && currentHealth > 0.0f)
         {
             if (collision.CompareTag("SpiritAttack") && this.enemyState != EnemyState.ENEMY_HIT)
             {

@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 public class SplashScreenController : MonoBehaviour
 {
     private Animator splashScreenAnimator;
-    
+    private float fixedSeeLogoTimer;
+    private float fixedSeeLogoTime = 1.0f;
+
     private enum SplashState { KDU_Logo, ThreeA_Production_Logo };
     private SplashState splashState = SplashState.KDU_Logo;
     private void Start()
@@ -16,7 +18,8 @@ public class SplashScreenController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.anyKeyDown && splashState <= SplashState.ThreeA_Production_Logo)
+        fixedSeeLogoTimer += 1.0f * Time.deltaTime;
+        if (Input.anyKeyDown && splashState <= SplashState.ThreeA_Production_Logo && fixedSeeLogoTimer > fixedSeeLogoTime)
         {
             switch (splashState)
             {
@@ -29,6 +32,11 @@ public class SplashScreenController : MonoBehaviour
             }
             splashState++;
         }
+    }
+
+    public void ResetFixedTimeToSeeLogo()
+    {
+        fixedSeeLogoTimer = 0.0f;
     }
 
     public void EndSplashScreen()

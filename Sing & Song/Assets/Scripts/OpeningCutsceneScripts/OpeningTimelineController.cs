@@ -11,7 +11,7 @@ public class OpeningTimelineController : MonoBehaviour
     [SerializeField] private GameObject singGameObject;
     [SerializeField] private Transform playerPivotPoint;
     [SerializeField] private GameObject boatGameObject;
-    [SerializeField] private GameObject inGameUIGameObject;
+    //[SerializeField] private GameObject inGameUIGameObject;
     [SerializeField] private GameObject triggerEvent;
     private DialogueTrigger openingDialogueTrigger;
     private DialogueManager dialogueManager;
@@ -89,17 +89,17 @@ public class OpeningTimelineController : MonoBehaviour
 
     private void DisableSingController()
     {
-        inGameUIGameObject.SetActive(false);
-        singGameObject.GetComponent<SingScript>().canDoAction = false;
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, false);
+        singGameObject.GetComponent<SingScript>().CanDoAction = false;
         singGameObject.GetComponent<SingScript>().enabled = false;
         singGameObject.GetComponent<Rigidbody2D>().gravityScale = 0.0f;
     }
 
     private void EnableSingController()
     {
-        inGameUIGameObject.SetActive(true);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, true);
         singGameObject.GetComponent<SingScript>().enabled = true;
-        singGameObject.GetComponent<SingScript>().canDoAction = true;
+        singGameObject.GetComponent<SingScript>().CanDoAction = true;
         singGameObject.GetComponent<Rigidbody2D>().gravityScale = singDefaultGravityScaleValue;
     }
 

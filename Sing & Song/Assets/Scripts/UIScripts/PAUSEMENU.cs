@@ -12,6 +12,7 @@ public class PAUSEMENU : MonoBehaviour
 {
     private bool paused = false;
     [SerializeField] private GameObject pauseMenuPanelGameObject;
+    [SerializeField] private GameObject pauseOptionMenuPanelGameObject;
 
     void Update()
     {        
@@ -32,7 +33,8 @@ public class PAUSEMENU : MonoBehaviour
     }
     public void Resume()
     {
-        pauseMenuPanelGameObject.SetActive(false);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.PauseMenuUI, false, 0.5f);
+
         paused = false;
         Time.timeScale = 1.0f;
     }
@@ -40,6 +42,9 @@ public class PAUSEMENU : MonoBehaviour
     public void Pause()
     {
         pauseMenuPanelGameObject.SetActive(true);
+        pauseOptionMenuPanelGameObject.SetActive(false);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.PauseMenuUI, true, 0.3f);
+
         paused = true;
         Time.timeScale = 0.0f;
     }

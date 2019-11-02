@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class CheckPoint : MonoBehaviour
 {
+    [HideInInspector] public RockScript rockScript = null;
+
     [SerializeField] private Animator checkPointUIBackgroundImageAnimator;
     [SerializeField] private ColdDownCount timerSavedPointRequest;
     [SerializeField] private Vector2 boxSizeVector2;
@@ -29,6 +31,8 @@ public class CheckPoint : MonoBehaviour
     private bool isPlayerInArea = false;
     private bool isPressingButton = false;
     private bool ableToSaveData = false;
+
+    public bool AbleToSaveData { get { return ableToSaveData; } }
 
     private string layerMaskPlayer = "Player";
 
@@ -73,6 +77,11 @@ public class CheckPoint : MonoBehaviour
         {
             if (timerSavedPointRequest.CountingAndCheck()) //Save Point here
             {
+                if (rockScript != null) //&& Global.gameManager.CurrentPointIndex != pointIndex)
+                {
+                    rockScript.specialCheckpointFirstTimeSave();
+                }
+
                 isPressingButton = false;
                 ableToSaveData = false;
 
@@ -80,9 +89,7 @@ public class CheckPoint : MonoBehaviour
                 Global.gameManager.SaveAllGameDatas();
 
                 timerSavedPointRequest.ResetTimer();
-
             }
-
         }
 
     }

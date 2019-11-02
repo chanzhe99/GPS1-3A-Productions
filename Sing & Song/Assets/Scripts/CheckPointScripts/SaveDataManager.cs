@@ -61,7 +61,7 @@ public class SaveDataManager
 
                 dataObject = binaryFormatter.Deserialize(fileStream) as object;
 
-                Debug.Log("Load Data Path( " + Application.persistentDataPath + path + " ) achieved !");
+                //Debug.Log("Load Data Path( " + Application.persistentDataPath + path + " ) achieved !");
 
             }
             catch (Exception exception)
@@ -116,7 +116,7 @@ public class SaveDataManager
             try
             {
                 File.Delete(Application.persistentDataPath + path);
-                Debug.Log("Delete Data Path( " + Application.persistentDataPath + path + " ) achieved !");
+                //Debug.Log("Delete Data Path( " + Application.persistentDataPath + path + " ) achieved !");
             }
             catch (Exception exception)
             {

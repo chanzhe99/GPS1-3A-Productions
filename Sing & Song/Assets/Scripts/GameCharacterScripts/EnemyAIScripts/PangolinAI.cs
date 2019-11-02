@@ -108,10 +108,15 @@ sealed public class PangolinAI : EnemyAI
         else { knockbackDirection.x = knockbackForce.x; }
         if(enemyState == EnemyState.ENEMY_RESTING)
         {
+            GetDamageEffect();
             StartCoroutine(EnemyKnockback());
             if(!spiritArmour.activeSelf)
             {
-                if(currentHealth > 0) { currentHealth -= 1; }
+                if(currentHealth > 0)
+                {
+                    GetDamageEffect();
+                    currentHealth -= 1;
+                }
             }
         }
         else if(enemyState != EnemyState.ENEMY_HIT)

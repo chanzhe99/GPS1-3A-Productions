@@ -6,7 +6,7 @@ public class TutorialManager : MonoBehaviour
 {
     public enum Index_ButtonNameOfTutorial { Horizontal, JumpButton, MeleeAttackButton };
 
-    [SerializeField] private GameObject tutorialUIGameObject;
+    //[SerializeField] private GameObject tutorialUIGameObject;
     [SerializeField] private Animator tutorialUIAnimator;
     [SerializeField] private Text tutorialText;
     [SerializeField] private GameObject singGameObject;
@@ -28,7 +28,6 @@ public class TutorialManager : MonoBehaviour
 
     private void Awake()
     {
-        tutorialUIGameObject.SetActive(true);
         tutorialUIAnimator.SetBool("IsShowing", false);
     }
 
@@ -46,7 +45,7 @@ public class TutorialManager : MonoBehaviour
             }
         }
         //keysImage.sprite = keysImageSprites[(int)index_ButtonNameOfTutorial];
-        tutorialUIGameObject.SetActive(true);
+        Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TutorialUI, true);
         tutorialStartPosition = singGameObject.transform.position;
         currentRequestNameOfButton = buttonNameOfTutorial[(int)index_ButtonNameOfTutorial];
         tutorialText.text = tutorialDialogue[(int)index_ButtonNameOfTutorial];
@@ -102,14 +101,14 @@ public class TutorialManager : MonoBehaviour
         if (index_ButtonNameOfTutorial == Index_ButtonNameOfTutorial.Horizontal)
         {
             yield return new WaitForSeconds(1.0f);
-            tutorialUIGameObject.SetActive(false);
+            Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TutorialUI, false);
             ShowTutorialUI(Index_ButtonNameOfTutorial.JumpButton);
         }
     }
 
     public void FadeInTutorialUI() // didn't use yet
     {
-        tutorialUIGameObject.SetActive(false);
+        Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TutorialUI, false);
         this.enabled = false;
     }
 

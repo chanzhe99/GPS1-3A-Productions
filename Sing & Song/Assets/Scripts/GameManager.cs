@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private Animator trasitionFadeAnimator;
 
     public SingScript playerScript;
+    public GameObject singGameObject;
     public GameObject songGameObject;
     private List<CheckPoint> checkPoints;
     private SaveData.PlayerSpawnData playerSpawnData;
@@ -131,7 +132,7 @@ public class GameManager : MonoBehaviour
 
     public void TimeToEndAndSayThankYou()
     {
-        playerScript.canDoAction = false;
+        playerScript.CanDoAction = false;
         playerScript.doAnimationFollowPlayerState = false;
 
         StopAllCoroutines();

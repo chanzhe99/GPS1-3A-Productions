@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RhinoAI : EnemyAI
 {
+    private GameObject rhinoBossObjectPool;
     public bool ableDoEnemyState = false;
 
     #region General position and count distance variable
@@ -26,13 +27,14 @@ public class RhinoAI : EnemyAI
 
     #region Enemy SpriteRenderer color detail
         //For check pre-war action got working or not, can delete it when you put in the animation.
-        [SerializeField] private GameObject headGameObjectOfAllSpriteRenderers;
-        private List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
-        [SerializeField] private float dieTransparentColorSpeed;
-        private Color tempDieTransparentColor;
-        [SerializeField] private Color getDamageColor;
-        [SerializeField] private Color getNotDamageColor;
-        private List<Color> originialColor = new List<Color>();
+        //[Header("Hurt Color Detials : ")]
+        //[SerializeField] private GameObject headGameObjectOfAllSpriteRenderers;
+        //private List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
+        //[SerializeField] private float dieTransparentColorSpeed;
+        //private Color tempDieTransparentColor;
+        //[SerializeField] private Color getDamageColor;
+        //[SerializeField] private Color getNotDamageColor;
+        //private List<Color> originialColor = new List<Color>();
     #endregion
 
     #region Boss Phase Attack State
@@ -61,6 +63,7 @@ public class RhinoAI : EnemyAI
 
         // Stom Wave Prefab And Wave Game Objects
         [SerializeField] private GameObject wavePrefab;
+        private GameObject waveGameObjectsContainer;
         private List<GameObject> waveGameObjects = new List<GameObject>();
 
         // Stom Wave Number Of Times Detail
@@ -76,7 +79,8 @@ public class RhinoAI : EnemyAI
 
         // Different 3 Shpae Of Rockfall Prefab And Rockfall GameObjects
         [SerializeField] private List<GameObject> rockfallPrefabs = new List<GameObject>();
-        private List<GameObject> rocksOfFalls = new List<GameObject>();
+        private GameObject rocksOfFallGameobjectsContainer;
+        private List<GameObject> rocksOfFallGameobjects = new List<GameObject>();
 
         // Setting Rockfall Fixed Appear Position
         private List<Vector2> rockfallFixedDifferentAppearPosition = new List<Vector2>(); // Set Original Positions To Get The Memory Address For Random
@@ -145,10 +149,18 @@ public class RhinoAI : EnemyAI
         terrainLayer = LayerMask.GetMask("Terrain");
         enemyTransform = transform;
 
+        rhinoBossObjectPool = new GameObject("rhinoBossObjectPool");
+        rocksOfFallGameobjectsContainer = new GameObject("rockfallsContainer");
+        waveGameObjectsContainer = new GameObject("waveContainer");
+
+        rocksOfFallGameobjectsContainer.transform.SetParent(rhinoBossObjectPool.transform);
+        waveGameObjectsContainer.transform.SetParent(rhinoBossObjectPool.transform);
+
         for (int i=0; i < eachRoundHowManyRockfalls; i++)
         {
-            rocksOfFalls.Add(Instantiate(rockfallPrefabs[Random.Range(0, 3)], Vector2.zero, Quaternion.identity));
-            rocksOfFalls[i].SetActive(false);
+            rocksOfFallGameobjects.Add(Instantiate(rockfallPrefabs[Random.Range(0, 3)], Vector2.zero, Quaternion.identity));
+            rocksOfFallGameobjects[i].transform.SetParent(rocksOfFallGameobjectsContainer.transform);
+            rocksOfFallGameobjects[i].SetActive(false);
         }
 
         Vector2 tempValue = new Vector2(); // The whole game only use one time, so crete it here more save memory usage frequency 
@@ -159,10 +171,12 @@ public class RhinoAI : EnemyAI
             tempValue.y = rockfallSourceOriginPoint.position.y;
             rockfallFixedDifferentAppearPosition.Add(tempValue);
         }
-
+        
+        
         for (int i=0; i < maxNumberOfStomWave; i++)
         {
             waveGameObjects.Add(Instantiate(wavePrefab, Vector2.zero, Quaternion.identity));
+            waveGameObjects[i].transform.SetParent(waveGameObjectsContainer.transform);
             waveGameObjects[i].gameObject.SetActive(false);
         }
 
@@ -170,13 +184,15 @@ public class RhinoAI : EnemyAI
         enemyEtherealArmourGameObject = tempGameObject;
         enemyEtherealArmourGameObject.GetComponent<RhinoEtherealArmourController>().rhinoAI = this.GetComponent<RhinoAI>();
         enemyEtherealArmourTransform = enemyEtherealArmourGameObject.transform;
+        enemyEtherealArmourTransform.SetParent(rhinoBossObjectPool.transform);
         enemyEtherealArmourGameObject.SetActive(false);
-
+        /*
         foreach (SpriteRenderer tempSpriteRenderer in headGameObjectOfAllSpriteRenderers.GetComponentsInChildren<SpriteRenderer>())
         {
             spriteRenderers.Add(tempSpriteRenderer);
             originialColor.Add(tempSpriteRenderer.color);
         }
+        */
     }
 
     protected override void EnemyPatrol()
@@ -347,9 +363,9 @@ public class RhinoAI : EnemyAI
                     int whichPosition = Random.Range(0, tempRockfallFixedDifferentAppearPosition.Count); // random the current rockfall position without overlap the same position in a round
 
                     // set the rock appaer to the position and default rotate
-                    rocksOfFalls[indexOfWhichRockIsFalling].transform.SetPositionAndRotation(tempRockfallFixedDifferentAppearPosition[whichPosition], Quaternion.identity);
+                    rocksOfFallGameobjects[indexOfWhichRockIsFalling].transform.SetPositionAndRotation(tempRockfallFixedDifferentAppearPosition[whichPosition], Quaternion.identity);
 
-                    rocksOfFalls[indexOfWhichRockIsFalling].SetActive(true);
+                    rocksOfFallGameobjects[indexOfWhichRockIsFalling].SetActive(true);
 
                     tempRockfallFixedDifferentAppearPosition.RemoveAt(whichPosition);// remove the temp position at which Position, so next rockfall won't be same postion after a round
 
@@ -467,9 +483,9 @@ public class RhinoAI : EnemyAI
                         int whichPosition = Random.Range(0, tempRockfallFixedDifferentAppearPosition.Count); // random the current rockfall position without overlap the same position in a round
 
                         // set the rock appaer to the position and default rotate
-                        rocksOfFalls[indexOfWhichRockIsFalling].transform.SetPositionAndRotation(tempRockfallFixedDifferentAppearPosition[whichPosition], Quaternion.identity);
+                        rocksOfFallGameobjects[indexOfWhichRockIsFalling].transform.SetPositionAndRotation(tempRockfallFixedDifferentAppearPosition[whichPosition], Quaternion.identity);
 
-                        rocksOfFalls[indexOfWhichRockIsFalling].SetActive(true);
+                        rocksOfFallGameobjects[indexOfWhichRockIsFalling].SetActive(true);
 
                         tempRockfallFixedDifferentAppearPosition.RemoveAt(whichPosition);// remove the temp position at which Position, so next rockfall won't be same postion after a round
 
@@ -548,76 +564,63 @@ public class RhinoAI : EnemyAI
 
     public override void DamageEnemyMelee()
     {
-        if (enemyState == EnemyState.ENEMY_RESTING)
-        {
-            if (!spiritArmour.activeSelf)
-            {
-                if (this.currentHealth > 0)
-                {
-                    this.currentHealth -= 1;
-                    StopCoroutine("DamageColorChange");
-                    StopCoroutine("NotDamageColorChange");
-
-                    StartCoroutine("DamageColorChange");
-                }
-
-            }
-        }
-        else
-        {
-            StopCoroutine("DamageColorChange");
-            StopCoroutine("NotDamageColorChange");
-
-            StartCoroutine("NotDamageColorChange");
-        }
-    }
-
-    protected override void DamageEnemySpirit()
-    {
-        if(enemyState == EnemyState.ENEMY_RESTING)
+        if (!spiritArmour.activeSelf)
         {
             if (this.currentHealth > 0)
             {
-                this.currentHealth -= 2;
+                this.currentHealth -= 1;
                 StopCoroutine("DamageColorChange");
                 StopCoroutine("NotDamageColorChange");
 
                 StartCoroutine("DamageColorChange");
             }
-            
+
         }
-        else
+    }
+    /*
+    protected override void DamageEnemySpirit()
+    {
+        if (this.currentHealth > 0)
         {
+            this.currentHealth -= 2;
             StopCoroutine("DamageColorChange");
             StopCoroutine("NotDamageColorChange");
 
-            StartCoroutine("NotDamageColorChange");
+            StartCoroutine("DamageColorChange");
         }
     }
-
+    */
     protected override void EnemyDieSound()
     {
         SoundManagerScripts.PlaySound("rhino_die_sound");
     }
-
+    /*
     private IEnumerator DamageColorChange()
     {
+        float colorChangeTime01 = 0.15f;
+        float colorChangeTime02 = 0.05f;
+        float colorChangeTime03 = 0.05f;
+
+        WaitForSeconds waitForSeconds01 = new WaitForSeconds(colorChangeTime01);
+        WaitForSeconds waitForSeconds02 = new WaitForSeconds(colorChangeTime02);
+        WaitForSeconds waitForSeconds03 = new WaitForSeconds(colorChangeTime03);
+
         foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
         {
             tempSpriteRenderer.color = getDamageColor;
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return waitForSeconds01;
         for (int i=0; i < spriteRenderers.Count; i++)
         {
                 spriteRenderers[i].color = originialColor[i];
         }
-        yield return new WaitForSeconds(0.05f);
+        yield return waitForSeconds02;
 
         foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
         {
             tempSpriteRenderer.color = getDamageColor;
         }
-        yield return new WaitForSeconds(0.05f);
+        yield return waitForSeconds03;
         for (int i = 0; i < spriteRenderers.Count; i++)
         {
             spriteRenderers[i].color = originialColor[i];
@@ -625,6 +628,7 @@ public class RhinoAI : EnemyAI
         yield return null;
     }
 
+    /*
     private IEnumerator NotDamageColorChange()
     {
         foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
@@ -638,6 +642,7 @@ public class RhinoAI : EnemyAI
         }
         yield return null;
     }
+    */
 
     protected override void EnemyDieColorChange()
     {
@@ -655,13 +660,13 @@ public class RhinoAI : EnemyAI
             this.gameObject.SetActive(false);
         }
     }
-
+    
     private void OnDestroy()
     {
         //For clear residuary rockfalls when the boss is die, because the player only can fight this boss one time, if the player still can fight again this boss then delete this whole OnDestroy() function.
-        for (int i = 0; i < rocksOfFalls.Count; i++)
+        for (int i = 0; i < rocksOfFallGameobjects.Count; i++)
         {
-            Destroy(rocksOfFalls[i]);
+            Destroy(rocksOfFallGameobjects[i]);
             Debug.Log("delete rocks fall");
         }
         for (int i = 0; i < maxNumberOfStomWave; i++)

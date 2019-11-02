@@ -40,7 +40,7 @@ public class STARTMENU : MonoBehaviour
             continueButtonText.color = continueButtonNotInteractableTextColor;
         }
         
-        player.GetComponent<SingScript>().canDoAction = false;
+        player.GetComponent<SingScript>().CanDoAction = false;
         
         if (PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayNewGameState))
         {
@@ -68,7 +68,7 @@ public class STARTMENU : MonoBehaviour
             {
                 levelTransitionScreenFadingAnimator.SetTrigger(nameAnimatorTrigger_StartFading);
                 inGameUIGameObject.SetActive(true);
-                FindObjectOfType<SingScript>().canDoAction = true;
+                FindObjectOfType<SingScript>().CanDoAction = true;
                 Time.timeScale = 1.0f;
                 startMenuPanelGameObject.SetActive(false);
                 PlayerPrefs.SetString(name_PlayerPrefs_OnPlayerRevive, "false");
@@ -125,7 +125,7 @@ public class STARTMENU : MonoBehaviour
 
         if (tempOpeningTimelineController == null)
         {
-            player.GetComponent<SingScript>().canDoAction = true;
+            player.GetComponent<SingScript>().CanDoAction = true;
             inGameUIGameObject.SetActive(true);
         }
     }

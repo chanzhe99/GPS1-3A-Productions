@@ -9,10 +9,11 @@ public class SingScript : GameCharacter
     #region Permission Variables
     [Header("Ability Variables")]
     [SerializeField] private Image[] abilityHearts;
-    [HideInInspector] public bool canDoAction = true;
+    [HideInInspector] private bool canDoAction = true;
     public bool canHeal = true;
     public bool canDash = true;
     private bool canSpiritAttack = false;
+    public bool CanDoAction { get { return canDoAction; } set { canDoAction = value; playerState = PlayerState.PLAYER_IDLE; } }
     #endregion
     #region Input Variables
     private Vector2 input;
@@ -166,6 +167,7 @@ public class SingScript : GameCharacter
     } // Initialises player variables
     private void Update()
     {
+        /*
         if(Input.GetKeyDown(KeyCode.F1))
         {
             if(!animator.GetBool("isResting"))
@@ -179,6 +181,7 @@ public class SingScript : GameCharacter
                 songAnimator.SetBool("isResting", false);
             }
         }
+        */
         if(Input.GetKey(KeyCode.O))
         {
             songAnimator.SetBool("isHealing", true);
@@ -188,10 +191,12 @@ public class SingScript : GameCharacter
             songAnimator.SetBool("isHealing", false);
         }
 
+        if (canDoAction) // If canDoAction is false, that mean have some event triggered and it don't want player can be controling
+        {
 
-        #region Check Permissions
-        if(!canDoAction) this.playerState = PlayerState.PLAYER_IDLE;
-        if(canHeal)
+            #region Check Permissions
+            //this.playerState = PlayerState.PLAYER_IDLE;
+            if (canHeal)
         {
             abilityHearts[0].enabled = true;
             abilityHearts[0].color = new Color32(148, 250, 242, 255);
@@ -203,138 +208,140 @@ public class SingScript : GameCharacter
             abilityHearts[1].color = new Color32(148, 250, 242, 255);
         }
         #endregion
-        #region Check Inputs
-        if(canDoAction) // Checks for if player is in dialogue mode
-        {
-            input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // Input for directions
-            inputJumpPress = Input.GetButtonDown("JumpButton"); // Input for jump press
-            inputJump = Input.GetButton("JumpButton"); // Input for jump
-            if(canHeal) inputHeal = Input.GetButton("HealButton"); // Input for heal
-            if(canDash) inputDash = Input.GetButtonDown("DashButton"); // Input for dash
-            inputMeleeAttack = Input.GetButtonDown("MeleeAttackButton"); // Input for melee attack
-            if(canSpiritAttack) inputSpiritAttack = Input.GetButtonDown("SpiritAttackButton"); // Input for spirit attack
-        }
-        inputInteract = Input.GetButtonDown("InteractButton"); // Input for interact
-        #endregion
-        #region Check Ground & Ceiling
-        UpdateRaycastOrigins();
-        VerticalCollisionDetection();
-        #endregion
-        #region Check Health
-        if(currentHealth <= 0)
-        {
-            FindObjectOfType<STARTMENU>().PlayerRevive();
-        }
-        #endregion
-        #region Check Spirit
-        if (currentSpirit > maximumSpirit) { currentSpirit = maximumSpirit; }
-        if(currentSpirit < 0) { currentSpirit = 0; }
-        if(playerState != PlayerState.PLAYER_HEALING && currentSpirit >= spiritDrainToUse - 0.1f && currentSpirit < spiritDrainToUse) { currentSpirit = Mathf.Round(currentSpirit); }
-        #endregion
-        #region Reset jumpTime
-        if(playerState != PlayerState.PLAYER_JUMPING && jumpTime > 0) { jumpTime = 0; }
-        #endregion
-        #region Reset Heal Input Buffer
-        if(!inputHeal && inputBuffer > 0) { inputBuffer = 0; }
-        #endregion
-        #region Reset Dash Interval
-        if(dashIntervalTimer < dashInterval) { dashIntervalTimer += Time.deltaTime; }
-        #endregion
-        #region Update Melee Attack Interval Timer & Position
-        if(meleeAttackIntervalTimer < meleeAttackInterval) { meleeAttackIntervalTimer += Time.deltaTime; }
-        if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING || playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
-        {
-            if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval)
+            #region Check Inputs
+                input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // Input for directions
+                inputJumpPress = Input.GetButtonDown("JumpButton"); // Input for jump press
+                inputJump = Input.GetButton("JumpButton"); // Input for jump
+                if (canHeal) inputHeal = Input.GetButton("HealButton"); // Input for heal
+                if (canDash) inputDash = Input.GetButtonDown("DashButton"); // Input for dash
+                inputMeleeAttack = Input.GetButtonDown("MeleeAttackButton"); // Input for melee attack
+                if (canSpiritAttack) inputSpiritAttack = Input.GetButtonDown("SpiritAttackButton"); // Input for spirit attack
+
+                inputInteract = Input.GetButtonDown("InteractButton"); // Input for interact
+            #endregion
+            #region Check Ground & Ceiling
+            UpdateRaycastOrigins();
+            VerticalCollisionDetection();
+            #endregion
+            #region Check Health
+            if(currentHealth <= 0)
             {
-                meleeAttackIntervalTimer = 0f;
-                PlayerMeleeAttack();
+                FindObjectOfType<STARTMENU>().PlayerRevive();
             }
+            #endregion
+            #region Check Spirit
+            if (currentSpirit > maximumSpirit) { currentSpirit = maximumSpirit; }
+            if(currentSpirit < 0) { currentSpirit = 0; }
+            if(playerState != PlayerState.PLAYER_HEALING && currentSpirit >= spiritDrainToUse - 0.1f && currentSpirit < spiritDrainToUse) { currentSpirit = Mathf.Round(currentSpirit); }
+            #endregion
+            #region Reset jumpTime
+            if(playerState != PlayerState.PLAYER_JUMPING && jumpTime > 0) { jumpTime = 0; }
+            #endregion
+            #region Reset Heal Input Buffer
+            if(!inputHeal && inputBuffer > 0) { inputBuffer = 0; }
+            #endregion
+            #region Reset Dash Interval
+            if(dashIntervalTimer < dashInterval) { dashIntervalTimer += Time.deltaTime; }
+            #endregion
+            #region Update Melee Attack Interval Timer & Position
+            if(meleeAttackIntervalTimer < meleeAttackInterval) { meleeAttackIntervalTimer += Time.deltaTime; }
+            if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING || playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
+            {
+                if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval)
+                {
+                    meleeAttackIntervalTimer = 0f;
+                    PlayerMeleeAttack();
+                }
+            }
+            #endregion
+            #region Update Spirit Attack Position
+            spiritAttack.transform.position = meleeAttackTransform.position;
+            if(inputSpiritAttack && currentSpirit >= spiritDrainToUse)
+            {
+                currentSpirit -= spiritDrainToUse;
+                playerState = PlayerState.PLAYER_SPIRIT;
+            }
+            #endregion
+            #region Set Enemy Layer Collision
+            ignoreEnemyCollision = !vulnerable;
+            Physics2D.IgnoreLayerCollision(8, 9, ignoreEnemyCollision);
+            #endregion
+            #region Update UI
+            for (int i = 0; i < healthCrystals.Length; i++) { healthCrystals[i].enabled = (i < currentHealth) ? true : false; }
+            spiritWellAlpha = (playerState != PlayerState.PLAYER_HEALING && currentSpirit < spiritDrainToUse) ? 0.6f : 1f;
+            spiritWell.color = new Color(1f, 1f, 1f, Mathf.Lerp(spiritWell.color.a, spiritWellAlpha, Time.deltaTime * 2));
+            currentSpiritWellPosition = Vector2.Lerp(minimumSpiritWellPosition, maximumSpiritWellPosition, currentSpirit/maximumSpirit);
+            spiritWell.rectTransform.anchoredPosition = Vector2.Lerp(spiritWell.rectTransform.anchoredPosition, currentSpiritWellPosition, Time.deltaTime * 10f);
+
+            if(previousSpiritWellPosition != currentSpiritWellPosition.y)
+            {
+                //spiritWell.rectTransform.Translate(spiritWellFlowSpeed * Time.deltaTime, 0f, 0f);
+                previousSpiritWellPosition = currentSpiritWellPosition.y;
+            }
+            #endregion
+            #region Update Animation
+            if(inputJumpPress && isGrounded) { animator.SetTrigger("jump"); }
+            //if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { animator.SetTrigger("attack"); }
+            #endregion
+
+            PlayerSwitchState();
         }
-        #endregion
-        #region Update Spirit Attack Position
-        spiritAttack.transform.position = meleeAttackTransform.position;
-        if(inputSpiritAttack && currentSpirit >= spiritDrainToUse)
-        {
-            currentSpirit -= spiritDrainToUse;
-            playerState = PlayerState.PLAYER_SPIRIT;
-        }
-        #endregion
+
         #region Update Song Node Position
         nodeOffset = (facingRight) ? -nodeOffsetDefault : nodeOffsetDefault;
-        if(nodeIntervalTimer > nodeInterval)
+        if (nodeIntervalTimer > nodeInterval)
         {
             nodeIntervalTimer = 0f;
             //nodePosition = (Vector2)transform.position + nodeOffset;
-            if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING) { nodePosition = (Vector2)transform.position + nodeOffset; }
-            if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING || playerState == PlayerState.PLAYER_DASHING || playerState == PlayerState.PLAYER_SPIRIT) { nodePosition = (Vector2)transform.position; }
+            if (playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING) { nodePosition = (Vector2)transform.position + nodeOffset; }
+            if (playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING || playerState == PlayerState.PLAYER_DASHING || playerState == PlayerState.PLAYER_SPIRIT) { nodePosition = (Vector2)transform.position; }
         }
         else { nodeIntervalTimer += Time.deltaTime; }
         #endregion
         #region Update Song Position
-        if(this.transform.position.x < song.transform.position.x && song.transform.rotation.eulerAngles.y < 90f)
+        if (doAnimationFollowPlayerState)
         {
-            songTargetRotation = Quaternion.Euler(songTargetRotation.eulerAngles.x, 180f, songTargetRotation.eulerAngles.z);
-            songRotationTime = 0f;
-            StartCoroutine(FlipSongSprite());
-        }
-        if(this.transform.position.x > song.transform.position.x && song.transform.rotation.eulerAngles.y > 90f)
-        {
-            songTargetRotation = Quaternion.Euler(songTargetRotation.eulerAngles.x, 0f, songTargetRotation.eulerAngles.z);
-            songRotationTime = 0f;
-            StartCoroutine(FlipSongSprite());
-        }
-        if(doAnimationFollowPlayerState)
-        {
-            if(playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING)
+            if (this.transform.position.x < song.transform.position.x && song.transform.rotation.eulerAngles.y < 90f)
+            {
+                songTargetRotation = Quaternion.Euler(songTargetRotation.eulerAngles.x, 180f, songTargetRotation.eulerAngles.z);
+                songRotationTime = 0f;
+                StartCoroutine(FlipSongSprite());
+            }
+            if (this.transform.position.x > song.transform.position.x && song.transform.rotation.eulerAngles.y > 90f)
+            {
+                songTargetRotation = Quaternion.Euler(songTargetRotation.eulerAngles.x, 0f, songTargetRotation.eulerAngles.z);
+                songRotationTime = 0f;
+                StartCoroutine(FlipSongSprite());
+            }
+
+            if (playerState == PlayerState.PLAYER_IDLE || playerState == PlayerState.PLAYER_RUNNING)
             {
                 song.GetComponent<Rigidbody2D>().gravityScale = 2f;
-                if(song.transform.position.x == nodePosition.x) { songAnimator.SetBool("isRunning", false); }
+                if (song.transform.position.x == nodePosition.x) { songAnimator.SetBool("isRunning", false); }
                 else
                 {
                     songAnimator.SetBool("isRunning", true);
                     song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(nodePosition.x, song.transform.position.y), moveSpeed * Time.deltaTime);
                 }
             }
-            if(playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
+            if (playerState == PlayerState.PLAYER_JUMPING || playerState == PlayerState.PLAYER_FALLING)
             {
                 songAnimator.SetBool("isRunning", false);
                 song.transform.position = Vector2.MoveTowards(song.transform.position, new Vector2(this.transform.position.x, song.transform.position.y), moveSpeed * Time.deltaTime);
                 //song.GetComponent<Rigidbody2D>().gravityScale = 0f;
                 //song.transform.position = Vector2.MoveTowards(song.transform.position, nodePosition, moveSpeed * Time.deltaTime);
             }
-            if(playerState == PlayerState.PLAYER_HEALING)
+            if (playerState == PlayerState.PLAYER_HEALING)
             {
                 songAnimator.SetBool("isHealing", true);
             }
-            if(playerState == PlayerState.PLAYER_DASHING)
+            if (playerState == PlayerState.PLAYER_DASHING)
             {
                 song.transform.position = this.transform.position;
             }
         }
         #endregion
-        #region Set Enemy Layer Collision
-        ignoreEnemyCollision = !vulnerable;
-        Physics2D.IgnoreLayerCollision(8, 9, ignoreEnemyCollision);
-        #endregion
-        #region Update UI
-        for (int i = 0; i < healthCrystals.Length; i++) { healthCrystals[i].enabled = (i < currentHealth) ? true : false; }
-        spiritWellAlpha = (playerState != PlayerState.PLAYER_HEALING && currentSpirit < spiritDrainToUse) ? 0.6f : 1f;
-        spiritWell.color = new Color(1f, 1f, 1f, Mathf.Lerp(spiritWell.color.a, spiritWellAlpha, Time.deltaTime * 2));
-        currentSpiritWellPosition = Vector2.Lerp(minimumSpiritWellPosition, maximumSpiritWellPosition, currentSpirit/maximumSpirit);
-        spiritWell.rectTransform.anchoredPosition = Vector2.Lerp(spiritWell.rectTransform.anchoredPosition, currentSpiritWellPosition, Time.deltaTime * 10f);
 
-        if(previousSpiritWellPosition != currentSpiritWellPosition.y)
-        {
-            //spiritWell.rectTransform.Translate(spiritWellFlowSpeed * Time.deltaTime, 0f, 0f);
-            previousSpiritWellPosition = currentSpiritWellPosition.y;
-        }
-        #endregion
-        #region Update Animation
-        if(inputJumpPress && isGrounded) { animator.SetTrigger("jump"); }
-        //if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { animator.SetTrigger("attack"); }
-        #endregion
-
-        PlayerSwitchState();
         //print($"canDoAction: {canDoAction}");
         //print($"playerHeal: {inputHeal}");
         //print($"playerState: {playerState}");
@@ -566,6 +573,7 @@ public class SingScript : GameCharacter
         {
             vulnerable = false;
             playerState = PlayerState.PLAYER_HIT;
+            GetDamageEffect();
             StartCoroutine(PlayerKnockback());
             if(currentHealth > 0) { currentHealth -= 1; }
         }
@@ -584,6 +592,17 @@ public class SingScript : GameCharacter
         yield return new WaitForSecondsRealtime(invulnerabilityPeriod);
         vulnerable = true;
     } // Coroutine that runs when player is hit
+
+    public void FlipSong(object invoker, bool facingRight)
+    {
+        if (typeof(RockScript).IsAssignableFrom(invoker.GetType()))
+        {
+            songTargetRotation = Quaternion.Euler(songTargetRotation.eulerAngles.x, facingRight ? 0.0f : 180.0f, songTargetRotation.eulerAngles.z);
+            songRotationTime = 0f;
+            StartCoroutine(FlipSongSprite());
+        }
+    } // Makes song's sprite flip with flip effect and only let the RockScript class can invoking this functions
+
     IEnumerator FlipSongSprite()
     {
         while(songRotationTime < 1f)
@@ -593,6 +612,7 @@ public class SingScript : GameCharacter
             yield return null;
         }
     }
+
     IEnumerator SongJump()
     {
         yield return new WaitForSeconds(nodeInterval);

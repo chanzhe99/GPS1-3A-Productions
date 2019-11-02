@@ -52,9 +52,10 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(ObjectDialogue dialogue, bool isClicked, bool endWillAssignedToControl, bool stillHaveDialogue = false)
     {
+        Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.DialogueUI, true);
         this.endWillAssignedToControl = endWillAssignedToControl;
         isEndOfDialogue = false;
-        singScript.canDoAction = false;
+        singScript.CanDoAction = false;
         isUsingButton = isClicked;
         hasMultipleDialogue = stillHaveDialogue;
         animator.SetBool("IsOpen", true);
@@ -103,8 +104,9 @@ public class DialogueManager : MonoBehaviour
     {
         if (endWillAssignedToControl)
         {
-            singScript.canDoAction = true;
+            singScript.CanDoAction = true;
         }
         animator.SetBool("IsOpen", false);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.DialogueUI, false);
     }
 }

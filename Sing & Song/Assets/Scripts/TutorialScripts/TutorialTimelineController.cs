@@ -6,8 +6,8 @@ using UnityEngine.Playables;
 
 public class TutorialTimelineController : MonoBehaviour
 {
-    [SerializeField] private GameObject inGameUIGameObject;
-    [SerializeField] private GameObject tutorialUIGameObject;
+    //[SerializeField] private GameObject inGameUIGameObject;
+    //[SerializeField] private GameObject tutorialUIGameObject;
     [SerializeField] private GameObject dogEnemyGameObject;
     private PlayableDirector playableDirector;
     [SerializeField] private PlayableAsset attackToturialMovie;
@@ -25,7 +25,7 @@ public class TutorialTimelineController : MonoBehaviour
     private int currentTutorialDialogueIndex = 0;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (Global.gameManager.IsTutorialMoviePlayed == false)
         {
@@ -46,11 +46,11 @@ public class TutorialTimelineController : MonoBehaviour
         {
             if (!Global.gameManager.IsTutorialMoviePlayed)
             {
-                inGameUIGameObject.SetActive(false);
+                Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, false);
 
                 singSpriteAnimator.runtimeAnimatorController = null;
                 songSpriteAnimator.runtimeAnimatorController = null;
-                singGameObject.GetComponent<SingScript>().canDoAction = false;
+                singGameObject.GetComponent<SingScript>().CanDoAction = false;
                 singGameObject.GetComponent<SingScript>().doAnimationFollowPlayerState = false;
                 songGameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
@@ -169,13 +169,13 @@ public class TutorialTimelineController : MonoBehaviour
         yield return null;
         Global.gameManager.IsTutorialMoviePlayed = true;
         Global.gameManager.SaveAllGameDatas();
-        inGameUIGameObject.SetActive(true);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, true);
         DestroyAllTutorialGameObjects();
     }
 
     private void DestroyAllTutorialGameObjects()
     {
-        Destroy(tutorialUIGameObject);
+        //Destroy(tutorialUIGameObject);
         Destroy(tutorialManager.gameObject);
         Destroy(dogEnemyGameObject);
         Destroy(attackTutorialTriggerEventGameObject);
