@@ -34,12 +34,14 @@ public class UIActiveManager : MonoBehaviour
 
     private void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.J))
         {
             //SetMenuVisibilityDirectly(Global.MenusType.PauseMenuUI, !menusVisibilityState[(int)Global.MenusType.PauseMenuUI]);
             SetMenuVisibilitySmoothly(Global.MenusType.PauseMenuUI, !menusVisibilityState[(int)Global.MenusType.PauseMenuUI]);
             Debug.Log("Switching");
         }
+        */
     }
 
     private void SetMenusVisibilityWhileGameStart()
