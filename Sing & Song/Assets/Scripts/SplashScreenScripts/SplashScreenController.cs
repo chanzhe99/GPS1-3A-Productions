@@ -18,6 +18,7 @@ public class SplashScreenController : MonoBehaviour
 
     private void Update()
     {
+        
         fixedSeeLogoTimer += 1.0f * Time.deltaTime;
         if (Input.anyKeyDown && splashState <= SplashState.ThreeA_Production_Logo && fixedSeeLogoTimer > fixedSeeLogoTime)
         {
@@ -41,6 +42,7 @@ public class SplashScreenController : MonoBehaviour
 
     public void EndSplashScreen()
     {
-        SceneManager.LoadSceneAsync((int)Global.SceneIndex.Area1 , LoadSceneMode.Single);
+        SceneManager.LoadSceneAsync((int)Global.SceneIndex.Area1);
     }
+
 }

@@ -13818,7 +13818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8461323ba245aa4b85a6085494219f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startMenuPanelGameObject: {fileID: 3590609004434861541}
   player: {fileID: 3920118415174553148}
   inGameUIGameObject: {fileID: 1914419389}
   continueButton: {fileID: 5439238538019477499}
@@ -21217,6 +21216,17 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1411268613}
+        m_MethodName: InverseMenuVisibilitySmoothly
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1729373436}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

@@ -12,7 +12,8 @@ using UnityEditor;
 public class STARTMENU : MonoBehaviour
 {
     private bool calledmenu = false;
-    [SerializeField] private GameObject startMenuPanelGameObject;
+    //[SerializeField] private GameObject startMenuPanelGameObject;
+    private bool menuActiveOnStart;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject inGameUIGameObject;
     [SerializeField] private Button continueButton;
@@ -47,7 +48,8 @@ public class STARTMENU : MonoBehaviour
             //Debug.Log("OnPlayNewGameState = " + bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)));
             if (bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)))
             {
-                startMenuPanelGameObject.SetActive(false);
+                //startMenuPanelGameObject.SetActive(false);
+                menuActiveOnStart = false;
                 OpeningTimelineController openingTimelineController = FindObjectOfType<OpeningTimelineController>();
                 if (openingTimelineController != null)
                 {
@@ -56,9 +58,15 @@ public class STARTMENU : MonoBehaviour
 
                 PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "false");
             }
+            else
+            {
+                menuActiveOnStart = true;
+            }
         }
         else
         {
+            menuActiveOnStart = true;
+
             PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "false");
         }
         
@@ -70,11 +78,14 @@ public class STARTMENU : MonoBehaviour
                 inGameUIGameObject.SetActive(true);
                 FindObjectOfType<SingScript>().CanDoAction = true;
                 Time.timeScale = 1.0f;
-                startMenuPanelGameObject.SetActive(false);
+                menuActiveOnStart = false;
+                //startMenuPanelGameObject.SetActive(false);
                 PlayerPrefs.SetString(name_PlayerPrefs_OnPlayerRevive, "false");
             }
         }
-        
+
+        Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, menuActiveOnStart);
+
     }
 
     /*void Update()

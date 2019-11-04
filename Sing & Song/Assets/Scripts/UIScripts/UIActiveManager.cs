@@ -49,7 +49,7 @@ public class UIActiveManager : MonoBehaviour
         SetMenuVisibilityDirectly(Global.MenusType.AbilityGainUI, false);
         SetMenuVisibilityDirectly(Global.MenusType.InGameUI, false);
         SetMenuVisibilityDirectly(Global.MenusType.DialogueUI, false);
-        SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, true);
+        //SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, true);
     }
 
     /// <summary>
