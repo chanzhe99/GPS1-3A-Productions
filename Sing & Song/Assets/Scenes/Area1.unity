@@ -5988,10 +5988,10 @@ MonoBehaviour:
   dialogues:
   - name: Sing
     sentences:
-    - Assalamualaikum, what happened to the village?
+    - Hello there, what happened to the village?
   - name: Stranger
     sentences:
-    - Walaikumsalam, the island was cursed by the Witch. Everyone is gone.
+    - Hello, the island was cursed by the Witch. Everyone is gone.
   - name: Sing
     sentences:
     - Witch? What witch? Why did she curse the island?
@@ -6033,7 +6033,7 @@ MonoBehaviour:
   - name: Stranger
     sentences:
     - "Take this with you. I found it at the cave entrance. It might be useful.\r\n"
-    - "May Allah bless your journey.\r\n"
+    - "Good luck on your journey.\r\n"
   dialogueManager: {fileID: 221683070046684452}
 --- !u!61 &706100129
 BoxCollider2D:
