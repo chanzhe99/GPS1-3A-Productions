@@ -27,7 +27,7 @@ public class SingScript : GameCharacter
     #endregion
     #region Spirit Variables
     [Header("Spirit Variable")]
-    [SerializeField] private float maximumSpirit = 9f;
+    [SerializeField] private float maximumSpirit = 10f;
     private float currentSpirit;
     #endregion
     #region Jump Variables

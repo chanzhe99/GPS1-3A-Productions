@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class TutorialManager : MonoBehaviour
 {
-    public enum Index_ButtonNameOfTutorial { Horizontal, JumpButton, MeleeAttackButton };
+    public enum Index_ButtonNameOfTutorial { JumpButton, Horizontal, MeleeAttackButton };
 
     //[SerializeField] private GameObject tutorialUIGameObject;
     [SerializeField] private Animator tutorialUIAnimator;
@@ -18,12 +18,12 @@ public class TutorialManager : MonoBehaviour
     //[SerializeField] private List<Sprite> keysImageSprites;
 
     [SerializeField] private List<string> tutorialDialogue = new List<string> {
-        "Use the arrow keys to move",  // Left and Right arrow button dialogue
-        "Use the Z key to jump",  // Z button dialogue
-        "Use the X key to attack"  // X button dialogue
+        "Move",  // Left and Right arrow button dialogue
+        "Hold to Jump",  // Z button dialogue
+        "Attack"  // X button dialogue
     };
 
-    private List<string> buttonNameOfTutorial = new List<string> { "Horizontal", "JumpButton", "MeleeAttackButton" };
+    private List<string> buttonNameOfTutorial = new List<string> { "JumpButton", "Horizontal", "MeleeAttackButton" };
     private string currentRequestNameOfButton;
 
     private void Awake()
