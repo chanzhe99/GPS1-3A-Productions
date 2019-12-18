@@ -120,12 +120,12 @@ public class PlayerController : MonoBehaviour
 
     #region SongControlVariables
     [Header("Song Control Variables")]// Node Update Variables (For Song Follow)
-    [SerializeField] private GameObject node;
-    [SerializeField] private GameObject song;
-    [SerializeField] private Vector3 nodeOffsetDefault;
-    [SerializeField] private float nodeUpdateInterval;
-    private Vector3 nodeOffset;
-    private float nodeUpdateIntervalTimer;
+    [SerializeField] private GameObject node = null;
+    [SerializeField] private GameObject song = null;
+    [SerializeField] private Vector3 nodeOffsetDefault = Vector3.zero;
+    [SerializeField] private float nodeUpdateInterval = 0.0f;
+    private Vector3 nodeOffset = Vector3.zero;
+    private float nodeUpdateIntervalTimer = 0.0f;
     #endregion
 
     #endregion

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class WaveRhinoController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeedX;
-    private Vector2 tempMoveSpeed;
-    [SerializeField] private float existTime;
+    [SerializeField] private float moveSpeedX = 0.0f;
+    private Vector2 tempMoveSpeed = Vector2.zero;
+    [SerializeField] private float existTime = 0.0f;
     private float existTimeTimer = 0.0f;
     [SerializeField] private Animator waveAnimator;
     private bool onWaveMoving = true;

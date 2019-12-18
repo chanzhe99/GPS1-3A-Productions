@@ -33,10 +33,11 @@ public class Global
     public static readonly string nameAnimatorLayer_SpecialAnimationLayer = "Special Animation Layer";
 
     public static readonly string nameGameObject_UI = "UI";
-    public static readonly string[] nameGameObject_Menus = { "PauseMenuUI", "TutorialUI", "AbilityGainUI", "InGameUI", "DialogueUI", "StartMenuUI" };
+    public static readonly string[] nameGameObject_Menus = { "PauseMenuUI", "TutorialUI", "AbilityGainUI", "InGameUI", "DialogueUI", "StartMenuUI", "BossHPBarUI" };
 
     public enum SceneIndex{ Splash, Area1, EndScene }
     public enum InputsType { Horizontal, Vertical, InteractButton, JumpButton, HealButton, DashButton, MeleeAttackButton, SpiritAttackButton, Length };
-    public enum MenusType { PauseMenuUI, TutorialUI, AbilityGainUI, InGameUI, DialogueUI, StartMenuUI };
+    public enum MenusType { PauseMenuUI, TutorialUI, AbilityGainUI, InGameUI, DialogueUI, StartMenuUI, BossHPBarUI, Length };
+    public enum Index_ButtonNameOfTutorial { JumpButton, Horizontal, MeleeAttackButton };
 }
 

@@ -1326,7 +1326,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -1344,6 +1344,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54dbef78b0924604eaf531b145085539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  headGameObjectOfAllSpriteRenderers: {fileID: 6604052493200035307}
+  dieTransparentColorSpeed: 1
+  getDamageColor: {r: 0.9716981, g: 0.38847485, b: 0.2520915, a: 1}
   animator: {fileID: 6480411660897432052}
   rayCount: 5
   spawnFacingRight: 0
@@ -1360,15 +1363,12 @@ MonoBehaviour:
   playerDetectionRange: {x: 7, y: 7}
   restTime: 2
   retreatTime: 2
+  bossHPBarController: {fileID: 0}
   ableDoEnemyState: 0
   rockfallSourceOriginPoint: {fileID: 7883975591762976868, guid: 27c74a3f0e2c46c48936e73fbff959db,
     type: 3}
   halfLengthOfRockfallAppearField: 19
   rhinoPre_WarActionTime: 2.5
-  headGameObjectOfAllSpriteRenderers: {fileID: 6604052493200035307}
-  dieTransparentColorSpeed: 1
-  getDamageColor: {r: 0.9716981, g: 0.38847485, b: 0.2520915, a: 1}
-  getNotDamageColor: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
   wavePrefab: {fileID: 8960606675797272908, guid: 425961a87289e714f80d68965c00fc07,
     type: 3}
   maxNumberOfStomWave: 3

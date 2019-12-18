@@ -17,11 +17,14 @@ public class TutorialManager : MonoBehaviour
     //[SerializeField] private Image keysImage;
     //[SerializeField] private List<Sprite> keysImageSprites;
 
-    [SerializeField] private List<string> tutorialDialogue = new List<string> {
+    [SerializeField] private List<string> tutorialDialogue = new List<string>();
+    /*
+    {
         "Move",  // Left and Right arrow button dialogue
         "Hold to Jump",  // Z button dialogue
         "Attack"  // X button dialogue
     };
+    */
 
     private List<string> buttonNameOfTutorial = new List<string> { "JumpButton", "Horizontal", "MeleeAttackButton" };
     private string currentRequestNameOfButton;
@@ -77,20 +80,43 @@ public class TutorialManager : MonoBehaviour
             //singGameObject.GetComponent<Rigidbody2D>().constraints  = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
 
-        while (true)
+        bool triggedEndTutorial = true;
+        DialogueManager dialogueManager = FindObjectOfType<DialogueManager>();
+
+        while (triggedEndTutorial)
         {
-            if (Vector2.Distance(tutorialStartPosition, singGameObject.transform.position) > tutorialMoveOutDisappearDistanceX)
+            switch (index_ButtonNameOfTutorial)
             {
-                break;
-            }
-            if (FindObjectOfType<DialogueManager>().IsEndOfDialogue)
-            {
-                if (Input.GetButtonDown(currentRequestNameOfButton))
-                {
-                    //singGameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+                case Index_ButtonNameOfTutorial.Horizontal:
+                    if (Input.GetButtonDown(currentRequestNameOfButton))
+                        triggedEndTutorial = false;
+
+                    if (Vector2.Distance(tutorialStartPosition, singGameObject.transform.position) > tutorialMoveOutDisappearDistanceX)
+                        triggedEndTutorial = false;
                     break;
-                }
-            }
+
+
+                case Index_ButtonNameOfTutorial.JumpButton:
+                    if (Input.GetButtonDown(currentRequestNameOfButton))
+                        triggedEndTutorial = false;
+
+                    if (Vector2.Distance(tutorialStartPosition, singGameObject.transform.position) > tutorialMoveOutDisappearDistanceX)
+                        triggedEndTutorial = false;
+                    break;
+
+
+                case Index_ButtonNameOfTutorial.MeleeAttackButton:
+                    if (dialogueManager.IsEndOfDialogue)
+                    {
+                        if (Input.GetButtonDown(currentRequestNameOfButton))
+                            triggedEndTutorial = false;
+                    }
+                    break;
+
+
+            }// put the event triger in the switch case
+            
+            
             yield return null;
         }
 

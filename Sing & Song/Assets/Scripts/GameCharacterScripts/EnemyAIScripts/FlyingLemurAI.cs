@@ -19,12 +19,12 @@ public class FlyingLemurAI : EnemyAI
     #endregion
 
 
-    private Vector3 lemurDefaultPosition;
-    private Vector3 playerDivePosition;
+    private Vector3 lemurDefaultPosition = Vector3.zero;
+    private Vector3 playerDivePosition = Vector3.zero;
     
-    private float diveDirection;
-    [SerializeField] private float diveSpeed;
-    [SerializeField] private float retreatingSpeed;
+    private float diveDirection = 0.0f;
+    [SerializeField] private float diveSpeed = 0.0f;
+    [SerializeField] private float retreatingSpeed = 0.0f;
     
 
 

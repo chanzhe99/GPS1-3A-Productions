@@ -7,15 +7,15 @@ public class GameCharacter : MonoBehaviour
 {
     #region Sprite Renderer Color Details
     [Header("Hurt Color Detials : ")]
-        [SerializeField] protected GameObject headGameObjectOfAllSpriteRenderers;
+        [SerializeField] protected GameObject headGameObjectOfAllSpriteRenderers = null;
         protected List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
-        [SerializeField] protected float dieTransparentColorSpeed;
-        protected Color tempDieTransparentColor;
-        [SerializeField] protected Color getDamageColor;// = new Color(248, 99, 64, 50);
+        [SerializeField] protected float dieTransparentColorSpeed = 0.0f;
+        protected Color tempDieTransparentColor = Color.white;
+        [SerializeField] protected Color getDamageColor = Color.white;// = new Color(248, 99, 64, 50);
         //[SerializeField] private Color getNotDamageColor;
         protected List<Color> originialColor = new List<Color>();
         protected float[] colorChangeTime = { 0.15f, 0.05f, 0.05f };
-        protected WaitForSeconds[] waitForSeconds;
+        protected WaitForSeconds[] waitForSeconds = null;
     #endregion
     #region Component Variables
     [Header("Animator Component")]

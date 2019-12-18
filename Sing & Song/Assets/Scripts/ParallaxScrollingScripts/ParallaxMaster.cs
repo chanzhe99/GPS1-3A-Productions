@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ParallaxMaster : MonoBehaviour
 {
-    [SerializeField] private Camera mainCamera;
+    [SerializeField] private Camera mainCamera = null;
     public delegate void ParallaxCameraDelegate(float deltaMovement);
     public ParallaxCameraDelegate onCameraTranslate;
     private float oldPosition;

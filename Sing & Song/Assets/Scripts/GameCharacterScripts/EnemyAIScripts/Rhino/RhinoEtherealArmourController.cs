@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class RhinoEtherealArmourController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float moveSpeed = 0.0f;
     [HideInInspector] public bool facingRight = false;
-    [SerializeField] private Transform enemyEtherealArmourRaycastOrigin;
+    [SerializeField] private Transform enemyEtherealArmourRaycastOrigin = null;
     private float detectWallRange = 0.3f;
     [SerializeField] private Vector2 detectPlayerVector2 = new Vector2(5.0f, 5.0f);
     [SerializeField] private Vector3 adjustDetectPlayerVector3Origin = new Vector3(3.72f, 0f, 0f);
-    [HideInInspector] public RhinoAI rhinoAI;
+    [HideInInspector] public RhinoAI rhinoAI = null;
     private Transform rhinoEtherealArmourTransform;
     private GameObject rhinoEtherealArmourGameOjebt;
     private Vector2 enemyTowardsPositon;

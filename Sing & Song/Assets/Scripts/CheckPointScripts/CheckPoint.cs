@@ -7,10 +7,10 @@ public class CheckPoint : MonoBehaviour
 {
     [HideInInspector] public RockScript rockScript = null;
 
-    [SerializeField] private Animator checkPointUIBackgroundImageAnimator;
-    [SerializeField] private ColdDownCount timerSavedPointRequest;
-    [SerializeField] private Vector2 boxSizeVector2;
-    [SerializeField] private int pointIndex;
+    [SerializeField] private Animator checkPointUIBackgroundImageAnimator = null;
+    [SerializeField] private ColdDownCount timerSavedPointRequest = null;
+    [SerializeField] private Vector2 boxSizeVector2 = Vector2.zero;
+    [SerializeField] private int pointIndex = 0;
     public int PointIndex
     {
         get

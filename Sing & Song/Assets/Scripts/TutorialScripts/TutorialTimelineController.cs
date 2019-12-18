@@ -10,18 +10,18 @@ public class TutorialTimelineController : MonoBehaviour
     //[SerializeField] private GameObject tutorialUIGameObject;
     [SerializeField] private GameObject dogEnemyGameObject;
     private PlayableDirector playableDirector;
-    [SerializeField] private PlayableAsset attackToturialMovie;
-    [SerializeField] private GameObject singGameObject;
-    [SerializeField] private GameObject songGameObject;
-    [SerializeField] private Animator singSpriteAnimator;
-    [SerializeField] private Animator songSpriteAnimator;
+    [SerializeField] private PlayableAsset attackToturialMovie = null;
+    [SerializeField] private GameObject singGameObject = null;
+    [SerializeField] private GameObject songGameObject = null;
+    [SerializeField] private Animator singSpriteAnimator = null;
+    [SerializeField] private Animator songSpriteAnimator = null;
     private RuntimeAnimatorController singDefalutRuntimeAnimatorController;
     private RuntimeAnimatorController songDefalutRuntimeAnimatorController;
-    [SerializeField] private GameObject attackTutorialTriggerEventGameObject;
-    [SerializeField] private DialogueManager dialogueManager;
-    [SerializeField] private TutorialManager tutorialManager;
-    [SerializeField] private List<DialogueTrigger> tutorialStartedDialogueTriggers;
-    [SerializeField] private List<DialogueTrigger> tutorialEndDialogueTriggers;
+    [SerializeField] private GameObject attackTutorialTriggerEventGameObject = null;
+    [SerializeField] private DialogueManager dialogueManager = null;
+    [SerializeField] private TutorialManager tutorialManager = null;
+    [SerializeField] private List<DialogueTrigger> tutorialStartedDialogueTriggers = new List<DialogueTrigger>();
+    [SerializeField] private List<DialogueTrigger> tutorialEndDialogueTriggers = new List<DialogueTrigger>();
     private int currentTutorialDialogueIndex = 0;
 
     // Start is called before the first frame update

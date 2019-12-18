@@ -20,10 +20,35 @@ public class UIActiveManager : MonoBehaviour
 
         userInterfaceCanvas = GameObject.Find(Global.nameGameObject_UI).GetComponent<Canvas>();
 
+        for (int i = 0; i < (int)Global.MenusType.Length; i++)
+        {
+            menusCanvasGroup.Add(null);
+            menusVisibilityState.Add(true);
+        }
+
+        int checkMenusAmount = 0;
         foreach (CanvasGroup tempCanvasGroup in userInterfaceCanvas.GetComponentsInChildren<CanvasGroup>())
         {
-            menusCanvasGroup.Add(tempCanvasGroup);
-            menusVisibilityState.Add(tempCanvasGroup.interactable);
+            for (int i = 0; i < (int)Global.MenusType.Length; i++)
+            {
+                if (tempCanvasGroup.name == Global.nameGameObject_Menus[i])
+                {
+                    checkMenusAmount++;
+
+                    menusCanvasGroup[i] = tempCanvasGroup;
+                    menusVisibilityState[i] = tempCanvasGroup.interactable;
+
+                    break;
+                }
+            }
+        }
+
+
+
+        if (checkMenusAmount != (int)Global.MenusType.Length) // check the menus amount
+        {
+            Debug.Log("Menus Amount = " + checkMenusAmount);
+            Debug.LogError("Error! Menus are not setting corectlly!");
         }
     }
 
@@ -34,14 +59,10 @@ public class UIActiveManager : MonoBehaviour
 
     private void Update()
     {
-        /*
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            //SetMenuVisibilityDirectly(Global.MenusType.PauseMenuUI, !menusVisibilityState[(int)Global.MenusType.PauseMenuUI]);
-            SetMenuVisibilitySmoothly(Global.MenusType.PauseMenuUI, !menusVisibilityState[(int)Global.MenusType.PauseMenuUI]);
-            Debug.Log("Switching");
+            SetMenuVisibilitySmoothly(Global.MenusType.BossHPBarUI, !menusVisibilityState[(int)Global.MenusType.BossHPBarUI]);
         }
-        */
     }
 
     private void SetMenusVisibilityWhileGameStart()
@@ -52,6 +73,7 @@ public class UIActiveManager : MonoBehaviour
         SetMenuVisibilityDirectly(Global.MenusType.InGameUI, false);
         SetMenuVisibilityDirectly(Global.MenusType.DialogueUI, false);
         //SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, true);
+        SetMenuVisibilityDirectly(Global.MenusType.BossHPBarUI, false);
     }
 
     /// <summary>
@@ -84,7 +106,7 @@ public class UIActiveManager : MonoBehaviour
     /// </summary>
     public void AllMenusSaveTemporaryVisibilityStateAndClose()
     {
-        if(menusTempVisibilityState.Count <= 0)
+        if (menusTempVisibilityState.Count <= 0)
         {
             for (int i = 0; i < menusCanvasGroup.Count; i++)
             {
@@ -130,14 +152,14 @@ public class UIActiveManager : MonoBehaviour
     {
         for (int i = 0; i < menusCanvasGroup.Count; i++)
         {
-            if(menusType == menusCanvasGroup[i])
+            if (menusType == menusCanvasGroup[i])
             {
-                SetMenuVisibilitySmoothly((Global.MenusType)i, !menusVisibilityState[i], 1.0f);
+                SetMenuVisibilitySmoothly((Global.MenusType)i, !menusVisibilityState[i]);
                 break;
             }
         }
-        
-        
+
+
     }
 
     /// <summary>
@@ -159,30 +181,65 @@ public class UIActiveManager : MonoBehaviour
     /// <param name="menusType">The visibility of the menu needs to be set.</param>
     /// <param name="visibilityState">The visibility state will set to the menu's visibility.</param>
     /// <param name="smoothlTime">The time of the smoothly transition.</param>
-    public void SetMenuVisibilitySmoothly(Global.MenusType menusType, bool visibilityState, float smoothlTime = 1.0f)
+    public void SetMenuVisibilitySmoothly(Global.MenusType menusType, bool visibilityState, float smoothlTime = 1.0f, bool slowToFast = true)
     {
         if (menusVisibilityState[(int)menusType] != visibilityState)
         {
             menusVisibilityState[(int)menusType] = visibilityState;
-            StartCoroutine(VisibilitySmoothlySwitchCoroutine(menusType, visibilityState, smoothlTime));
+            //StopAllCoroutines();
+            StartCoroutine(VisibilitySmoothlySwitchCoroutine(menusType, menusVisibilityState[(int)menusType], smoothlTime, slowToFast));
         }
-        
+
     }
 
-    private IEnumerator VisibilitySmoothlySwitchCoroutine(Global.MenusType menusType, bool visibilityState, float smoothlTime)
+    public void ShowMenuSmoothly(string menuName)
+    {
+        for (int i = 0; i < Global.nameGameObject_Menus.Length; i++)
+        {
+            if (menuName == Global.nameGameObject_Menus[i])
+            {
+                if (menusVisibilityState[i] != true)
+                {
+                    menusVisibilityState[i] = true;
+                    StopAllCoroutines();
+                    StartCoroutine(VisibilitySmoothlySwitchCoroutine((Global.MenusType)i, menusVisibilityState[i], 1.0f, true));
+                }
+                break;
+            }
+        }
+    }
+
+    public void HideMenuSmoothly(string menuName)
+    {
+        for (int i = 0; i < Global.nameGameObject_Menus.Length; i++)
+        {
+            if (menuName == Global.nameGameObject_Menus[i])
+            {
+                if (menusVisibilityState[i] != false)
+                {
+                    menusVisibilityState[i] = false;
+                    StopAllCoroutines();
+                    StartCoroutine(VisibilitySmoothlySwitchCoroutine((Global.MenusType)i, menusVisibilityState[i], 1.0f, true));
+                }
+                break;
+            }
+        }
+    }
+
+    private IEnumerator VisibilitySmoothlySwitchCoroutine(Global.MenusType menusType, bool visibilityState, float smoothlTime, bool slowToFast = true)
     {
         float alpha = menusCanvasGroup[(int)menusType].alpha; // Get the latest alpha value when everytime invoking VisibilitySmoothlySwitchCoroutine()
         float time = (visibilityState ? alpha : 1.0f - alpha);
         bool visibility = visibilityState;
 
-        Debug.Log(time);
-
         if (menusVisibilityState[(int)menusType]) menusCanvasGroup[(int)menusType].interactable = menusCanvasGroup[(int)menusType].blocksRaycasts = visibilityState; // Switch the menu interactable and the mouse raycast block before switching while open the menu
 
         while (true)
         {
-            time += ((1.0f * Time.deltaTime) + (time * 0.2f)) / smoothlTime;
+            if (slowToFast) time += ((1.0f * Time.deltaTime) + (time * 0.2f)) / smoothlTime;
+            else time += ((1.0f * Time.deltaTime) + ((1.0f - time) * 0.2f)) / smoothlTime;//(1.0f * Time.deltaTime) / smoothlTime;
             time = (time > 1.0f) ? 1.0f : time;
+
 
             menusCanvasGroup[(int)menusType].alpha = Mathf.Lerp(visibilityState ? 0.0f : 1.0f, visibilityState ? 1.0f : 0.0f, time);// Smoothly switch the visibility
 
@@ -192,7 +249,7 @@ public class UIActiveManager : MonoBehaviour
             yield return null;
         }
 
-        if(!menusVisibilityState[(int)menusType]) menusCanvasGroup[(int)menusType].interactable = menusCanvasGroup[(int)menusType].blocksRaycasts = visibilityState; // Switch the menu interactable and the mouse raycast block after switched while close the menu
+        if (!menusVisibilityState[(int)menusType]) menusCanvasGroup[(int)menusType].interactable = menusCanvasGroup[(int)menusType].blocksRaycasts = visibilityState; // Switch the menu interactable and the mouse raycast block after switched while close the menu
 
         yield return null;
     }

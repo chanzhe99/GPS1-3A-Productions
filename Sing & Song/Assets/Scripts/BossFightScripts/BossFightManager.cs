@@ -5,18 +5,18 @@ using UnityEngine.Playables;
 
 public class BossFightManager : MonoBehaviour
 {
-    [SerializeField] private AudioClip rhinoBossFightAudioClip;
-    [SerializeField] private AudioSource backgroundMusicAudioSource;
+    [SerializeField] private AudioClip rhinoBossFightAudioClip = null;
+    [SerializeField] private AudioSource backgroundMusicAudioSource = null;
     //[SerializeField] private GameObject inGameUIGameObject;
-    [SerializeField] private GameObject bossFightTriggerGameObject;
-    private PlayableDirector playableDirector;
-    [SerializeField] private PlayableAsset bossFightPreMovie;
-    [SerializeField] private RhinoAI rhinoAI;
-    [SerializeField] private SingScript singScript;
-    [SerializeField] private Animator singSpriteAnimator;
-    [SerializeField] private Animator rhinoBossSpriteAnimator;
-    private RuntimeAnimatorController singDefalutRuntimeAnimatorController;
-    private RuntimeAnimatorController rhinoBossDefalutRuntimeAnimatorController;
+    [SerializeField] private GameObject bossFightTriggerGameObject = null;
+    private PlayableDirector playableDirector = null;
+    [SerializeField] private PlayableAsset bossFightPreMovie = null;
+    [SerializeField] private RhinoAI rhinoAI = null;
+    [SerializeField] private SingScript singScript = null;
+    [SerializeField] private Animator singSpriteAnimator = null;
+    [SerializeField] private Animator rhinoBossSpriteAnimator = null;
+    private RuntimeAnimatorController singDefalutRuntimeAnimatorController = null;
+    private RuntimeAnimatorController rhinoBossDefalutRuntimeAnimatorController = null;
     [Header("Roar Diaologue:")]
     [SerializeField] private List<DialogueTrigger> roarDialogueTriggers = new List<DialogueTrigger>();
 
@@ -32,6 +32,7 @@ public class BossFightManager : MonoBehaviour
     {
         singScript.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, false);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.BossHPBarUI, false);
         singScript.CanDoAction = false;
         rhinoAI.ableDoEnemyState = false;
         singSpriteAnimator.runtimeAnimatorController = null;
@@ -58,7 +59,8 @@ public class BossFightManager : MonoBehaviour
 
     public void EndOfBossFightMovie()
     {
-        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, true);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, true, 5.0f);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.BossHPBarUI, true, 5.0f);
         singSpriteAnimator.runtimeAnimatorController = singDefalutRuntimeAnimatorController;
         rhinoBossSpriteAnimator.runtimeAnimatorController = rhinoBossDefalutRuntimeAnimatorController;
         singScript.CanDoAction = true;

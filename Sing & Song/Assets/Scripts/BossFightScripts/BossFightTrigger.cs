@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossFightTrigger : MonoBehaviour
 {
-    [SerializeField] private BossFightManager bossFightManager;
+    [SerializeField] private BossFightManager bossFightManager = null;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

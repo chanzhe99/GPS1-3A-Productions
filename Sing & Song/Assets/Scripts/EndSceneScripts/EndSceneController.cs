@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class EndSceneController : MonoBehaviour
 {
     private Animator endSceneAnimator;
-    [SerializeField] private float ableToRestartGameTime;
+    [SerializeField] private float ableToRestartGameTime = 0.0f;
     private float ableToRestartGameTimeTimer;
     private bool isGetInputOneTime = false;
 

@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class RhinoAI : EnemyAI
 {
-    private GameObject rhinoBossObjectPool;
+    [Header("Boss health slider")]
+    [SerializeField] private BossHPBarController bossHPBarController = null;
+
+    private GameObject rhinoBossObjectPool = null;
     public bool ableDoEnemyState = false;
 
     #region General position and count distance variable
@@ -23,18 +26,6 @@ public class RhinoAI : EnemyAI
     #region General timer Variable
         [SerializeField] private float rhinoPre_WarActionTime;
         private float rhinoPre_WarActionTimeTimer = 0.0f;
-    #endregion
-
-    #region Enemy SpriteRenderer color detail
-        //For check pre-war action got working or not, can delete it when you put in the animation.
-        //[Header("Hurt Color Detials : ")]
-        //[SerializeField] private GameObject headGameObjectOfAllSpriteRenderers;
-        //private List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
-        //[SerializeField] private float dieTransparentColorSpeed;
-        //private Color tempDieTransparentColor;
-        //[SerializeField] private Color getDamageColor;
-        //[SerializeField] private Color getNotDamageColor;
-        //private List<Color> originialColor = new List<Color>();
     #endregion
 
     #region Boss Phase Attack State
@@ -193,6 +184,9 @@ public class RhinoAI : EnemyAI
             originialColor.Add(tempSpriteRenderer.color);
         }
         */
+
+        bossHPBarController.SetUpHPBarSlider(this.maximumHealth);
+        bossHPBarController.UpdateHPBarProgress(this.currentHealth);
     }
 
     protected override void EnemyPatrol()
@@ -569,6 +563,8 @@ public class RhinoAI : EnemyAI
             if (this.currentHealth > 0)
             {
                 this.currentHealth -= 1;
+                bossHPBarController.UpdateHPBarProgress(this.currentHealth);
+
                 StopCoroutine("DamageColorChange");
                 StopCoroutine("NotDamageColorChange");
 
@@ -577,23 +573,12 @@ public class RhinoAI : EnemyAI
 
         }
     }
-    /*
-    protected override void DamageEnemySpirit()
-    {
-        if (this.currentHealth > 0)
-        {
-            this.currentHealth -= 2;
-            StopCoroutine("DamageColorChange");
-            StopCoroutine("NotDamageColorChange");
 
-            StartCoroutine("DamageColorChange");
-        }
-    }
-    */
     protected override void EnemyDieSound()
     {
         SoundManagerScripts.PlaySound("rhino_die_sound");
     }
+
     /*
     private IEnumerator DamageColorChange()
     {
@@ -667,15 +652,15 @@ public class RhinoAI : EnemyAI
         for (int i = 0; i < rocksOfFallGameobjects.Count; i++)
         {
             Destroy(rocksOfFallGameobjects[i]);
-            Debug.Log("delete rocks fall");
+            //Debug.Log("delete rocks fall");
         }
         for (int i = 0; i < maxNumberOfStomWave; i++)
         {
             Destroy(waveGameObjects[i]);
-            Debug.Log("delete rhino wave");
+            //Debug.Log("delete rhino wave");
         }
         Destroy(enemyEtherealArmourGameObject);
-        Debug.Log("delete rhino enemy ethereal armour");
+        //Debug.Log("delete rhino enemy ethereal armour");
     }
 
     protected override void OnDrawGizmos()
