@@ -442,6 +442,7 @@ public class SingScript : GameCharacter
                 if (isGrounded)
                 {
                     dashedInAir = false;
+                    animator.SetTrigger("land");
                     playerState = PlayerState.PLAYER_IDLE;
                 } // Resets player state to idle after landing from a fall
                 if(inputDash && dashIntervalTimer >= dashInterval && !dashedInAir)
