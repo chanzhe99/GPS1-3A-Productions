@@ -2234,7 +2234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 264412391}
   m_Layer: 0
-  m_Name: EnemyPositions
+  m_Name: NPCPositions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10958,54 +10958,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 264323744}
   dialogues:
-  - name: Sing
-    sentences:
-    - Hello there, what happened to the village?
   - name: Stranger
     sentences:
-    - Hello, the island was cursed by the Witch. Everyone is gone.
+    - BAH! You musn't go further!
+    - Dangerous creatures lie in waiting ahead!
   - name: Sing
     sentences:
-    - Witch? What witch? Why did she curse the island?
+    - Okay...? Don't worry, I'm not any going further than the village.
+    - But uh... what happened to the village?
   - name: Stranger
     sentences:
-    - "The Witch on the mountain\u2019s peak. Nobody knows why."
+    - The village? It was destroyed when the island was cursed!
+    - The Witch of the Mountain cursed the island!
+    - If you wish to undo the curse and find out what happened, you must travel to
+      the top of the mountain!
   - name: Sing
     sentences:
-    - Have you seen my wife? Where is she?
+    - Didn't you just tell me not to go past this point?
   - name: Stranger
     sentences:
-    - "Oh your wife? I don\u2019t know\u2026\n"
-    - But she was last seen going up the mountain....
-  - name: Sing
-    sentences:
-    - "Up the mountain?? Where the Witch is? WHY?\r"
-  - name: Stranger
-    sentences:
-    - "Uh\u2026. I don\u2019t know\u2026"
-  - name: Sing
-    sentences:
-    - "I must find her, she might be in trouble. \r"
-    - "Tell me how to get to the mountain top.\r\n"
-  - name: Stranger
-    sentences:
-    - "Up the mountain?? Are you insane?? You could die! \r\n"
-    - "You don\u2019t know what the Witch is capable of!\r\n"
-  - name: Sing
-    sentences:
-    - "I have to find my wife. Tell me how to get there.\r\n"
-  - name: Stranger
-    sentences:
-    - "\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\n"
-    - "Alright. Past this cave there\u2019s an entrance that leads up to the mountain."
-    - "But beware, inside the cave there are monsters.\r\n"
-  - name: Sing
-    sentences:
-    - "I don\u2019t care. I will find a way."
-  - name: Stranger
-    sentences:
-    - "Take this with you. I found it at the cave entrance. It might be useful.\r\n"
-    - "Good luck on your journey.\r\n"
+    - '...'
+    - '...Please?'
   dialogueManager: {fileID: 221683070046684452}
 --- !u!61 &706100129
 BoxCollider2D:
@@ -11031,7 +11004,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5626476, y: 1.7508285}
+  m_Size: {x: 1.82, y: 1.7508285}
   m_EdgeRadius: 0
 --- !u!1 &746631976
 GameObject:
@@ -14580,7 +14553,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Villager
+  m_text: Stranger
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 12cb611272eb3fd44b165fa5a1450122, type: 2}
   m_sharedMaterial: {fileID: 8629704464205410098, guid: 12cb611272eb3fd44b165fa5a1450122,
