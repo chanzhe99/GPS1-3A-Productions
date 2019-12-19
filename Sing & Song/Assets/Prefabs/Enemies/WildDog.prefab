@@ -66,7 +66,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b58965c8e2a55164692baa83d7358cb0, type: 3}
   m_Color: {r: 0.5803922, g: 0.9803922, b: 0.9490197, a: 0.7058824}
@@ -194,7 +194,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1897512587
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: a819efbd75a973f42b989a2299cdab4e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -234,7 +234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5351378825812343168}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.17, y: -3.05, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5351378824172361599}
@@ -293,6 +293,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed76797a56014c478bd0a1b125f5731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  headGameObjectOfAllSpriteRenderers: {fileID: 0}
+  dieTransparentColorSpeed: 0
+  getDamageColor: {r: 1, g: 1, b: 1, a: 1}
   animator: {fileID: 5351378825812343175}
   rayCount: 5
   spawnFacingRight: 0
@@ -301,6 +304,10 @@ MonoBehaviour:
   attackRange: {x: 8, y: 2}
   knockbackForce: {x: 6, y: 6}
   knockbackTime: 0.3
+  hitParticleEffect: {fileID: 9116430072627646123, guid: 478ed96c49906514ca7c26e19fdbd78e,
+    type: 3}
+  hitArmourParticleEffect: {fileID: 7280012001439988394, guid: ca123f394b1e9174a941319b76f373e0,
+    type: 3}
   enemySpriteTransform: {fileID: 5351378824646183569}
   spiritArmour: {fileID: 5351378824148351389}
   haveSpiritArmour: 0

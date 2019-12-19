@@ -109,6 +109,7 @@ sealed public class PangolinAI : EnemyAI
         if(enemyState == EnemyState.ENEMY_RESTING)
         {
             GetDamageEffect();
+            Instantiate(hitParticleEffect, this.transform.position, Quaternion.identity);
             StartCoroutine(EnemyKnockback());
             if(!spiritArmour.activeSelf)
             {
@@ -122,6 +123,7 @@ sealed public class PangolinAI : EnemyAI
         else if(enemyState != EnemyState.ENEMY_HIT)
         {
             enemyState = EnemyState.ENEMY_HIT;
+            Instantiate(hitArmourParticleEffect, this.transform.position, Quaternion.identity);
             StartCoroutine(EnemyKnockback());
         }
     }

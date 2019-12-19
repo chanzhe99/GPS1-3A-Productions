@@ -6,6 +6,7 @@ public class RhinoAI : EnemyAI
 {
     [Header("Boss health slider")]
     [SerializeField] private BossHPBarController bossHPBarController = null;
+    [SerializeField] private Transform hitParticleSpawnLocation = null;
 
     private GameObject rhinoBossObjectPool = null;
     public bool ableDoEnemyState = false;
@@ -560,6 +561,7 @@ public class RhinoAI : EnemyAI
     {
         if (!spiritArmour.activeSelf)
         {
+            Instantiate(hitParticleEffect, hitParticleSpawnLocation.position, Quaternion.identity);
             if (this.currentHealth > 0)
             {
                 this.currentHealth -= 1;

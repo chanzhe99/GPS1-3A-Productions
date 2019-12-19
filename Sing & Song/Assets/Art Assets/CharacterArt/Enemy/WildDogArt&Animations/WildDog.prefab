@@ -767,6 +767,10 @@ MonoBehaviour:
   attackRange: {x: 8, y: 2}
   knockbackForce: {x: 6, y: 6}
   knockbackTime: 0.3
+  hitParticleEffect: {fileID: 9116430072627646123, guid: 478ed96c49906514ca7c26e19fdbd78e,
+    type: 3}
+  hitArmourParticleEffect: {fileID: 7280012001439988394, guid: ca123f394b1e9174a941319b76f373e0,
+    type: 3}
   enemySpriteTransform: {fileID: 4025039076563013976}
   spiritArmour: {fileID: 1420990172728381431}
   haveSpiritArmour: 0
