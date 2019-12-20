@@ -46,6 +46,8 @@ public class SingScript : GameCharacter
     [SerializeField] private float inputBufferTime = 0.2f;
     [SerializeField] private float spiritDrainToUse = 3f;
     [SerializeField] private float healTime = 1.5f;
+    [SerializeField] private GameObject healParticleEffect = null;
+    [SerializeField] private GameObject songHealParticleEffect = null;
     private float inputBuffer;
     private float spiritDrain;
     private float healTimeTimer;
@@ -370,6 +372,8 @@ public class SingScript : GameCharacter
         {
             case PlayerState.PLAYER_IDLE:
                 animator.SetBool("isRunning", false);
+                healParticleEffect.SetActive(false);
+                songHealParticleEffect.SetActive(false);
                 PlayerFlip();
                 meleeAttackTransform.localPosition = (input.y > 0) ? Vector2.up * 2f : Vector2.left * 1.5f;
                 spiritAttack.transform.localRotation = (input.y > 0) ? Quaternion.Euler(0f, 0f, -90f) : Quaternion.Euler(0f, 0f, 0f);
@@ -398,6 +402,8 @@ public class SingScript : GameCharacter
                 break;
             case PlayerState.PLAYER_RUNNING:
                 animator.SetBool("isRunning", true);
+                healParticleEffect.SetActive(false);
+                songHealParticleEffect.SetActive(false);
 
                 if (timeBtwTrail >= 0.25f)
                 {
@@ -436,6 +442,8 @@ public class SingScript : GameCharacter
                 break;
             case PlayerState.PLAYER_JUMPING:
                 animator.SetBool("isRunning", false);
+                healParticleEffect.SetActive(false);
+                songHealParticleEffect.SetActive(false);
                 PlayerFlip();
                 PlayerMove();
                 PlayerJump();
@@ -451,6 +459,8 @@ public class SingScript : GameCharacter
                 break;
             case PlayerState.PLAYER_FALLING:
                 animator.SetBool("isRunning", false);
+                healParticleEffect.SetActive(false);
+                songHealParticleEffect.SetActive(false);
                 PlayerFlip();
                 PlayerMove();
                 meleeAttackTransform.localPosition = (input.y != 0) ? Vector2.up * input.y * 2f : Vector2.left * 1.5f;
@@ -471,6 +481,8 @@ public class SingScript : GameCharacter
                 break;
             case PlayerState.PLAYER_HEALING:
                 animator.SetBool("isRunning", false);
+                healParticleEffect.SetActive(true);
+                songHealParticleEffect.SetActive(true);
                 this.rigidbody2D.velocity = Vector2.zero;
                 PlayerHeal();
                 if(!isGrounded) { playerState = PlayerState.PLAYER_FALLING; }
@@ -484,16 +496,22 @@ public class SingScript : GameCharacter
                 break;
             case PlayerState.PLAYER_DASHING:
                 animator.SetBool("isRunning", false);
+                healParticleEffect.SetActive(false);
+                songHealParticleEffect.SetActive(false);
                 PlayerDash();
                 break;
             case PlayerState.PLAYER_SPIRIT:
                 animator.SetBool("isRunning", false);
+                healParticleEffect.SetActive(false);
+                songHealParticleEffect.SetActive(false);
                 this.rigidbody2D.gravityScale = 0f;
                 this.rigidbody2D.velocity = Vector2.zero;
                 PlayerSpiritAttack();
                 break;
             case PlayerState.PLAYER_HIT:
                 animator.SetBool("isRunning", false);
+                healParticleEffect.SetActive(false);
+                songHealParticleEffect.SetActive(false);
                 break;
         }
     } // Determines what happens in each playerState
