@@ -1221,8 +1221,8 @@ MonoBehaviour:
     name: Sing
     sentences:
     - Wait...
-    - something's not right.
-    - The island's atmosphere is..... different somehow.
+    - The rain... the atmosphere is... something's wrong.
+    - '...the village, is everyone okay?'
 --- !u!4 &114854981 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6480411661203237139, guid: eeac1acd9d390e1438e4b9957a09da9c,
@@ -1383,7 +1383,8 @@ MonoBehaviour:
     sentences:
     - That was close!
     - Are you okay?
-    - What's that shiny necklace for?
+    - Ahh, I think I got scratched.
+    - What's that? Think you can help me out?
 --- !u!1 &141039529
 GameObject:
   m_ObjectHideFlags: 0
@@ -24637,8 +24638,7 @@ MonoBehaviour:
     - Dangerous creatures lie in waiting ahead!
   - name: Sing
     sentences:
-    - Okay...? Don't worry, I'm not any going further than the village.
-    - But uh... what happened to the village?
+    - The village! What happened?! Where is everyone?
   - name: Stranger
     sentences:
     - The village? It was destroyed when the island was cursed!
@@ -43361,9 +43361,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlayOneTime: 1
   dialogue:
-    name: Sing
+    name: ???
     sentences:
-    - Hoooh... !
+    - OOAARHHHHHH!
 --- !u!1 &2640321092963654023
 GameObject:
   m_ObjectHideFlags: 0
@@ -43397,7 +43397,7 @@ MonoBehaviour:
   dialogue:
     name: Sing
     sentences:
-    - What is That?
+    - I have a bad feeling about this.
 --- !u!4 &2640321093220479089
 Transform:
   m_ObjectHideFlags: 0
@@ -46827,8 +46827,8 @@ MonoBehaviour:
   knockbackForce: {x: 10, y: 10}
   knockbackTime: 0.3
   singBelt: {fileID: 466524446}
-  singMusicNoteParticleEffect: {fileID: 0}
-  songMusicNoteParticleEffect: {fileID: 0}
+  singMusicNoteParticleEffect: {fileID: 303407936}
+  songMusicNoteParticleEffect: {fileID: 250102185}
   abilityHearts:
   - {fileID: 474007168}
   - {fileID: 1386068142}

@@ -60,6 +60,7 @@ public class NpcDialogueTrigger : MonoBehaviour
             {
                 if (Input.GetButtonDown("InteractButton") && dialogueManager.IsEndOfDialogue)
                 {
+                    FindObjectOfType<SingScript>().GetComponent<SingScript>().SetStateIdle();
                     FindObjectOfType<SingScript>().GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                     button.SetBool("IsNear", false);
 

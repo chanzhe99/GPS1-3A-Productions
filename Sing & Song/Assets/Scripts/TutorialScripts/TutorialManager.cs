@@ -128,17 +128,17 @@ public class TutorialManager : MonoBehaviour
                     break;
 
                 case Index_ButtonNameOfTutorial.HealButton:
-                    if (Input.GetButtonDown(currentRequestNameOfButton))
-                        triggedEndTutorial = false;
+                    //if (Input.GetButtonDown(currentRequestNameOfButton))
+                    //    triggedEndTutorial = false;
                     if (Vector2.Distance(tutorialStartPosition, singGameObject.transform.position) > tutorialMoveOutDisappearDistanceX * 1.5f)
                         triggedEndTutorial = false;
-                    /*
+
                     if (singGameObject.GetComponent<SingScript>().GetHealedOnce())
                     {
                         print("healed = " + singGameObject.GetComponent<SingScript>().GetHealedOnce());
                         triggedEndTutorial = false;
                     }
-                    */
+
                     break;
 
                 case Index_ButtonNameOfTutorial.DashButton:
