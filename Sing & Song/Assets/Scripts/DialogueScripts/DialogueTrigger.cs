@@ -17,6 +17,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (hit.CompareTag("Player"))
         {
+            hit.GetComponentInParent<SingScript>().SetStateIdle();
             hit.GetComponentInParent<Rigidbody2D>().velocity = Vector2.zero;
             OpenDialogue(true);
             if (isPlayOneTime)

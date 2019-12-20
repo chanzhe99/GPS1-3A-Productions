@@ -21,7 +21,7 @@ public class ParticleDirector : MonoBehaviour
         int partSize = ps.GetParticles(parts);
 
         for (int i = 0; i < partSize; i++)
-            parts[i].position = Vector3.MoveTowards(parts[i].position, particleTarget.position, Time.deltaTime * 25f);
+            parts[i].position = Vector3.MoveTowards(parts[i].position, particleTarget.position, Time.deltaTime * 2f);
 
         // Apply the modified particles
         ps.SetParticles(parts, partSize);

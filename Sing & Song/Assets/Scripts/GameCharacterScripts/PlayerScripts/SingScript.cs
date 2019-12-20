@@ -287,7 +287,7 @@ public class SingScript : GameCharacter
             }
             #endregion
             #region Update Animation
-            if(inputJumpPress && isGrounded) { animator.SetTrigger("jump"); }
+            //if(inputJumpPress && isGrounded) { animator.SetTrigger("jump"); }
             //if(inputMeleeAttack && meleeAttackIntervalTimer >= meleeAttackInterval) { animator.SetTrigger("attack"); }
             #endregion
 
@@ -381,7 +381,8 @@ public class SingScript : GameCharacter
                 else if(input.x != 0) { playerState = PlayerState.PLAYER_RUNNING; }
                 else if(inputJumpPress && isGrounded)
                 {
-                    Instantiate(landParticleEffect, transform.position, Quaternion.identity);
+                    //Instantiate(landParticleEffect, transform.position, Quaternion.identity);
+                    animator.SetTrigger("jump");
                     StartCoroutine(SongJump());
                     playerState = PlayerState.PLAYER_JUMPING;
                 }
@@ -405,13 +406,13 @@ public class SingScript : GameCharacter
                 healParticleEffect.SetActive(false);
                 songHealParticleEffect.SetActive(false);
 
-                if (timeBtwTrail >= 0.25f)
-                {
-                    Instantiate(landParticleEffect, transform.position, Quaternion.identity);
-                    timeBtwTrail = 0f;
-                }
-                else
-                    timeBtwTrail += Time.deltaTime;
+                //if (timeBtwTrail >= 0.25f)
+                //{
+                //    Instantiate(landParticleEffect, transform.position, Quaternion.identity);
+                //    timeBtwTrail = 0f;
+                //}
+                //else
+                //    timeBtwTrail += Time.deltaTime;
 
                 PlayerFlip();
                 PlayerMove();
@@ -421,7 +422,8 @@ public class SingScript : GameCharacter
                 else if(input.x == 0) { playerState = PlayerState.PLAYER_IDLE; }
                 else if(inputJumpPress && isGrounded)
                 {
-                    Instantiate(landParticleEffect, transform.position, Quaternion.identity);
+                    //Instantiate(landParticleEffect, transform.position, Quaternion.identity);
+                    animator.SetTrigger("jump");
                     StartCoroutine(SongJump());
                     playerState = PlayerState.PLAYER_JUMPING;
                 }
@@ -653,5 +655,11 @@ public class SingScript : GameCharacter
     {
         yield return new WaitForSeconds(nodeInterval);
         song.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpVelocity * 1.25f), ForceMode2D.Impulse);
+    }
+
+    public void SetStateIdle()
+    {
+        this.playerState = PlayerState.PLAYER_IDLE;
+        animator.SetBool("isRunning", false);
     }
 }
