@@ -12,6 +12,7 @@ public class RhinoBossFightManager : MonoBehaviour
     [SerializeField] private GameObject bossFightTriggerGameObject = null;
     private PlayableDirector playableDirector = null;
     [SerializeField] private PlayableAsset rhinoBossFightPreMovie = null;
+    [SerializeField] private PlayableAsset rhinoBossFightSkipPreMovie = null;
     [SerializeField] private PlayableAsset rhinoBossFightPhase2Movie = null;
     [SerializeField] private PlayableAsset rhinoBossFightEndMovie = null;
     [SerializeField] private RhinoAI rhinoAI = null;
@@ -100,6 +101,9 @@ public class RhinoBossFightManager : MonoBehaviour
         singScript.CanDoAction = true;
         rhinoAI.ableStartAnimation = true;
 
+        Global.gameManager.isNotFirstTimeRunRhinoCutscene = true;
+        Global.gameManager.SaveRhinoBossData();
+
         DestroyBossFightTriggerObject();
     }
 
@@ -107,6 +111,36 @@ public class RhinoBossFightManager : MonoBehaviour
     {
         Destroy(bossFightTriggerGameObject);
         //Destroy(this.gameObject);
+    }
+
+    public void PlayBossFightSkipPreMovie()
+    {
+        singScript.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, false);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.BossHPBarUI, false);
+        singScript.CanDoAction = false;
+        rhinoAI.ableStartAnimation = false;
+        singSpriteAnimator.runtimeAnimatorController = null;
+        rhinoBossSpriteAnimator.runtimeAnimatorController = null;
+
+        playableDirector.Play(rhinoBossFightSkipPreMovie, DirectorWrapMode.None);
+    }
+
+    public void EndOfBossFightSkipPreMovie()
+    {
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, true, 5.0f);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.BossHPBarUI, true, 5.0f);
+        singSpriteAnimator.runtimeAnimatorController = singDefalutRuntimeAnimatorController;
+        rhinoBossSpriteAnimator.runtimeAnimatorController = rhinoBossDefalutRuntimeAnimatorController;
+        singScript.CanDoAction = true;
+        rhinoAI.ableStartAnimation = true;
+
+        DestroyBossFightSkipPreMovieObject();
+    }
+
+    private void DestroyBossFightSkipPreMovieObject()
+    {
+        // Anythings need destroy when boss fight skip pre movie is finish
     }
 
     public void PlayBossFightPhase2Movie()

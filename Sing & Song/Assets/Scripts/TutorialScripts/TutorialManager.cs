@@ -34,6 +34,17 @@ public class TutorialManager : MonoBehaviour
         tutorialUIAnimator.SetBool("IsShowing", false);
     }
 
+    private void Update()
+    {
+        /*
+        currentRequestNameOfButton = buttonNameOfTutorial[(int)Index_ButtonNameOfTutorial.HealButton];
+        if (Input.GetButtonDown(currentRequestNameOfButton))
+        {
+            Debug.Log("Press");
+        }
+        */
+    }
+
     public void ShowTutorialUI(Index_ButtonNameOfTutorial index_ButtonNameOfTutorial)
     {
         for(int i=0; i< keysImages.Count; i++)
@@ -110,35 +121,36 @@ public class TutorialManager : MonoBehaviour
                     if (dialogueManager.IsEndOfDialogue)
                     {
                         if (Input.GetButtonDown(currentRequestNameOfButton))
+                        {
                             triggedEndTutorial = false;
+                        }
                     }
                     break;
 
                 case Index_ButtonNameOfTutorial.HealButton:
-                    if (dialogueManager.IsEndOfDialogue)
+                    if (Input.GetButtonDown(currentRequestNameOfButton))
+                        triggedEndTutorial = false;
+                    if (Vector2.Distance(tutorialStartPosition, singGameObject.transform.position) > tutorialMoveOutDisappearDistanceX * 1.5f)
+                        triggedEndTutorial = false;
+                    /*
+                    if (singGameObject.GetComponent<SingScript>().GetHealedOnce())
                     {
-                        if (Input.GetButtonDown(currentRequestNameOfButton))
-                            triggedEndTutorial = false;
-                        if (singGameObject.GetComponent<SingScript>().GetHealedOnce())
-                        {
-                            print("healed = " + singGameObject.GetComponent<SingScript>().GetHealedOnce());
-                            triggedEndTutorial = false;
-                        }
-                            
+                        print("healed = " + singGameObject.GetComponent<SingScript>().GetHealedOnce());
+                        triggedEndTutorial = false;
                     }
+                    */
                     break;
 
                 case Index_ButtonNameOfTutorial.DashButton:
-                    if (dialogueManager.IsEndOfDialogue)
-                    {
-                        if (Input.GetButtonDown(currentRequestNameOfButton))
-                            triggedEndTutorial = false;
-                    }
+                    if (Input.GetButtonDown(currentRequestNameOfButton))
+                        triggedEndTutorial = false;
+                    if (Vector2.Distance(tutorialStartPosition, singGameObject.transform.position) > tutorialMoveOutDisappearDistanceX * 1.5f)
+                        triggedEndTutorial = false;
                     break;
 
             }// put the event triger in the switch case
-            
-            
+            Debug.Log(triggedEndTutorial);
+
             yield return null;
         }
 
@@ -151,6 +163,13 @@ public class TutorialManager : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TutorialUI, false);
             ShowTutorialUI(Index_ButtonNameOfTutorial.Horizontal);
+        }
+
+        if(index_ButtonNameOfTutorial == Index_ButtonNameOfTutorial.HealButton)
+        {
+            yield return new WaitForSeconds(1.0f);
+            Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TutorialUI, false);
+            ShowTutorialUI(Index_ButtonNameOfTutorial.DashButton);
         }
     }
 

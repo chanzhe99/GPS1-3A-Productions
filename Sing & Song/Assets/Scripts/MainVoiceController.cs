@@ -22,9 +22,9 @@ public class MainVoiceController : MonoBehaviour
             gameSoundVolumeData = new SaveData.GameSoundVolumeData();
         }
 
-        audioMixer.SetFloat("MasterVolume", gameSoundVolumeData.masterVolume);
-        audioMixer.SetFloat("MusicVolume", gameSoundVolumeData.musicVolume);
-        audioMixer.SetFloat("SoundEffectVolume", gameSoundVolumeData.soundEffectVolume);
+        audioMixer.SetFloat("MasterVolume", gameSoundVolumeData.MasterVolume);
+        audioMixer.SetFloat("MusicVolume", gameSoundVolumeData.MusicVolume);
+        audioMixer.SetFloat("SoundEffectVolume", gameSoundVolumeData.SoundEffectVolume);
 
     }
 
@@ -57,16 +57,20 @@ public class MainVoiceController : MonoBehaviour
     // ! save volume data functions
     public void LaodGameSoundVolumeData()
     {
-        foreach (Slider masterSlider in masterSliders) masterSlider.value = gameSoundVolumeData.masterVolume;
-        foreach (Slider musicSlider in musicSliders) musicSlider.value = gameSoundVolumeData.musicVolume;
-        foreach (Slider soundEffectSlider in soundEffectSliders) soundEffectSlider.value = gameSoundVolumeData.soundEffectVolume;
+        foreach (Slider masterSlider in masterSliders) masterSlider.value = gameSoundVolumeData.MasterVolume;
+        foreach (Slider musicSlider in musicSliders) musicSlider.value = gameSoundVolumeData.MusicVolume;
+        foreach (Slider soundEffectSlider in soundEffectSliders) soundEffectSlider.value = gameSoundVolumeData.SoundEffectVolume;
     }
 
     public void SaveGameSoundVolumeData()
     {
-        audioMixer.GetFloat("MasterVolume", out gameSoundVolumeData.masterVolume);
-        audioMixer.GetFloat("MusicVolume", out gameSoundVolumeData.musicVolume);
-        audioMixer.GetFloat("SoundEffectVolume", out gameSoundVolumeData.soundEffectVolume);
+        float masterVolume, musicVolume, soundEffectVolume;
+
+        audioMixer.GetFloat("MasterVolume", out masterVolume);
+        audioMixer.GetFloat("MusicVolume", out musicVolume);
+        audioMixer.GetFloat("SoundEffectVolume", out soundEffectVolume);
+
+        gameSoundVolumeData = new SaveData.GameSoundVolumeData(masterVolume, musicVolume, soundEffectVolume);
 
         //! Debug
         //Debug.Log(nameof(gameSoundVolumeData.masterVolume) + " : " + gameSoundVolumeData.masterVolume + ", " + nameof(gameSoundVolumeData.musicVolume) + " : " + gameSoundVolumeData.musicVolume + ", " + nameof(gameSoundVolumeData.soundEffectVolume) + " : " + gameSoundVolumeData.soundEffectVolume);

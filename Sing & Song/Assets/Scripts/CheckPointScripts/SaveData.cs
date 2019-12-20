@@ -2,8 +2,11 @@
 {
     [System.Serializable] public class PlayerSpawnData
     {
-        public int currentPointIndex;
-        public int lastCheckPointLevelIndex;
+        private int currentPointIndex = 0;
+        private int lastCheckPointLevelIndex = 0;
+
+        public int CurrentPointIndex => currentPointIndex;
+        public int LastCheckPointLevelIndex => lastCheckPointLevelIndex;
 
         public PlayerSpawnData()
         {
@@ -21,7 +24,9 @@
 
     [System.Serializable] public class TutorialData
     {
-        public bool isTutorialMoviePlayed;
+        private bool isTutorialMoviePlayed = false;
+
+        public bool IsTutorialMoviePlayed => isTutorialMoviePlayed;
 
         public TutorialData()
         {
@@ -37,7 +42,9 @@
 
     [System.Serializable] public class OpeningCutsceneData
     {
-        public bool isOpeningCutsceneMoviePlayed;
+        private bool isOpeningCutsceneMoviePlayed = false;
+
+        public bool IsOpeningCutsceneMoviePlayed => isOpeningCutsceneMoviePlayed;
 
         public OpeningCutsceneData()
         {
@@ -53,9 +60,13 @@
 
     [System.Serializable] public class GameSoundVolumeData
     {
-        public float masterVolume;
-        public float musicVolume;
-        public float soundEffectVolume;
+        private float masterVolume = 0.0f;
+        private float musicVolume = 0.0f;
+        private float soundEffectVolume = 0.0f;
+
+        public float MasterVolume => masterVolume;
+        public float MusicVolume => musicVolume;
+        public float SoundEffectVolume => soundEffectVolume;
 
         public GameSoundVolumeData()
         {
@@ -76,6 +87,23 @@
             this.masterVolume = masterVolume;
             this.musicVolume = musicVolume;
             this.soundEffectVolume = soundEffectVolume;
+        }
+    }
+
+    [System.Serializable] public class RhinoBossData
+    {
+        private bool isNotFirstTimeRunRhinoCutscene = false;
+
+        public bool IsNotFirstTimeRunRhinoCutscene => isNotFirstTimeRunRhinoCutscene;
+
+        public RhinoBossData()
+        {
+            isNotFirstTimeRunRhinoCutscene = false;
+        }
+
+        public RhinoBossData(bool isStartGameFirstTimeRunRhinoCutscene)
+        {
+            this.isNotFirstTimeRunRhinoCutscene = isStartGameFirstTimeRunRhinoCutscene;
         }
     }
 }

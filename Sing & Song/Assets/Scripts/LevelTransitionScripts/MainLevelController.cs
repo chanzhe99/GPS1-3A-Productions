@@ -29,7 +29,7 @@ public class MainLevelController : MonoBehaviour
 
             
 
-            if (tempLevelTransitionController[i].LevelIndex == Global.gameManager.LastCheckPointLevelIndex)
+            if (tempLevelTransitionController[i].LevelIndex == Global.gameManager.lastCheckPointLevelIndex)
             {
                 tempLevelTransitionController[i].SetUpStart();
                 tempLevelTransitionController[i].SetDisableToSwitch(true);

@@ -22,7 +22,7 @@ public class OpeningTimelineController : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        if (Global.gameManager.IsOpeningCutsceneMoviePlayed == false)
+        if (Global.gameManager.isOpeningCutsceneMoviePlayed == false)
         {
             openingDialogueTrigger = transform.GetComponentInChildren<DialogueTrigger>();
             dialogueManager = FindObjectOfType<DialogueManager>();
@@ -67,7 +67,7 @@ public class OpeningTimelineController : MonoBehaviour
 
         FindObjectOfType<TutorialManager>().ShowTutorialUI(TutorialManager.Index_ButtonNameOfTutorial.JumpButton);
 
-        Global.gameManager.IsOpeningCutsceneMoviePlayed = true;
+        Global.gameManager.isOpeningCutsceneMoviePlayed = true;
         DestroyAllOpeningGameObjects();
     }
 

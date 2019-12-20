@@ -27,7 +27,7 @@ public class TutorialTimelineController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if (Global.gameManager.IsTutorialMoviePlayed == false)
+        if (Global.gameManager.isTutorialMoviePlayed == false)
         {
             playableDirector = GetComponent<PlayableDirector>();
             singDefalutRuntimeAnimatorController = singSpriteAnimator.runtimeAnimatorController;
@@ -44,7 +44,7 @@ public class TutorialTimelineController : MonoBehaviour
     {
         if (tutorialStartedDialogueTriggers != null)
         {
-            if (!Global.gameManager.IsTutorialMoviePlayed)
+            if (!Global.gameManager.isTutorialMoviePlayed)
             {
                 Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, false);
 
@@ -166,20 +166,23 @@ public class TutorialTimelineController : MonoBehaviour
             yield return null;
         }
         yield return null;
-        Global.gameManager.IsTutorialMoviePlayed = true;
+        Global.gameManager.isTutorialMoviePlayed = true;
         Global.gameManager.SaveAllGameDatas();
         Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, true);
+
+        yield return new WaitForSeconds(1.0f);
         FindObjectOfType<TutorialManager>().ShowTutorialUI(TutorialManager.Index_ButtonNameOfTutorial.HealButton);
+
         DestroyAllTutorialGameObjects();
     }
 
     private void DestroyAllTutorialGameObjects()
     {
         //Destroy(tutorialUIGameObject);
-        Destroy(tutorialManager.gameObject);
+        //Destroy(tutorialManager.gameObject);
         Destroy(dogEnemyGameObject);
         Destroy(attackTutorialTriggerEventGameObject);
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
     }
 
 }

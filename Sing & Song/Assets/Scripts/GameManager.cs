@@ -15,18 +15,13 @@ public class GameManager : MonoBehaviour
     private SaveData.PlayerSpawnData playerSpawnData;
     private SaveData.TutorialData tutorialData;
     private SaveData.OpeningCutsceneData openingCutsceneData;
+    private SaveData.RhinoBossData rhinoBossData;
 
-    private int currentPointIndex = -1;
-    public int CurrentPointIndex { set { /*currentPointIndex = (value < 0 || value > FindObjectsOfType<CheckPoint>().Length) ? -1 : value;*/ currentPointIndex = value; } get { return currentPointIndex; } }
-
-    private int lastCheckPointLevelIndex = 1;
-    public int LastCheckPointLevelIndex { set { lastCheckPointLevelIndex = value; } get { return lastCheckPointLevelIndex; } }
-
-    private bool isTutorialMoviePlayed = false;
-    public bool IsTutorialMoviePlayed { set { isTutorialMoviePlayed = value; } get { return isTutorialMoviePlayed; } }
-
-    private bool isOpeningCutsceneMoviePlayed = false;
-    public bool IsOpeningCutsceneMoviePlayed { set { isOpeningCutsceneMoviePlayed = value; } get { return isOpeningCutsceneMoviePlayed; } }
+    public int currentPointIndex = -1;
+    public int lastCheckPointLevelIndex = 1;
+    public bool isTutorialMoviePlayed = false;
+    public bool isOpeningCutsceneMoviePlayed = false;
+    public bool isNotFirstTimeRunRhinoCutscene = false;
 
     private void Awake()
     {
@@ -44,22 +39,30 @@ public class GameManager : MonoBehaviour
         if (playerSpawnData != null)
         {
             DefinePlayerLocation();
-            lastCheckPointLevelIndex = playerSpawnData.lastCheckPointLevelIndex;
+            lastCheckPointLevelIndex = playerSpawnData.LastCheckPointLevelIndex;
         }
 
         tutorialData = new SaveData.TutorialData();
         tutorialData = (SaveData.TutorialData)SaveDataManager.LoadDataGetObject(Global.pathOfData_TutorialData);
         if (tutorialData != null)
         {
-            isTutorialMoviePlayed = tutorialData.isTutorialMoviePlayed;
+            isTutorialMoviePlayed = tutorialData.IsTutorialMoviePlayed;
         }
 
         openingCutsceneData = new SaveData.OpeningCutsceneData();
         openingCutsceneData = (SaveData.OpeningCutsceneData)SaveDataManager.LoadDataGetObject(Global.pathOfData_OpeningCutsceneData);
         if (openingCutsceneData != null)
         {
-            isOpeningCutsceneMoviePlayed = openingCutsceneData.isOpeningCutsceneMoviePlayed;
+            isOpeningCutsceneMoviePlayed = openingCutsceneData.IsOpeningCutsceneMoviePlayed;
         }
+
+        rhinoBossData = new SaveData.RhinoBossData();
+        rhinoBossData = (SaveData.RhinoBossData)SaveDataManager.LoadDataGetObject(Global.pathOfData_RhinoBossData);
+        if(rhinoBossData != null)
+        {
+            isNotFirstTimeRunRhinoCutscene = rhinoBossData.IsNotFirstTimeRunRhinoCutscene;
+        }
+
     }
     private void Update()
     {
@@ -86,13 +89,20 @@ public class GameManager : MonoBehaviour
 
             }
         }
+        else if (Input.GetKey(KeyCode.R))
+        {
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                SaveDataManager.DeleteData(Global.pathOfData_RhinoBossData);
+            }
+        }
     }
 
     private void DefinePlayerLocation()
     {
         for(int i = 0; i < checkPoints.Count; i++)
         {
-            if(checkPoints[i].PointIndex == playerSpawnData.currentPointIndex)
+            if(checkPoints[i].PointIndex == playerSpawnData.CurrentPointIndex)
             {
                 playerScript.GetComponent<Transform>().position = checkPoints[i].PlayerSpawnPosition;
                 songGameObject.GetComponent<Transform>().position = checkPoints[i].PlayerSpawnPosition;
@@ -115,16 +125,24 @@ public class GameManager : MonoBehaviour
         SaveDataManager.SaveData(openingCutsceneData, Global.pathOfData_OpeningCutsceneData);
     }
 
+    public void SaveRhinoBossData()
+    {
+        rhinoBossData = new SaveData.RhinoBossData(isNotFirstTimeRunRhinoCutscene);
+        SaveDataManager.SaveData(rhinoBossData, Global.pathOfData_RhinoBossData);
+    }
+
     public void DeleteAllGameDatas()
     {
         currentPointIndex = -1;
         lastCheckPointLevelIndex = 1;
         isTutorialMoviePlayed = false;
         isOpeningCutsceneMoviePlayed = false;
+        isNotFirstTimeRunRhinoCutscene = false;
 
         SaveDataManager.DeleteData(Global.pathOfData_TutorialData);
         SaveDataManager.DeleteData(Global.pathOfData_PlayerSpawnData);
         SaveDataManager.DeleteData(Global.pathOfData_OpeningCutsceneData);
+        SaveDataManager.DeleteData(Global.pathOfData_RhinoBossData);
     }
 
     public void TimeToEndAndSayThankYou()

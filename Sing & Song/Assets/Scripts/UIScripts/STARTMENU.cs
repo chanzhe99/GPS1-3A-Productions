@@ -29,7 +29,7 @@ public class STARTMENU : MonoBehaviour
     {
         continueButtonTextDefualtColor = continueButtonText.color;
 
-        if (Global.gameManager.IsTutorialMoviePlayed ==  true)
+        if (Global.gameManager.isTutorialMoviePlayed ==  true)
         {
             continueButton.interactable = true;
             continueButtonText.color = continueButtonTextDefualtColor;
@@ -87,7 +87,7 @@ public class STARTMENU : MonoBehaviour
 
         Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, menuActiveOnStart);
 
-        if(!Global.gameManager.IsTutorialMoviePlayed && !Global.gameManager.IsOpeningCutsceneMoviePlayed)
+        if(!Global.gameManager.isTutorialMoviePlayed && !Global.gameManager.isOpeningCutsceneMoviePlayed)
         {
             Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, false);
             StartNewGame();

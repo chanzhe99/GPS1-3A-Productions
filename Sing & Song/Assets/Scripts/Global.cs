@@ -9,6 +9,7 @@ public class Global
     public static readonly string pathOfData_TutorialData = "/data/TutorialData.dat";
     public static readonly string pathOfData_OpeningCutsceneData = "/data/OpeningCutsceneData.dat";
     public static readonly string pathOfData_GameSoundVolumeData = "/data/GameSoundVolumeData.dat";
+    public static readonly string pathOfData_RhinoBossData = "/data/RhinoBossData.dat";
 
     public static readonly string tag_Player = "Player";
 
