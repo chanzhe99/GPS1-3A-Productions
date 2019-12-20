@@ -128,6 +128,14 @@ public class TutorialManager : MonoBehaviour
                     }
                     break;
 
+                case Index_ButtonNameOfTutorial.DashButton:
+                    if (dialogueManager.IsEndOfDialogue)
+                    {
+                        if (Input.GetButtonDown(currentRequestNameOfButton))
+                            triggedEndTutorial = false;
+                    }
+                    break;
+
             }// put the event triger in the switch case
             
             

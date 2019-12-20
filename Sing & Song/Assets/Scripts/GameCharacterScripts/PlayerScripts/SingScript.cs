@@ -8,7 +8,9 @@ public class SingScript : GameCharacter
 {
     [SerializeField] Transform singBelt = null;
     [SerializeField] private GameObject singMusicNoteParticleEffect;
+    [SerializeField] private GameObject songMusicNoteParticleEffect;
     private ParticleSystem singMusicNotes;
+    private ParticleSystem songMusicNotes;
     bool healedOnce = false;
     #region Permission Variables
     [Header("Ability Variables")]
@@ -177,6 +179,7 @@ public class SingScript : GameCharacter
         #endregion
         #region Initialise Particle Systems
         singMusicNotes = singMusicNoteParticleEffect.GetComponent<ParticleSystem>();
+        songMusicNotes = songMusicNoteParticleEffect.GetComponent<ParticleSystem>();
         #endregion
     } // Initialises player variables
     private void Update()
@@ -677,9 +680,15 @@ public class SingScript : GameCharacter
     public void PlayMusicNoteParticles(bool play)
     {
         if (play)
+        {
             singMusicNotes.Play();
+            songMusicNotes.Play();
+        }
         else
+        {
             singMusicNotes.Stop();
+            songMusicNotes.Stop();
+        }
     }
 
     public bool GetHealedOnce()
