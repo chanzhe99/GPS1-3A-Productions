@@ -34,6 +34,7 @@ public class SingScript : GameCharacter
     [Header("Jump Variables")]
     [SerializeField] private float jumpHeight = 4.5f;
     [SerializeField] private float timeToJumpApex = 0.35f;
+    [SerializeField] private GameObject landParticleEffect = null;
     private float jumpVelocity;
     private float jumpTime;
     private float gravity;
@@ -123,6 +124,7 @@ public class SingScript : GameCharacter
     [SerializeField] private float JumpSoundTime = 1f;
     private float JumpSoundTimer = 0f;
     #endregion
+    float timeBtwTrail = 0f;
 
     protected override void Initialise()
     {
@@ -167,10 +169,10 @@ public class SingScript : GameCharacter
     } // Initialises player variables
     private void Update()
     {
-        /*
-        if(Input.GetKeyDown(KeyCode.F1))
+
+        if (Input.GetKeyDown(KeyCode.F1))
         {
-            if(!animator.GetBool("isResting"))
+            if (!animator.GetBool("isResting"))
             {
                 animator.SetBool("isResting", true);
                 songAnimator.SetBool("isResting", true);
@@ -181,8 +183,8 @@ public class SingScript : GameCharacter
                 songAnimator.SetBool("isResting", false);
             }
         }
-        */
-        if(Input.GetKey(KeyCode.O))
+
+        if (Input.GetKey(KeyCode.O))
         {
             songAnimator.SetBool("isHealing", true);
         }
@@ -372,6 +374,7 @@ public class SingScript : GameCharacter
                 else if(input.x != 0) { playerState = PlayerState.PLAYER_RUNNING; }
                 else if(inputJumpPress && isGrounded)
                 {
+                    Instantiate(landParticleEffect, transform.position, Quaternion.identity);
                     StartCoroutine(SongJump());
                     playerState = PlayerState.PLAYER_JUMPING;
                 }
@@ -392,6 +395,15 @@ public class SingScript : GameCharacter
                 break;
             case PlayerState.PLAYER_RUNNING:
                 animator.SetBool("isRunning", true);
+
+                if (timeBtwTrail >= 0.25f)
+                {
+                    Instantiate(landParticleEffect, transform.position, Quaternion.identity);
+                    timeBtwTrail = 0f;
+                }
+                else
+                    timeBtwTrail += Time.deltaTime;
+
                 PlayerFlip();
                 PlayerMove();
                 meleeAttackTransform.localPosition = (input.y > 0) ? Vector2.up * 2f : Vector2.left * 1.5f;
@@ -400,6 +412,7 @@ public class SingScript : GameCharacter
                 else if(input.x == 0) { playerState = PlayerState.PLAYER_IDLE; }
                 else if(inputJumpPress && isGrounded)
                 {
+                    Instantiate(landParticleEffect, transform.position, Quaternion.identity);
                     StartCoroutine(SongJump());
                     playerState = PlayerState.PLAYER_JUMPING;
                 }
@@ -442,6 +455,8 @@ public class SingScript : GameCharacter
                 if (isGrounded)
                 {
                     dashedInAir = false;
+                    animator.SetTrigger("land");
+                    Instantiate(landParticleEffect, transform.position, Quaternion.identity);
                     playerState = PlayerState.PLAYER_IDLE;
                 } // Resets player state to idle after landing from a fall
                 if(inputDash && dashIntervalTimer >= dashInterval && !dashedInAir)

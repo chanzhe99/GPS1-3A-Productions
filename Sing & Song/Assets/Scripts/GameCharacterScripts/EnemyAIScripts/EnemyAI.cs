@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyAI : GameCharacter
 {
     protected bool isAwayCheckPlayer = true;
+    [SerializeField] protected GameObject hitParticleEffect = null;
+    [SerializeField] protected GameObject hitArmourParticleEffect = null;
 
     #region Component Variables
     [Header("Component Variables")]
@@ -241,6 +243,7 @@ public class EnemyAI : GameCharacter
             if(this.enemyState != EnemyState.ENEMY_HIT)
             {
                 this.enemyState = EnemyState.ENEMY_HIT;
+                Instantiate(hitParticleEffect, this.transform.position, Quaternion.identity);
                 StartCoroutine(this.EnemyKnockback());
                 if(!spiritArmour.activeSelf)
                 {
