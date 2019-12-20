@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class SingScript : GameCharacter
 {
+    [SerializeField] Transform singBelt = null;
+    bool healedOnce = false;
     #region Permission Variables
     [Header("Ability Variables")]
     [SerializeField] private Image[] abilityHearts;
@@ -48,6 +50,7 @@ public class SingScript : GameCharacter
     [SerializeField] private float healTime = 1.5f;
     [SerializeField] private GameObject healParticleEffect = null;
     [SerializeField] private GameObject songHealParticleEffect = null;
+    [SerializeField] private GameObject finishHealParticleEffect = null;
     private float inputBuffer;
     private float spiritDrain;
     private float healTimeTimer;
@@ -128,7 +131,7 @@ public class SingScript : GameCharacter
     [SerializeField] private float JumpSoundTime = 1f;
     private float JumpSoundTimer = 0f;
     #endregion
-    float timeBtwTrail = 0f;
+    //float timeBtwTrail = 0f;
 
     protected override void Initialise()
     {
@@ -538,7 +541,10 @@ public class SingScript : GameCharacter
                 currentHealth += 1;
                 print($"currentHealth: {currentHealth}");
             }
+            Instantiate(finishHealParticleEffect, singBelt.position, Quaternion.identity);
             finishedHeal = true;
+            healedOnce = true;
+            print(healedOnce);
         }
         else
         {
@@ -661,5 +667,11 @@ public class SingScript : GameCharacter
     {
         this.playerState = PlayerState.PLAYER_IDLE;
         animator.SetBool("isRunning", false);
+    }
+
+    public bool GetHealedOnce()
+    {
+        print("healedOnce");
+        return healedOnce;
     }
 }

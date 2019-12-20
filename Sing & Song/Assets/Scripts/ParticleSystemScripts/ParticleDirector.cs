@@ -11,7 +11,7 @@ public class ParticleDirector : MonoBehaviour
 
     private void Start()
     {
-        particleTarget = GameObject.FindGameObjectWithTag("Sing").transform;
+        particleTarget = GameObject.FindGameObjectWithTag("SingBelt").transform;
         if (particleTarget != null) print("Got Sing: " + particleTarget.name);
         ps = GetComponent<ParticleSystem>();
     }

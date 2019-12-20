@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class TutorialManager : MonoBehaviour
 {
-    public enum Index_ButtonNameOfTutorial { JumpButton, Horizontal, MeleeAttackButton };
+    public enum Index_ButtonNameOfTutorial { JumpButton, Horizontal, MeleeAttackButton, HealButton, DashButton };
 
     //[SerializeField] private GameObject tutorialUIGameObject;
     [SerializeField] private Animator tutorialUIAnimator;
@@ -26,7 +26,7 @@ public class TutorialManager : MonoBehaviour
     };
     */
 
-    private List<string> buttonNameOfTutorial = new List<string> { "JumpButton", "Horizontal", "MeleeAttackButton" };
+    private List<string> buttonNameOfTutorial = new List<string> { "JumpButton", "Horizontal", "MeleeAttackButton", "HealButton", "DashButton" };
     private string currentRequestNameOfButton;
 
     private void Awake()
@@ -75,8 +75,9 @@ public class TutorialManager : MonoBehaviour
             yield return null;
         }
 
-        if (index_ButtonNameOfTutorial == Index_ButtonNameOfTutorial.JumpButton)
+        if (index_ButtonNameOfTutorial == Index_ButtonNameOfTutorial.Horizontal)
         {
+            //tutorialUIAnimator.SetBool("IsShowing", false);
             //singGameObject.GetComponent<Rigidbody2D>().constraints  = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
 
@@ -87,7 +88,7 @@ public class TutorialManager : MonoBehaviour
         {
             switch (index_ButtonNameOfTutorial)
             {
-                case Index_ButtonNameOfTutorial.Horizontal:
+                case Index_ButtonNameOfTutorial.JumpButton:
                     if (Input.GetButtonDown(currentRequestNameOfButton))
                         triggedEndTutorial = false;
 
@@ -96,7 +97,7 @@ public class TutorialManager : MonoBehaviour
                     break;
 
 
-                case Index_ButtonNameOfTutorial.JumpButton:
+                case Index_ButtonNameOfTutorial.Horizontal:
                     if (Input.GetButtonDown(currentRequestNameOfButton))
                         triggedEndTutorial = false;
 
@@ -113,6 +114,19 @@ public class TutorialManager : MonoBehaviour
                     }
                     break;
 
+                case Index_ButtonNameOfTutorial.HealButton:
+                    if (dialogueManager.IsEndOfDialogue)
+                    {
+                        if (Input.GetButtonDown(currentRequestNameOfButton))
+                            triggedEndTutorial = false;
+                        if (singGameObject.GetComponent<SingScript>().GetHealedOnce())
+                        {
+                            print("healed = " + singGameObject.GetComponent<SingScript>().GetHealedOnce());
+                            triggedEndTutorial = false;
+                        }
+                            
+                    }
+                    break;
 
             }// put the event triger in the switch case
             
@@ -124,11 +138,11 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(closeDialogueTime);
         tutorialUIAnimator.SetBool("IsShowing", false);
 
-        if (index_ButtonNameOfTutorial == Index_ButtonNameOfTutorial.Horizontal)
+        if (index_ButtonNameOfTutorial == Index_ButtonNameOfTutorial.JumpButton)
         {
             yield return new WaitForSeconds(1.0f);
             Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TutorialUI, false);
-            ShowTutorialUI(Index_ButtonNameOfTutorial.JumpButton);
+            ShowTutorialUI(Index_ButtonNameOfTutorial.Horizontal);
         }
     }
 

@@ -169,6 +169,7 @@ public class TutorialTimelineController : MonoBehaviour
         Global.gameManager.IsTutorialMoviePlayed = true;
         Global.gameManager.SaveAllGameDatas();
         Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, true);
+        FindObjectOfType<TutorialManager>().ShowTutorialUI(TutorialManager.Index_ButtonNameOfTutorial.HealButton);
         DestroyAllTutorialGameObjects();
     }
 

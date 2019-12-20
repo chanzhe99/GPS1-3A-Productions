@@ -65,7 +65,7 @@ public class OpeningTimelineController : MonoBehaviour
 
         //! Here for save the isMoviePlayed data
 
-        FindObjectOfType<TutorialManager>().ShowTutorialUI(TutorialManager.Index_ButtonNameOfTutorial.Horizontal);
+        FindObjectOfType<TutorialManager>().ShowTutorialUI(TutorialManager.Index_ButtonNameOfTutorial.JumpButton);
 
         Global.gameManager.IsOpeningCutsceneMoviePlayed = true;
         DestroyAllOpeningGameObjects();
