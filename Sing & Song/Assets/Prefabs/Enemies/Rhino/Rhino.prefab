@@ -1355,6 +1355,8 @@ MonoBehaviour:
   attackRange: {x: 8, y: 2}
   knockbackForce: {x: 6, y: 6}
   knockbackTime: 0.3
+  hitParticleEffect: {fileID: 0}
+  hitArmourParticleEffect: {fileID: 0}
   enemySpriteTransform: {fileID: 6480411660897432053}
   spiritArmour: {fileID: 8827721098279002472}
   haveSpiritArmour: 0
@@ -1364,6 +1366,7 @@ MonoBehaviour:
   restTime: 2
   retreatTime: 2
   bossHPBarController: {fileID: 0}
+  hitParticleSpawnLocation: {fileID: 0}
   ableStartAnimation: 0
   allowRhinoAttackBehaviour: 1
   rockfallSourceOriginPoint: {fileID: 7883975591762976868, guid: 27c74a3f0e2c46c48936e73fbff959db,

@@ -70,6 +70,7 @@ public class WildDogAI : EnemyAI
         enemyState = EnemyState.ENEMY_RETREATING;
         isLunge = false;
     }
+
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();

@@ -9,10 +9,12 @@ public class SingScript : GameCharacter
     #region Permission Variables
     [Header("Ability Variables")]
     [SerializeField] private Image[] abilityHearts;
-    [HideInInspector] private bool canDoAction = true;
+    private bool canDoAction = true;
     public bool canHeal = true;
     public bool canDash = true;
     private bool canSpiritAttack = false;
+    private float dealthZone = 0.2f;
+
     public bool CanDoAction { get { return canDoAction; } set { canDoAction = value; playerState = PlayerState.PLAYER_IDLE; } }
     #endregion
     #region Input Variables
@@ -209,9 +211,10 @@ public class SingScript : GameCharacter
             abilityHearts[0].color = new Color32(255, 255, 255, 255);
             abilityHearts[1].color = new Color32(148, 250, 242, 255);
         }
-        #endregion
+            #endregion
             #region Check Inputs
                 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // Input for directions
+                if (input.sqrMagnitude < (dealthZone * dealthZone)) input = Vector2.zero;
                 inputJumpPress = Input.GetButtonDown("JumpButton"); // Input for jump press
                 inputJump = Input.GetButton("JumpButton"); // Input for jump
                 if (canHeal) inputHeal = Input.GetButton("HealButton"); // Input for heal

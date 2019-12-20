@@ -747,6 +747,7 @@ public class RhinoAI : EnemyAI
     
     private void OnDestroy()
     {
+        /*
         //For clear residuary rockfalls when the boss is die, because the player only can fight this boss one time, if the player still can fight again this boss then delete this whole OnDestroy() function.
         for (int i = 0; i < rocksOfFallGameobjects.Count; i++)
         {
@@ -760,6 +761,7 @@ public class RhinoAI : EnemyAI
         }
         Destroy(enemyEtherealArmourGameObject);
         //Debug.Log("delete rhino enemy ethereal armour");
+        */
     }
 
     protected override void OnDrawGizmos()

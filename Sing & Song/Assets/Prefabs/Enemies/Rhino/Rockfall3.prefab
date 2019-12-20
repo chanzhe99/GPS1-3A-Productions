@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5622459317747673254}
   - component: {fileID: 9052320949656983765}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rockfall3Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 988712974954775140}
   - component: {fileID: 5569018946983931508}
   - component: {fileID: 8107365582529369608}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rockfall3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

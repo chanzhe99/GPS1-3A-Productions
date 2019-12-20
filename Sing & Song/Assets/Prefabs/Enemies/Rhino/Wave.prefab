@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8960606674759515791}
   - component: {fileID: 8960606674759515790}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WaveSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 6920562067857425855}
   - component: {fileID: 8960606675797272899}
   - component: {fileID: 7982152201709490081}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Wave
   m_TagString: Untagged
   m_Icon: {fileID: 0}

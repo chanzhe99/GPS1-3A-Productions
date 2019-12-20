@@ -28,33 +28,6 @@ public class GameManager : MonoBehaviour
     private bool isOpeningCutsceneMoviePlayed = false;
     public bool IsOpeningCutsceneMoviePlayed { set { isOpeningCutsceneMoviePlayed = value; } get { return isOpeningCutsceneMoviePlayed; } }
 
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.T))
-        {
-            if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                SaveDataManager.DeleteData(Global.pathOfData_TutorialData);
-            }
-        }
-        else if (Input.GetKey(KeyCode.P))
-        {
-            if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                SaveDataManager.DeleteData(Global.pathOfData_PlayerSpawnData);
-
-            }
-        }
-        else if (Input.GetKey(KeyCode.O))
-        {
-            if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                SaveDataManager.DeleteData(Global.pathOfData_OpeningCutsceneData);
-
-            }
-        }
-    }
-
     private void Awake()
     {
         Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TrasitionFade, true);
@@ -86,6 +59,32 @@ public class GameManager : MonoBehaviour
         if (openingCutsceneData != null)
         {
             isOpeningCutsceneMoviePlayed = openingCutsceneData.isOpeningCutsceneMoviePlayed;
+        }
+    }
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.T))
+        {
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                SaveDataManager.DeleteData(Global.pathOfData_TutorialData);
+            }
+        }
+        else if (Input.GetKey(KeyCode.P))
+        {
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                SaveDataManager.DeleteData(Global.pathOfData_PlayerSpawnData);
+
+            }
+        }
+        else if (Input.GetKey(KeyCode.O))
+        {
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                SaveDataManager.DeleteData(Global.pathOfData_OpeningCutsceneData);
+
+            }
         }
     }
 
@@ -139,7 +138,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator EndSceneTransitionTime()
     {
-        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, true, Global.gameStartFadeInSpeed);
+        //Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, true, Global.gameStartFadeInSpeed);
 
         yield return null;
         while (true)

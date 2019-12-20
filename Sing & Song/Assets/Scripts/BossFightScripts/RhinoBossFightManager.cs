@@ -56,7 +56,7 @@ public class RhinoBossFightManager : MonoBehaviour
     
     public void PlayBossFightPreMovieDialogue(int whichDialogueIndex)
     {
-        roarDialogueTriggers[whichDialogueIndex].OpenDialogue();
+        roarDialogueTriggers[whichDialogueIndex].OpenDialogue(true, false, (whichDialogueIndex == 0) ? true : false);
         playableDirector.Pause();
 
         StopCoroutine("CheckBossFightPreMovieDialogueDialogueEnded");
@@ -154,7 +154,24 @@ public class RhinoBossFightManager : MonoBehaviour
 
     public void FadeOutSceneView()
     {
-        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, true, 4.0f);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, true, 3.0f);
+        //StopCoroutine("DoubleComfirmToFadeOut");
+        //StartCoroutine("DoubleComfirmToFadeOut");
+    }
+
+    private IEnumerator DoubleComfirmToFadeOut()
+    {
+        while (true)
+        {
+            if (!Global.userInterfaceActiveManager.MenusOnTrasition[(int)Global.MenusType.TrasitionFade])
+            {
+                Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TrasitionFade, false);
+                Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TrasitionFade, true);
+                break;
+            }
+
+            yield return null;
+        }
     }
 
     public void EndOfBossFightEndMovie()

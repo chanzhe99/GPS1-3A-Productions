@@ -658,7 +658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   headGameObjectOfAllSpriteRenderers: {fileID: 851457968657989412}
-  dieTransparentColorSpeed: 0
+  dieTransparentColorSpeed: 1
   getDamageColor: {r: 0.9716981, g: 0.38847485, b: 0.2520915, a: 1}
   animator: {fileID: 851457968657989411}
   rayCount: 5

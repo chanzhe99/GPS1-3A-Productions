@@ -87,6 +87,12 @@ public class STARTMENU : MonoBehaviour
 
         Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, menuActiveOnStart);
 
+        if(!Global.gameManager.IsTutorialMoviePlayed && !Global.gameManager.IsOpeningCutsceneMoviePlayed)
+        {
+            Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, false);
+            StartNewGame();
+        }
+
     }
 
     /*void Update()

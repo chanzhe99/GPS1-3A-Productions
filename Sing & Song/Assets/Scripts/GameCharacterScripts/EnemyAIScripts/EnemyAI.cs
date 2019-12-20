@@ -182,6 +182,8 @@ public class EnemyAI : GameCharacter
                 }
                 if (this.deathFadeOutTimeTimer >= this.deathFadeOutTime)
                 {
+                    EnemyDieColorChange();
+                    /*
                     if (isAwayCheckPlayer)
                     {
                         this.deathFadeOutTimeTimer = 0f;
@@ -191,6 +193,7 @@ public class EnemyAI : GameCharacter
                     {
                         EnemyDieColorChange();
                     }
+                    */
                 }
                 else
                 {
@@ -201,7 +204,23 @@ public class EnemyAI : GameCharacter
     }
 
     protected virtual void EnemyDieSound() { }
-    protected virtual void EnemyDieColorChange() { }
+    protected virtual void EnemyDieColorChange()
+    {
+        foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
+        {
+            tempDieTransparentColor.r = tempSpriteRenderer.color.r;
+            tempDieTransparentColor.g = tempSpriteRenderer.color.g;
+            tempDieTransparentColor.b = tempSpriteRenderer.color.b;
+            tempDieTransparentColor.a = tempSpriteRenderer.color.a - (dieTransparentColorSpeed * Time.deltaTime);
+            tempSpriteRenderer.color = tempDieTransparentColor;
+        }
+
+        if (spriteRenderers[spriteRenderers.Count - 1].color.a <= 0.0f)
+        {
+            this.deathFadeOutTimeTimer = 0f;
+            this.gameObject.SetActive(false);
+        }
+    }
 
     private void UpdateWallRaycast()
     {
