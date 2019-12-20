@@ -98,6 +98,8 @@ public class RockScript : MonoBehaviour
         SetAnimationBoolBothSingAndSong("directlyRest", true);
         rockAnimator.SetBool("isSaving", true);
 
+        singScript.PlayMusicNoteParticles(true);
+
         yield return StartCoroutine(LightIntensitySwitch(true));
 
         while (true)
@@ -120,6 +122,7 @@ public class RockScript : MonoBehaviour
                 Input.GetButtonDown(Global.nameInputs[(int)Global.InputsType.SpiritAttackButton]) ||
                 Input.GetButtonDown(Global.nameInputs[(int)Global.InputsType.Vertical]))
             {
+                singScript.PlayMusicNoteParticles(false);
                 break;
             }
             yield return null;

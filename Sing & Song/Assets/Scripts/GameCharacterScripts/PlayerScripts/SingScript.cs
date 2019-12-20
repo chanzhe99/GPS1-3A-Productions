@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class SingScript : GameCharacter
 {
     [SerializeField] Transform singBelt = null;
+    [SerializeField] private GameObject singMusicNoteParticleEffect;
+    private ParticleSystem singMusicNotes;
     bool healedOnce = false;
     #region Permission Variables
     [Header("Ability Variables")]
@@ -172,6 +174,9 @@ public class SingScript : GameCharacter
 
             currentHealth = maximumHealth;
 
+        #endregion
+        #region Initialise Particle Systems
+        singMusicNotes = singMusicNoteParticleEffect.GetComponent<ParticleSystem>();
         #endregion
     } // Initialises player variables
     private void Update()
@@ -667,6 +672,14 @@ public class SingScript : GameCharacter
     {
         this.playerState = PlayerState.PLAYER_IDLE;
         animator.SetBool("isRunning", false);
+    }
+
+    public void PlayMusicNoteParticles(bool play)
+    {
+        if (play)
+            singMusicNotes.Play();
+        else
+            singMusicNotes.Stop();
     }
 
     public bool GetHealedOnce()
