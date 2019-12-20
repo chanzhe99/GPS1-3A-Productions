@@ -8,10 +8,17 @@ public class RhinoAI : EnemyAI
     [SerializeField] private BossHPBarController bossHPBarController = null;
 
     private GameObject rhinoBossObjectPool = null;
-    public bool ableDoEnemyState = false;
+    public bool ableStartAnimation = false;
+    public bool allowRhinoAttackBehaviour = true;
+    private bool onPhase2_FirstTimeAttack = true;
+    private bool isRhinoFightEndMovie_FirstTimePlay = true;
+    private bool isAttacking = false;
+
+    private int phase1_MaxHealth = 0;
+    private int phase2_MaxHealth = 0;
 
     #region General position and count distance variable
-        [Space(6.0f)][Header("Rhino AI Details:")]
+    [Space(6.0f)][Header("Rhino AI Details:")]
         [SerializeField] private Transform rockfallSourceOriginPoint;
         [SerializeField] private float halfLengthOfRockfallAppearField;
         private Transform enemyTransform;
@@ -121,6 +128,10 @@ public class RhinoAI : EnemyAI
         private bool onStompWave = true;
     #endregion
 
+    #region | Getter |
+    public bool IsAttacking => isAttacking;
+    #endregion
+
     // For Reference Rhino's Attack Types
     // 
     //  Phase 1
@@ -185,13 +196,16 @@ public class RhinoAI : EnemyAI
         }
         */
 
-        bossHPBarController.SetUpHPBarSlider(this.maximumHealth);
-        bossHPBarController.UpdateHPBarProgress(this.currentHealth);
+        phase2_MaxHealth = (int)(this.maximumHealth/2);
+        phase1_MaxHealth = this.maximumHealth - phase2_MaxHealth;
+
+        bossHPBarController.SetUpHPBarSlider(phase1_MaxHealth);
+        bossHPBarController.UpdateHPBarProgress(this.currentHealth - phase2_MaxHealth);
     }
 
     protected override void EnemyPatrol()
     {
-        if (ableDoEnemyState)
+        if (ableStartAnimation)
         {
             if (rhinoPre_WarActionTimeTimer.Equals(0.0f))
             {
@@ -199,35 +213,68 @@ public class RhinoAI : EnemyAI
                 animator.SetTrigger(Global.nameAnimatorTrigger_RhinoAI_Roar);
             }
 
-            if (rhinoPre_WarActionTimeTimer >= rhinoPre_WarActionTime) { enemyState = EnemyState.ENEMY_CHASING; }
+            if (rhinoPre_WarActionTimeTimer >= rhinoPre_WarActionTime)
+            {
+                onPhase2 = false;
+                animator.SetBool(Global.nameAnimatorBool_RhinoAI_Phase2, onPhase2);
+                enemyState = EnemyState.ENEMY_CHASING;
+            }
             else { rhinoPre_WarActionTimeTimer += Time.deltaTime; }
         }
     }
 
     protected override void EnemyChase()
     {
-        if(currentHealth < (int)(maximumHealth / 2) && onPhase2 == false)
+        isAttacking = false;
+
+        if (currentHealth <= phase2_MaxHealth && onPhase2 == false)
         {
             onPhase2 = true;
-        }
-        
-        if (onPhase2.Equals(false))
-        {
-            bossPhaseAttack = (BossPhaseAttack)Random.Range((int)BossPhaseAttack.Phase1_Attack1, (int)BossPhaseAttack.Phase1_Attack3 + 1);
-        }
-        else
-        {
-            bossPhaseAttack = (BossPhaseAttack)Random.Range((int)BossPhaseAttack.Phase2_Attack1, (int)BossPhaseAttack.Phase2_Attack2 + 1);
-            Debug.Log(bossPhaseAttack);
+            //allowRhinoAttackBehaviour = false;
+            FindObjectOfType<RhinoBossFightManager>().PlayBossFightPhase2Movie();
         }
 
-        animator.SetBool(Global.nameAnimatorBool_RhinoAI_Phase2, onPhase2);
+        if (allowRhinoAttackBehaviour)
+        {
+            if (onPhase2 && onPhase2_FirstTimeAttack)
+            {
+                this.currentHealth = phase2_MaxHealth;
+                bossHPBarController.UpdateHPBarProgress(this.currentHealth, 1f);
+                bossPhaseAttack = BossPhaseAttack.Phase2_Attack1;
 
-        enemyState = EnemyState.ENEMY_ATTACKING;
+                isAttacking = true;
+                animator.SetBool(Global.nameAnimatorBool_RhinoAI_Phase2, onPhase2);
+                enemyState = EnemyState.ENEMY_ATTACKING;
+
+                onPhase2_FirstTimeAttack = false;
+                return;
+            }
+
+            if (onPhase2.Equals(false))
+            {
+                bossPhaseAttack = (BossPhaseAttack)Random.Range((int)BossPhaseAttack.Phase1_Attack1, (int)BossPhaseAttack.Phase1_Attack3 + 1);
+            }
+            else
+            {
+                bossPhaseAttack = (BossPhaseAttack)Random.Range((int)BossPhaseAttack.Phase2_Attack1, (int)BossPhaseAttack.Phase2_Attack2 + 1);
+                //Debug.Log(bossPhaseAttack);
+            }
+
+            isAttacking = true;
+            animator.SetBool(Global.nameAnimatorBool_RhinoAI_Phase2, onPhase2);
+            enemyState = EnemyState.ENEMY_ATTACKING;
+        }
     }
 
     protected override void EnemyAttack()
     {
+        if (currentHealth <= phase2_MaxHealth && onPhase2 == false)
+        {
+            ResetAllAttackModeVariable();
+
+            enemyState = EnemyState.ENEMY_CHASING;
+            return;
+        }
         switch (bossPhaseAttack)
         {
             case BossPhaseAttack.Phase1_Attack1:
@@ -250,6 +297,36 @@ public class RhinoAI : EnemyAI
                 Phase2_SecondAttackMode();
             break;
         }
+    }
+
+    private void ResetAllAttackModeVariable()
+    {
+        SetOnPreAttackAnimationFinishTrue();
+        SetIsFinishPhaseChargeTrue();
+        SetIsEtherealArmourFinishTrue();
+
+        bossPhaseAttack = BossPhaseAttack.None;
+        animator.SetInteger(Global.nameAnimatorInteger_RhinoAI_AttackType, (int)bossPhaseAttack);
+
+        tempRockfallFixedDifferentAppearPosition.Clear();
+        tempRockfallFixedDifferentAppearPosition.AddRange(rockfallFixedDifferentAppearPosition);// reset back the temp position
+
+        eachRockOfFallIntervalTimeTimer = 0;
+        indexOfWhichRockIsFalling = 0;
+        currentNumberOfStomWave = 0;
+        currentNumberOfRockfalls = 0;
+        isFinishPhaseCharge = false;
+        onPreAttackAnimationFinish = false;
+
+        // Phase 2 variables, actually not need but for safe reset it better
+        isEtherealArmourFinish = false;
+        onStompWave = false;
+        animator.SetBool(Global.nameAnimatorBool_RhinoAI_OnStompWave, onStompWave);
+        eachRockOfFallIntervalPhase2TimeTimer = 0;
+        indexOfWhichRockIsFalling = 0;
+        currentNumberOfStomWaveAndRockfalls = 0;
+
+        animator.SetBool(Global.nameAnimatorBool_RhinoAI_ContinueAttack, false);
     }
 
     private void Phase1_FirstAttackMode()
@@ -562,8 +639,17 @@ public class RhinoAI : EnemyAI
         {
             if (this.currentHealth > 0)
             {
-                this.currentHealth -= 1;
-                bossHPBarController.UpdateHPBarProgress(this.currentHealth);
+                
+                if (!onPhase2 && this.currentHealth > phase2_MaxHealth)
+                {
+                    this.currentHealth -= 1;
+                    bossHPBarController.UpdateHPBarProgress(this.currentHealth - phase2_MaxHealth);
+                }
+                else if(onPhase2)
+                {
+                    this.currentHealth -= 1;
+                    bossHPBarController.UpdateHPBarProgress(this.currentHealth);
+                }
 
                 StopCoroutine("DamageColorChange");
                 StopCoroutine("NotDamageColorChange");
@@ -631,6 +717,13 @@ public class RhinoAI : EnemyAI
 
     protected override void EnemyDieColorChange()
     {
+        if (isRhinoFightEndMovie_FirstTimePlay)
+        {
+            FindObjectOfType<RhinoBossFightManager>().PlayBossFightEndMovie();
+            isRhinoFightEndMovie_FirstTimePlay = false;
+        }
+
+        /*
         foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
         {
             tempDieTransparentColor.r = tempSpriteRenderer.color.r;
@@ -639,11 +732,15 @@ public class RhinoAI : EnemyAI
             tempDieTransparentColor.a = tempSpriteRenderer.color.a - (dieTransparentColorSpeed * Time.deltaTime);
             tempSpriteRenderer.color = tempDieTransparentColor;
         }
+        
         if(spriteRenderers[spriteRenderers.Count-1].color.a <= 0.0f)
         {
-            Global.gameManager.TimeToEndAndSayThankYou();
+            Debug.Log("Ending");
+            FindObjectOfType<RhinoBossFightManager>().PlayBossFightEndMovie();
+            //Global.gameManager.TimeToEndAndSayThankYou();
             this.gameObject.SetActive(false);
         }
+        */
     }
     
     private void OnDestroy()

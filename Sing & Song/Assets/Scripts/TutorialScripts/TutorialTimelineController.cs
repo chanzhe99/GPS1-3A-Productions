@@ -90,7 +90,6 @@ public class TutorialTimelineController : MonoBehaviour
             yield return null;
         }
 
-        yield return null;
         singSpriteAnimator.runtimeAnimatorController = null;
         songSpriteAnimator.runtimeAnimatorController = null;
         playableDirector.Resume();

@@ -16,10 +16,7 @@ public class LevelTransitionController : MonoBehaviour
     private Vector2 tempTransferPosition;
     private float playerMoveInDistanceX;
 
-
-    private float transitionTime = 0.5f;
-    private float transitionTimeTimer;
-    private float playerMoveInMinusDistanceX = 1.0f;
+    private float playerMoveInMinusDistanceX = 2f;
 
     public int LevelIndex
     {
@@ -61,7 +58,7 @@ public class LevelTransitionController : MonoBehaviour
         isNotAbleToSwitchToThis = isAblemove;
     }
 
-    public void setChildrenActive(bool isActive)
+    public void SetChildrenActive(bool isActive)
     {
         foreach(GameObject tempGameObject in gameObjectInLevel)
         {
@@ -85,17 +82,13 @@ public class LevelTransitionController : MonoBehaviour
             {
                 Global.gameManager.LastCheckPointLevelIndex = levelIndex;
 
-                mainLevelController.CurrentLevel.setChildrenActive(false);
-                mainLevelController.SwitchToAnotherLevelAndStartScreenFading(this);
-                this.setChildrenActive(true);
-
                 tempTransferPosition.x = transform.position.x + ((transform.position.x > collision.transform.parent.position.x) ? -playerMoveInDistanceX : playerMoveInDistanceX);
                 tempTransferPosition.y = collision.transform.parent.position.y;
-                collision.transform.parent.position = tempTransferPosition;
-                mainLevelController.songTransform.position = tempTransferPosition;
+
+                mainLevelController.SwitchToAnotherLevelAndStartScreenFading(this, tempTransferPosition);
+
                 isNotAbleToSwitchToThis = true;
 
-                
             }
         }
     }

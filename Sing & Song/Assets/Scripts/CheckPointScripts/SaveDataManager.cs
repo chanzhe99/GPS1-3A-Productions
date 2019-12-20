@@ -23,7 +23,7 @@ public class SaveDataManager
 
             binaryFormatter.Serialize(fileStream, saveData);
 
-            Debug.Log("Save Data Path( " + Application.persistentDataPath + path + " ) achieved !");
+            //Debug.Log("Save Data Path( " + Application.persistentDataPath + path + " ) achieved !");
 
         }
         catch (Exception exception)

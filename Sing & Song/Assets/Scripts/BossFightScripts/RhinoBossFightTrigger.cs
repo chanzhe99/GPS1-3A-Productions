@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossFightTrigger : MonoBehaviour
+public class RhinoBossFightTrigger : MonoBehaviour
 {
-    [SerializeField] private BossFightManager bossFightManager = null;
+    [SerializeField] private RhinoBossFightManager rhinoBossFightManager = null;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(Global.tag_Player))
         {
             this.GetComponent<BoxCollider2D>().enabled = false;
-            bossFightManager.PlayBossFightMovie();
+            rhinoBossFightManager.PlayBossFightPreMovie();
         }
     }
 }

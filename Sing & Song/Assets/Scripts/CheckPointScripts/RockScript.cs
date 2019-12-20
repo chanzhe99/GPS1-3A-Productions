@@ -54,8 +54,8 @@ public class RockScript : MonoBehaviour
     public void specialCheckpointFirstTimeSave()
     {
         animatorSing.SetBool(Global.nameAnimatorBool_Sing_IsRunning, false);
-        animatorSing.SetBool(Global.nameAnimatorBool_Song_IsRunning, false);
-        animatorSing.SetBool(Global.nameAnimatorBool_Song_IsHealing, false);
+        animatorSong.SetBool(Global.nameAnimatorBool_Song_IsRunning, false);
+        animatorSong.SetBool(Global.nameAnimatorBool_Song_IsHealing, false);
         Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, false);
         StopCoroutine("RockAnimation");
         StartCoroutine("RockAnimation");

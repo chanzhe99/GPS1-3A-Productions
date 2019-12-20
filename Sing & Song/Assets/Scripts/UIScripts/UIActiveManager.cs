@@ -10,8 +10,10 @@ public class UIActiveManager : MonoBehaviour
     private List<CanvasGroup> menusCanvasGroup = new List<CanvasGroup>();
     private List<bool> menusTempVisibilityState = new List<bool>();
     private List<bool> menusVisibilityState = new List<bool>();
+    private List<bool> menusOnTrasition = new List<bool>();
 
     public bool[] MenusVisibilityState { get { return menusVisibilityState.ToArray(); } }
+    public bool[] MenusOnTrasition { get { return menusOnTrasition.ToArray(); } }
 
     private void Awake()
     {
@@ -24,6 +26,7 @@ public class UIActiveManager : MonoBehaviour
         {
             menusCanvasGroup.Add(null);
             menusVisibilityState.Add(true);
+            menusOnTrasition.Add(false);
         }
 
         int checkMenusAmount = 0;
@@ -59,10 +62,12 @@ public class UIActiveManager : MonoBehaviour
 
     private void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SetMenuVisibilitySmoothly(Global.MenusType.BossHPBarUI, !menusVisibilityState[(int)Global.MenusType.BossHPBarUI]);
         }
+        */
     }
 
     private void SetMenusVisibilityWhileGameStart()
@@ -185,6 +190,7 @@ public class UIActiveManager : MonoBehaviour
     {
         if (menusVisibilityState[(int)menusType] != visibilityState)
         {
+            menusOnTrasition[(int)menusType] = true;
             menusVisibilityState[(int)menusType] = visibilityState;
             //StopAllCoroutines();
             StartCoroutine(VisibilitySmoothlySwitchCoroutine(menusType, menusVisibilityState[(int)menusType], smoothlTime, slowToFast));
@@ -200,6 +206,7 @@ public class UIActiveManager : MonoBehaviour
             {
                 if (menusVisibilityState[i] != true)
                 {
+                    menusOnTrasition[i] = true;
                     menusVisibilityState[i] = true;
                     StopAllCoroutines();
                     StartCoroutine(VisibilitySmoothlySwitchCoroutine((Global.MenusType)i, menusVisibilityState[i], 1.0f, true));
@@ -217,6 +224,7 @@ public class UIActiveManager : MonoBehaviour
             {
                 if (menusVisibilityState[i] != false)
                 {
+                    menusOnTrasition[i] = true;
                     menusVisibilityState[i] = false;
                     StopAllCoroutines();
                     StartCoroutine(VisibilitySmoothlySwitchCoroutine((Global.MenusType)i, menusVisibilityState[i], 1.0f, true));
@@ -232,7 +240,8 @@ public class UIActiveManager : MonoBehaviour
         float time = (visibilityState ? alpha : 1.0f - alpha);
         bool visibility = visibilityState;
 
-        if (menusVisibilityState[(int)menusType]) menusCanvasGroup[(int)menusType].interactable = menusCanvasGroup[(int)menusType].blocksRaycasts = visibilityState; // Switch the menu interactable and the mouse raycast block before switching while open the menu
+        //if (menusVisibilityState[(int)menusType]) menusCanvasGroup[(int)menusType].interactable = menusCanvasGroup[(int)menusType].blocksRaycasts = visibilityState; // Switch the menu interactable and the mouse raycast block before switching while open the menu
+        menusCanvasGroup[(int)menusType].interactable = menusCanvasGroup[(int)menusType].blocksRaycasts = visibilityState; // Switch the menu interactable and the mouse raycast block before switching while open the menu
 
         while (true)
         {
@@ -249,7 +258,9 @@ public class UIActiveManager : MonoBehaviour
             yield return null;
         }
 
-        if (!menusVisibilityState[(int)menusType]) menusCanvasGroup[(int)menusType].interactable = menusCanvasGroup[(int)menusType].blocksRaycasts = visibilityState; // Switch the menu interactable and the mouse raycast block after switched while close the menu
+        //if (!menusVisibilityState[(int)menusType]) menusCanvasGroup[(int)menusType].interactable = menusCanvasGroup[(int)menusType].blocksRaycasts = visibilityState; // Switch the menu interactable and the mouse raycast block after switched while close the menu
+
+        menusOnTrasition[(int)menusType] = false;
 
         yield return null;
     }

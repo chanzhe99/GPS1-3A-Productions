@@ -20,7 +20,6 @@ public class STARTMENU : MonoBehaviour
     [SerializeField] private TextMeshProUGUI continueButtonText;
     [SerializeField] private Color continueButtonNotInteractableTextColor;
     private Color continueButtonTextDefualtColor;
-    [SerializeField] private Animator levelTransitionScreenFadingAnimator;
     private string name_PlayerPrefs_OnPlayNewGameState = "OnPlayNewGameState";
     private string name_PlayerPrefs_OnPlayerRevive = "OnPlayerRevive";
 
@@ -74,7 +73,9 @@ public class STARTMENU : MonoBehaviour
         {
             if (bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayerRevive)))
             {
-                levelTransitionScreenFadingAnimator.SetTrigger(nameAnimatorTrigger_StartFading);
+                Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TrasitionFade, false);
+                Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, true, Global.gameStartFadeInSpeed);
+
                 inGameUIGameObject.SetActive(true);
                 FindObjectOfType<SingScript>().CanDoAction = true;
                 Time.timeScale = 1.0f;

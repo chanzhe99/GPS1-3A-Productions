@@ -7,8 +7,6 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private float endSceneTransitionTime;
     [SerializeField] private AudioSource audioSourceBGM;
-    [SerializeField] private GameObject trasitionFadeGameObject;
-    private Animator trasitionFadeAnimator;
 
     public SingScript playerScript;
     public GameObject singGameObject;
@@ -59,9 +57,9 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        trasitionFadeGameObject.SetActive(true);
-        trasitionFadeAnimator = trasitionFadeGameObject.GetComponent<Animator>();
-        trasitionFadeAnimator.SetTrigger(Global.nameAnimatorTrigger_TrasitionFade_FadeIn);
+        Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TrasitionFade, true);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, false, Global.gameStartFadeInSpeed);
+
         if (Global.gameManager == null) { Global.gameManager = this; }
         else { Destroy(gameObject); return; }
 
@@ -141,8 +139,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator EndSceneTransitionTime()
     {
-        trasitionFadeGameObject.SetActive(true);
-        trasitionFadeAnimator.SetTrigger(Global.nameAnimatorTrigger_TrasitionFade_FadeOut);
+        Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, true, Global.gameStartFadeInSpeed);
+
         yield return null;
         while (true)
         {

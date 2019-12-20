@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class BossHPBarController : MonoBehaviour
 {
     [SerializeField] private Slider bossHPBarSlider;
-    private float progressBarTransitionSpeed = 3.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -20,13 +19,13 @@ public class BossHPBarController : MonoBehaviour
         bossHPBarSlider.maxValue = maxHP;
     }
 
-    public void UpdateHPBarProgress(float currentHP)
+    public void UpdateHPBarProgress(float currentHP, float progressBarTransitionSpeed = 3.0f)
     {
         StopAllCoroutines();
-        StartCoroutine(UpdateProgressSmoothly(currentHP));
+        StartCoroutine(UpdateProgressSmoothly(currentHP, progressBarTransitionSpeed));
     }
 
-    private IEnumerator UpdateProgressSmoothly(float targetUpdateAmount)
+    private IEnumerator UpdateProgressSmoothly(float targetUpdateAmount, float progressBarTransitionSpeed)
     {
         float valueProgress = 0.0f;
         float beforeUpdateAmount = 0.0f;

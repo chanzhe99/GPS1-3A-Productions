@@ -305,7 +305,7 @@ public class EnemyAI : GameCharacter
         {
             if (collision.CompareTag("Player"))
             {
-                Debug.Log("detect IN!");
+                //Debug.Log("detect IN!");
                 playerScript.DamagePlayer(this.transform);
             }
         }
