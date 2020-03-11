@@ -668,7 +668,7 @@ public class SingScript : GameCharacter
     IEnumerator SongJump()
     {
         yield return new WaitForSeconds(nodeInterval);
-        song.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpVelocity * 1.25f), ForceMode2D.Impulse);
+        song.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpVelocity * 1.15f), ForceMode2D.Impulse);
     }
 
     public void SetStateIdle()

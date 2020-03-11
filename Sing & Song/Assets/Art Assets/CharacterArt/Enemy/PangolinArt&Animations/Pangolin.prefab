@@ -663,7 +663,7 @@ MonoBehaviour:
   animator: {fileID: 851457968657989411}
   rayCount: 5
   spawnFacingRight: 0
-  maximumHealth: 5
+  maximumHealth: 1
   moveSpeed: 3
   attackRange: {x: 8, y: 2}
   knockbackForce: {x: 6, y: 6}
