@@ -80,7 +80,7 @@ public class LevelTransitionController : MonoBehaviour
         {
             if (!isNotAbleToSwitchToThis)
             {
-                Global.gameManager.lastCheckPointLevelIndex = levelIndex;
+                Global.gameManager.playerSpawnData.SetLastCheckPointLevelIndex(levelIndex);
 
                 tempTransferPosition.x = transform.position.x + ((transform.position.x > collision.transform.parent.position.x) ? -playerMoveInDistanceX : playerMoveInDistanceX);
                 tempTransferPosition.y = collision.transform.parent.position.y;

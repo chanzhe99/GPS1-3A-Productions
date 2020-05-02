@@ -667,56 +667,6 @@ public class RhinoAI : EnemyAI
         SoundManagerScripts.PlaySound("rhino_die_sound");
     }
 
-    /*
-    private IEnumerator DamageColorChange()
-    {
-        float colorChangeTime01 = 0.15f;
-        float colorChangeTime02 = 0.05f;
-        float colorChangeTime03 = 0.05f;
-
-        WaitForSeconds waitForSeconds01 = new WaitForSeconds(colorChangeTime01);
-        WaitForSeconds waitForSeconds02 = new WaitForSeconds(colorChangeTime02);
-        WaitForSeconds waitForSeconds03 = new WaitForSeconds(colorChangeTime03);
-
-        foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
-        {
-            tempSpriteRenderer.color = getDamageColor;
-        }
-        yield return waitForSeconds01;
-        for (int i=0; i < spriteRenderers.Count; i++)
-        {
-                spriteRenderers[i].color = originialColor[i];
-        }
-        yield return waitForSeconds02;
-
-        foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
-        {
-            tempSpriteRenderer.color = getDamageColor;
-        }
-        yield return waitForSeconds03;
-        for (int i = 0; i < spriteRenderers.Count; i++)
-        {
-            spriteRenderers[i].color = originialColor[i];
-        }
-        yield return null;
-    }
-
-    /*
-    private IEnumerator NotDamageColorChange()
-    {
-        foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
-        {
-            tempSpriteRenderer.color = getNotDamageColor;
-        }
-        yield return new WaitForSeconds(0.3f);
-        for (int i = 0; i < spriteRenderers.Count; i++)
-        {
-            spriteRenderers[i].color = originialColor[i];
-        }
-        yield return null;
-    }
-    */
-
     protected override void EnemyDieColorChange()
     {
         if (isRhinoFightEndMovie_FirstTimePlay)
@@ -725,24 +675,6 @@ public class RhinoAI : EnemyAI
             isRhinoFightEndMovie_FirstTimePlay = false;
         }
 
-        /*
-        foreach (SpriteRenderer tempSpriteRenderer in spriteRenderers)
-        {
-            tempDieTransparentColor.r = tempSpriteRenderer.color.r;
-            tempDieTransparentColor.g = tempSpriteRenderer.color.g;
-            tempDieTransparentColor.b = tempSpriteRenderer.color.b;
-            tempDieTransparentColor.a = tempSpriteRenderer.color.a - (dieTransparentColorSpeed * Time.deltaTime);
-            tempSpriteRenderer.color = tempDieTransparentColor;
-        }
-        
-        if(spriteRenderers[spriteRenderers.Count-1].color.a <= 0.0f)
-        {
-            Debug.Log("Ending");
-            FindObjectOfType<RhinoBossFightManager>().PlayBossFightEndMovie();
-            //Global.gameManager.TimeToEndAndSayThankYou();
-            this.gameObject.SetActive(false);
-        }
-        */
     }
     
     private void OnDestroy()

@@ -85,7 +85,7 @@ public class CheckPoint : MonoBehaviour
                 isPressingButton = false;
                 ableToSaveData = false;
 
-                Global.gameManager.currentPointIndex = pointIndex;
+                Global.gameManager.playerSpawnData.SetCurrentPointIndex(pointIndex);
                 Global.gameManager.SaveAllGameDatas();
 
                 timerSavedPointRequest.ResetTimer();

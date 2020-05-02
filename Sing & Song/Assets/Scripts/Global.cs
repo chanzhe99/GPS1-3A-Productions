@@ -2,6 +2,8 @@
 
 public class Global
 {
+    public static readonly bool onSaveDataManagerDebug = false;
+
     public static GameManager gameManager;
     public static UIActiveManager userInterfaceActiveManager;
 
@@ -10,6 +12,7 @@ public class Global
     public static readonly string pathOfData_OpeningCutsceneData = "/data/OpeningCutsceneData.dat";
     public static readonly string pathOfData_GameSoundVolumeData = "/data/GameSoundVolumeData.dat";
     public static readonly string pathOfData_RhinoBossData = "/data/RhinoBossData.dat";
+    public static readonly string pathOfData_MenuStateData = "/data/MenuStateData.dat";
 
     public static readonly string tag_Player = "Player";
 

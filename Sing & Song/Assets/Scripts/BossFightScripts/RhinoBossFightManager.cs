@@ -101,7 +101,7 @@ public class RhinoBossFightManager : MonoBehaviour
         singScript.CanDoAction = true;
         rhinoAI.ableStartAnimation = true;
 
-        Global.gameManager.isNotFirstTimeRunRhinoCutscene = true;
+        Global.gameManager.rhinoBossData.SetIsNotFirstTimeRunRhinoCutscene(true);
         Global.gameManager.SaveRhinoBossData();
 
         DestroyBossFightTriggerObject();

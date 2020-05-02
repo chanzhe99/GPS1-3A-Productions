@@ -20,16 +20,23 @@ public class STARTMENU : MonoBehaviour
     [SerializeField] private TextMeshProUGUI continueButtonText;
     [SerializeField] private Color continueButtonNotInteractableTextColor;
     private Color continueButtonTextDefualtColor;
+
     private string name_PlayerPrefs_OnPlayNewGameState = "OnPlayNewGameState";
     private string name_PlayerPrefs_OnPlayerRevive = "OnPlayerRevive";
 
     private string nameAnimatorTrigger_StartFading = "StartFading";
 
+    private OpeningTimelineController openingTimelineController;
+
     private void Start()
     {
-        continueButtonTextDefualtColor = continueButtonText.color;
+        openingTimelineController = FindObjectOfType<OpeningTimelineController>();
 
-        if (Global.gameManager.isTutorialMoviePlayed ==  true)
+
+        // Set continue button interatable depend on the 
+        continueButtonTextDefualtColor = continueButtonText.color;
+        
+        if (Global.gameManager.menuStateData.IsOnNewGame == false)
         {
             continueButton.interactable = true;
             continueButtonText.color = continueButtonTextDefualtColor;
@@ -41,7 +48,57 @@ public class STARTMENU : MonoBehaviour
         }
         
         player.GetComponent<SingScript>().CanDoAction = false;
+
+
+        // Check the menu state
+        if (Global.gameManager.playerSpawnData.OnPlayerRevive)
+        {
+            Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TrasitionFade, false);
+            Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, true, Global.gameStartFadeInSpeed);
+
+            inGameUIGameObject.SetActive(true);
+            FindObjectOfType<SingScript>().CanDoAction = true;
+            Time.timeScale = 1.0f;
+            menuActiveOnStart = false;
+            Global.gameManager.playerSpawnData.SetOnPlayerRevive(false);
+            Global.gameManager.SaveAllGameDatas();
+            //startMenuPanelGameObject.SetActive(false);
+        }
+        else if (Global.gameManager.menuStateData.IsOnNewGame && !Global.gameManager.menuStateData.IsReturnToMainMenu)
+        {
+            //startMenuPanelGameObject.SetActive(false);
+            menuActiveOnStart = false;
+            if (openingTimelineController != null)
+            {
+                openingTimelineController.ShowOpeningDialogue();
+            }
+        }
+        else
+        {
+            Global.gameManager.menuStateData.SetIsReturnToMainMenu(false);
+            Global.gameManager.SaveAllGameDatas();
+
+            menuActiveOnStart = true;
+        }
+
+        Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, menuActiveOnStart);
+
+        if(!PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayerRevive) && !PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayNewGameState))
+        {
+            Debug.Log(name_PlayerPrefs_OnPlayerRevive + " and " + name_PlayerPrefs_OnPlayNewGameState + " discard PlayerPrefs have deleted!");
+        }
+        else
+        {
+            Debug.Log(name_PlayerPrefs_OnPlayerRevive + " PlayerPrefs have delete!");
+            PlayerPrefs.DeleteKey(name_PlayerPrefs_OnPlayerRevive);
+
+            Debug.Log(name_PlayerPrefs_OnPlayNewGameState + " PlayerPrefs have delete!");
+            PlayerPrefs.DeleteKey(name_PlayerPrefs_OnPlayNewGameState);
+        }
         
+
+        #region NotWant
+        /*
         if (PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayNewGameState))
         {
             //Debug.Log("OnPlayNewGameState = " + bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayNewGameState)));
@@ -68,7 +125,7 @@ public class STARTMENU : MonoBehaviour
 
             PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "false");
         }
-        
+
         if (PlayerPrefs.HasKey(name_PlayerPrefs_OnPlayerRevive))
         {
             if (bool.Parse(PlayerPrefs.GetString(name_PlayerPrefs_OnPlayerRevive)))
@@ -92,6 +149,8 @@ public class STARTMENU : MonoBehaviour
             Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, false);
             StartNewGame();
         }
+        */
+        #endregion
 
     }
 
@@ -139,36 +198,37 @@ public class STARTMENU : MonoBehaviour
 
     public void Continue()
     {
-        OpeningTimelineController tempOpeningTimelineController = FindObjectOfType<OpeningTimelineController>();
-
-        if (tempOpeningTimelineController == null)
-        {
-            player.GetComponent<SingScript>().CanDoAction = true;
-            inGameUIGameObject.SetActive(true);
-        }
+        player.GetComponent<SingScript>().CanDoAction = true;
+        inGameUIGameObject.SetActive(true);
     }
 
     public void StartNewGame()
     {
-        OpeningTimelineController tempOpeningTimelineController = FindObjectOfType<OpeningTimelineController>();
-
-        if (tempOpeningTimelineController == null)
+        if (Global.gameManager.menuStateData.IsOnNewGame)
         {
-            Global.gameManager.DeleteAllGameDatas();
-            Global.gameManager.SaveAllGameDatas();
+            Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, menuActiveOnStart);
 
-            PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "true");
-            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+            if (openingTimelineController != null)
+            {
+                openingTimelineController.ShowOpeningDialogue();
+            }
         }
         else
         {
-            tempOpeningTimelineController.ShowOpeningDialogue();
+            Global.gameManager.ResetAllGameDatas();
+            Global.gameManager.SaveAllGameDatas();
+
+            //PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "true");
+            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
     public void PlayerRevive()
     {
-        PlayerPrefs.SetString(name_PlayerPrefs_OnPlayerRevive, "true");
+        Global.gameManager.playerSpawnData.SetOnPlayerRevive(true);
+        Global.gameManager.SaveAllGameDatas();
+
+        //PlayerPrefs.SetString(name_PlayerPrefs_OnPlayerRevive, "true");
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 

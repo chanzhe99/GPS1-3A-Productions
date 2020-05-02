@@ -51,6 +51,9 @@ public class PAUSEMENU : MonoBehaviour
 
     public void QuitToMainMenu()
     {
+        Global.gameManager.menuStateData.SetIsReturnToMainMenu(true);
+        Global.gameManager.SaveAllGameDatas();
+
         Time.timeScale = 1.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

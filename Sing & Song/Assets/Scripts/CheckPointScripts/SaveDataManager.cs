@@ -23,15 +23,12 @@ public class SaveDataManager
 
             binaryFormatter.Serialize(fileStream, saveData);
 
-            //Debug.Log("Save Data Path( " + Application.persistentDataPath + path + " ) achieved !");
+            if (Global.onSaveDataManagerDebug) { Debug.Log("Save Data Path( " + Application.persistentDataPath + path + " ) achieved !"); }
 
         }
         catch (Exception exception)
         {
-            if (exception != null)
-            {
-                Debug.LogError("#Important ! Save Data Path( " + Application.persistentDataPath + path + " ) failed - Exception Massage : " + exception.Message);
-            }
+            if (Global.onSaveDataManagerDebug && exception != null) { Debug.LogError("#Important ! Save Data Path( " + Application.persistentDataPath + path + " ) failed - Exception Massage : " + exception.Message); }
 
         }
         finally
@@ -61,16 +58,12 @@ public class SaveDataManager
 
                 dataObject = binaryFormatter.Deserialize(fileStream) as object;
 
-                //Debug.Log("Load Data Path( " + Application.persistentDataPath + path + " ) achieved !");
+                if (Global.onSaveDataManagerDebug) { Debug.Log("Load Data Path( " + Application.persistentDataPath + path + " ) achieved !"); }
 
             }
             catch (Exception exception)
             {
-                if(exception != null)
-                {
-                    Debug.LogError("#Important ! Load Data Path( " + Application.persistentDataPath + path + " ) failed - Exception Massage : " + exception.Message);
-                }
-
+                if(Global.onSaveDataManagerDebug && exception != null) { Debug.LogError("#Important ! Load Data Path( " + Application.persistentDataPath + path + " ) failed - Exception Massage : " + exception.Message); }
             }
             finally
             {
@@ -78,7 +71,6 @@ public class SaveDataManager
                 {
                     fileStream.Close();
                 }
-
             }
 
         }
@@ -86,7 +78,7 @@ public class SaveDataManager
         {
 
             dataObject = null;
-            Debug.LogWarning("#Warning ! Empty File Path( " + Application.persistentDataPath + path + " ) - Load data failed!");
+            if(Global.onSaveDataManagerDebug) { Debug.LogWarning("#Warning ! Empty File Path( " + Application.persistentDataPath + path + " ) - Load data failed!"); }
 
         }
 
@@ -116,21 +108,18 @@ public class SaveDataManager
             try
             {
                 File.Delete(Application.persistentDataPath + path);
-                //Debug.Log("Delete Data Path( " + Application.persistentDataPath + path + " ) achieved !");
+                if (Global.onSaveDataManagerDebug) { Debug.Log("Delete Data Path( " + Application.persistentDataPath + path + " ) achieved !"); }
             }
             catch (Exception exception)
             {
-                if (exception != null)
-                {
-                    Debug.LogError("#Important ! Delete Data Path( " + Application.persistentDataPath + path + " ) failed - Exception Massage : " + exception.Message);
-                }
+                if (Global.onSaveDataManagerDebug && exception != null) { Debug.LogError("#Important ! Delete Data Path( " + Application.persistentDataPath + path + " ) failed - Exception Massage : " + exception.Message); }
             }
         }
         else
         {
-            Debug.LogWarning("#Warning ! Empty File Path( " + Application.persistentDataPath + path + " ) - Delete data failed!");
-
+            if (Global.onSaveDataManagerDebug) { Debug.LogWarning("#Warning ! Empty File Path( " + Application.persistentDataPath + path + " ) - Delete data failed!"); }
         }
+
     }
 
 }

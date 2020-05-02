@@ -4,9 +4,12 @@
     {
         private int currentPointIndex = 0;
         private int lastCheckPointLevelIndex = 0;
+        private bool onPlayerRevive = false;
 
         public int CurrentPointIndex => currentPointIndex;
         public int LastCheckPointLevelIndex => lastCheckPointLevelIndex;
+
+        public bool OnPlayerRevive => onPlayerRevive;
 
         public PlayerSpawnData()
         {
@@ -14,10 +17,33 @@
             lastCheckPointLevelIndex = 1;
         }
 
-        public PlayerSpawnData(int currentPointIndex, int lastCheckPointLevelIndex)
+        public PlayerSpawnData(int currentPointIndex, int lastCheckPointLevelIndex, bool onPlayerRevive)
         {
             this.currentPointIndex = currentPointIndex;
             this.lastCheckPointLevelIndex = lastCheckPointLevelIndex;
+            this.onPlayerRevive = onPlayerRevive;
+        }
+
+        public void SetCurrentPointIndex(int currentPointIndex)
+        {
+            this.currentPointIndex = currentPointIndex;
+        }
+
+        public void SetLastCheckPointLevelIndex(int lastCheckPointLevelIndex)
+        {
+            this.lastCheckPointLevelIndex = lastCheckPointLevelIndex;
+        }
+
+        public void SetOnPlayerRevive(bool onPlayerRevive)
+        {
+            this.onPlayerRevive = onPlayerRevive;
+        }
+
+        public void SetPlayerSpawnData(int currentPointIndex, int lastCheckPointLevelIndex, bool onPlayerRevive)
+        {
+            this.currentPointIndex = currentPointIndex;
+            this.lastCheckPointLevelIndex = lastCheckPointLevelIndex;
+            this.onPlayerRevive = onPlayerRevive;
         }
 
     }
@@ -38,6 +64,11 @@
             this.isTutorialMoviePlayed = isTutorialMoviePlayed;
         }
 
+        public void SetIsTutorialMoviePlayed(bool isTutorialMoviePlayed)
+        {
+            this.isTutorialMoviePlayed = isTutorialMoviePlayed;
+        }
+
     }
 
     [System.Serializable] public class OpeningCutsceneData
@@ -52,6 +83,11 @@
         }
 
         public OpeningCutsceneData(bool isOpeningCutsceneMoviePlayed)
+        {
+            this.isOpeningCutsceneMoviePlayed = isOpeningCutsceneMoviePlayed;
+        }
+
+        public void SetIsOpeningCutsceneMoviePlayed(bool isOpeningCutsceneMoviePlayed)
         {
             this.isOpeningCutsceneMoviePlayed = isOpeningCutsceneMoviePlayed;
         }
@@ -82,6 +118,21 @@
             this.soundEffectVolume = soundEffectVolume;
         }
 
+        public void SetMasterVolume(float masterVolume)
+        {
+            this.masterVolume = masterVolume;
+        }
+
+        public void SetMusicVolume(float musicVolume)
+        {
+            this.musicVolume = musicVolume;
+        }
+
+        public void SetSoundEffectVolume(float soundEffectVolume)
+        {
+            this.soundEffectVolume = soundEffectVolume;
+        }
+
         public void SetGameSoundVolumeData(float masterVolume, float musicVolume, float soundEffectVolume)
         {
             this.masterVolume = masterVolume;
@@ -105,5 +156,49 @@
         {
             this.isNotFirstTimeRunRhinoCutscene = isStartGameFirstTimeRunRhinoCutscene;
         }
+
+        public void SetIsNotFirstTimeRunRhinoCutscene(bool isStartGameFirstTimeRunRhinoCutscene)
+        {
+            this.isNotFirstTimeRunRhinoCutscene = isStartGameFirstTimeRunRhinoCutscene;
+        }
     }
+
+    [System.Serializable] public class MenuStateData
+    {
+        private bool isOnNewGame = true;
+        private bool isReturnToMainMenu = false;
+
+        public bool IsOnNewGame => isOnNewGame;
+        public bool IsReturnToMainMenu => isReturnToMainMenu;
+
+        public MenuStateData()
+        {
+            isOnNewGame = true;
+            isReturnToMainMenu = false;
+        }
+
+        public MenuStateData(bool isOnNewGame, bool isReturnToMainMenu)
+        {
+            this.isOnNewGame = isOnNewGame;
+            this.isReturnToMainMenu = isReturnToMainMenu;
+        }
+
+        public void SetIsOnNewGame(bool isOnNewGame)
+        {
+            this.isOnNewGame = isOnNewGame;
+        }
+
+        public void SetIsReturnToMainMenu(bool isReturnToMainMenu)
+        {
+            this.isReturnToMainMenu = isReturnToMainMenu;
+        }
+
+        public void SetMenuStateData(bool isOnNewGame, bool isReturnToMainMenu)
+        {
+            this.isOnNewGame = isOnNewGame;
+            this.isReturnToMainMenu = isReturnToMainMenu;
+        }
+
+    }
+
 }

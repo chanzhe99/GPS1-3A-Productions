@@ -36806,16 +36806,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95516dcc335457940a2e4261e7c95a03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDeleteAllDataOnAwake: 0
   endSceneTransitionTime: 1
   audioSourceBGM: {fileID: 7332003663411659394}
   playerScript: {fileID: 3920118415174553149}
   singGameObject: {fileID: 3920118415174553148}
   songGameObject: {fileID: 4666943266864052661}
-  currentPointIndex: -1
-  lastCheckPointLevelIndex: 1
-  isTutorialMoviePlayed: 0
-  isOpeningCutsceneMoviePlayed: 0
-  isNotFirstTimeRunRhinoCutscene: 0
 --- !u!1 &1635310931
 GameObject:
   m_ObjectHideFlags: 0

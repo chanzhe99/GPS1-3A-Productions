@@ -34,7 +34,7 @@ public class RockScript : MonoBehaviour
         singScript = FindObjectOfType<SingScript>();
         checkPoint.rockScript = this;
 
-        SetAnimationSpecialAnimationLayer_WeightBothSingAndSong(0.0f);
+        //SetAnimationSpecialAnimationLayer_WeightBothSingAndSong(0.0f);
 
         //FindObjectOfType<UIActiveManager>().SaveCurrentMenusActiveStateAndCloseAllMenus();
         //FindObjectOfType<UIActiveManager>().LoadAndOpenAllMenusToBeforeState();

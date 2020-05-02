@@ -27,7 +27,7 @@ public class TutorialTimelineController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if (Global.gameManager.isTutorialMoviePlayed == false)
+        if (Global.gameManager.tutorialData.IsTutorialMoviePlayed == false)
         {
             playableDirector = GetComponent<PlayableDirector>();
             singDefalutRuntimeAnimatorController = singSpriteAnimator.runtimeAnimatorController;
@@ -44,7 +44,7 @@ public class TutorialTimelineController : MonoBehaviour
     {
         if (tutorialStartedDialogueTriggers != null)
         {
-            if (!Global.gameManager.isTutorialMoviePlayed)
+            if (!Global.gameManager.tutorialData.IsTutorialMoviePlayed)
             {
                 Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, false);
 
@@ -166,7 +166,8 @@ public class TutorialTimelineController : MonoBehaviour
             yield return null;
         }
         yield return null;
-        Global.gameManager.isTutorialMoviePlayed = true;
+        Global.gameManager.tutorialData.SetIsTutorialMoviePlayed(true);
+        Global.gameManager.menuStateData.SetIsOnNewGame(false);
         Global.gameManager.SaveAllGameDatas();
         Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.InGameUI, true);
 

@@ -11,7 +11,8 @@ public class RhinoBossFightTrigger : MonoBehaviour
         if (collision.CompareTag(Global.tag_Player))
         {
             this.GetComponent<BoxCollider2D>().enabled = false;
-            if (Global.gameManager.isNotFirstTimeRunRhinoCutscene)
+            
+            if (Global.gameManager.rhinoBossData.IsNotFirstTimeRunRhinoCutscene)
             {
                 rhinoBossFightManager.PlayBossFightSkipPreMovie();
             }

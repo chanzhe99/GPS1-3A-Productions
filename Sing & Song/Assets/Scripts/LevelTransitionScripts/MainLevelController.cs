@@ -26,10 +26,7 @@ public class MainLevelController : MonoBehaviour
 
         for (int i=0; i < tempLevelTransitionController.Count; i++)
         {
-
-            
-
-            if (tempLevelTransitionController[i].LevelIndex == Global.gameManager.lastCheckPointLevelIndex)
+            if (tempLevelTransitionController[i].LevelIndex == Global.gameManager.playerSpawnData.LastCheckPointLevelIndex)
             {
                 tempLevelTransitionController[i].SetUpStart();
                 tempLevelTransitionController[i].SetDisableToSwitch(true);
@@ -41,8 +38,6 @@ public class MainLevelController : MonoBehaviour
                 tempLevelTransitionController[i].SetUpStart();
                 tempLevelTransitionController[i].SetDisableToSwitch(false);
                 tempLevelTransitionController[i].SetChildrenActive(false);
-                
-                
             }
         }
 
