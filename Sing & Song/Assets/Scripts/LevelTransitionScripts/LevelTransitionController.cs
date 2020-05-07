@@ -12,7 +12,6 @@ public class LevelTransitionController : MonoBehaviour
     private static string name_EnemyPositions = "EnemyPositions";
     private static string tag_Player = "Player";
 
-    private bool isNotAbleToSwitchToThis;
     private Vector2 tempTransferPosition;
     private float playerMoveInDistanceX;
 
@@ -53,11 +52,6 @@ public class LevelTransitionController : MonoBehaviour
 
     }
 
-    public void SetDisableToSwitch(bool isAblemove)
-    {
-        isNotAbleToSwitchToThis = isAblemove;
-    }
-
     public void SetChildrenActive(bool isActive)
     {
         foreach(GameObject tempGameObject in gameObjectInLevel)
@@ -78,21 +72,19 @@ public class LevelTransitionController : MonoBehaviour
     {
         if (collision.CompareTag(tag_Player))
         {
-            if (!isNotAbleToSwitchToThis)
+            if (Global.gameManager.lastCheckPointLevelIndex != levelIndex)
             {
-                Global.gameManager.playerSpawnData.SetLastCheckPointLevelIndex(levelIndex);
-
                 tempTransferPosition.x = transform.position.x + ((transform.position.x > collision.transform.parent.position.x) ? -playerMoveInDistanceX : playerMoveInDistanceX);
                 tempTransferPosition.y = collision.transform.parent.position.y;
 
                 mainLevelController.SwitchToAnotherLevelAndStartScreenFading(this, tempTransferPosition);
 
-                isNotAbleToSwitchToThis = true;
-
+                Global.gameManager.lastCheckPointLevelIndex = levelIndex;
             }
         }
     }
 
+    /*
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag(tag_Player))
@@ -100,5 +92,6 @@ public class LevelTransitionController : MonoBehaviour
             isNotAbleToSwitchToThis = false;
         }
     }
+    */
 
 }

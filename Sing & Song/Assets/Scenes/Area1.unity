@@ -29208,6 +29208,11 @@ PrefabInstance:
       propertyPath: boxSizeVector2.x
       value: 2.25
       objectReference: {fileID: 0}
+    - target: {fileID: 9074244432522378449, guid: 6120f77a7ca7038429c667078d8597f8,
+        type: 3}
+      propertyPath: currentLocalLevel
+      value: 
+      objectReference: {fileID: 563065602}
     - target: {fileID: 1947137728, guid: 6120f77a7ca7038429c667078d8597f8, type: 3}
       propertyPath: m_textInfo.characterCount
       value: 0
@@ -29483,6 +29488,7 @@ MonoBehaviour:
   singTransform: {fileID: 3920118415174553147}
   songTransform: {fileID: 4666943266864052662}
   singScript: {fileID: 3920118415174553149}
+  isAbleSwitchLevel: 0
 --- !u!1 &1295606999
 GameObject:
   m_ObjectHideFlags: 0
@@ -36812,6 +36818,7 @@ MonoBehaviour:
   playerScript: {fileID: 3920118415174553149}
   singGameObject: {fileID: 3920118415174553148}
   songGameObject: {fileID: 4666943266864052661}
+  lastCheckPointLevelIndex: -1
 --- !u!1 &1635310931
 GameObject:
   m_ObjectHideFlags: 0
@@ -48056,7 +48063,6 @@ MonoBehaviour:
   singGameObject: {fileID: 3920118415174553148}
   playerPivotPoint: {fileID: 4190623348319296587}
   boatGameObject: {fileID: 887988688268945224}
-  triggerEvent: {fileID: 99538894}
 --- !u!114 &4190623349457577712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51374,6 +51380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21cf29ad155d6a04d943ce116d113ce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstTriggerEvent: {fileID: 99538894}
   dogEnemyGameObject: {fileID: 2523101284447647167}
   attackToturialMovie: {fileID: 11400000, guid: 32103d1ff2d875b4db40fb3a0542c1c0,
     type: 2}

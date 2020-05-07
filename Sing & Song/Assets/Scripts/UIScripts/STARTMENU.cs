@@ -36,7 +36,7 @@ public class STARTMENU : MonoBehaviour
         // Set continue button interatable depend on the 
         continueButtonTextDefualtColor = continueButtonText.color;
         
-        if (Global.gameManager.menuStateData.IsOnNewGame == false)
+        if (!Global.gameManager.menuStateData.IsOnNewGame || Global.gameManager.openingCutsceneData.IsOpeningCutsceneMoviePlayed)
         {
             continueButton.interactable = true;
             continueButtonText.color = continueButtonTextDefualtColor;
@@ -51,7 +51,14 @@ public class STARTMENU : MonoBehaviour
 
 
         // Check the menu state
-        if (Global.gameManager.playerSpawnData.OnPlayerRevive)
+        if(Global.gameManager.menuStateData.IsJustStartGame)
+        {
+            Time.timeScale = 1.0f;
+            menuActiveOnStart = true;
+
+            Global.gameManager.menuStateData.SetIsJustStartGame(false);
+        }
+        else if (Global.gameManager.playerSpawnData.OnPlayerRevive)
         {
             Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.TrasitionFade, false);
             Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, true, Global.gameStartFadeInSpeed);
@@ -62,13 +69,12 @@ public class STARTMENU : MonoBehaviour
             menuActiveOnStart = false;
             Global.gameManager.playerSpawnData.SetOnPlayerRevive(false);
             Global.gameManager.SaveAllGameDatas();
-            //startMenuPanelGameObject.SetActive(false);
         }
         else if (Global.gameManager.menuStateData.IsOnNewGame && !Global.gameManager.menuStateData.IsReturnToMainMenu)
         {
-            //startMenuPanelGameObject.SetActive(false);
+            Time.timeScale = 1.0f;
             menuActiveOnStart = false;
-            if (openingTimelineController != null)
+            if (!Global.gameManager.openingCutsceneData.IsOpeningCutsceneMoviePlayed)
             {
                 openingTimelineController.ShowOpeningDialogue();
             }
@@ -198,24 +204,30 @@ public class STARTMENU : MonoBehaviour
 
     public void Continue()
     {
+        if (!Global.gameManager.tutorialData.IsTutorialMoviePlayed)
+        {
+            FindObjectOfType<TutorialManager>().ShowTutorialUI(TutorialManager.Index_ButtonNameOfTutorial.JumpButton);
+        }
         player.GetComponent<SingScript>().CanDoAction = true;
         inGameUIGameObject.SetActive(true);
     }
 
     public void StartNewGame()
     {
-        if (Global.gameManager.menuStateData.IsOnNewGame)
+        if (Global.gameManager.menuStateData.IsOnNewGame && !Global.gameManager.openingCutsceneData.IsOpeningCutsceneMoviePlayed)
         {
             Global.userInterfaceActiveManager.SetMenuVisibilityDirectly(Global.MenusType.StartMenuUI, menuActiveOnStart);
 
-            if (openingTimelineController != null)
-            {
-                openingTimelineController.ShowOpeningDialogue();
-            }
+            openingTimelineController.ShowOpeningDialogue();
+            
         }
         else
         {
+            //int lastCheckPointLevelIndex = Global.gameManager.playerSpawnData.LastCheckPointLevelIndex;
             Global.gameManager.ResetAllGameDatas();
+            Global.gameManager.menuStateData.SetIsJustStartGame(false);
+            //Global.gameManager.playerSpawnData.SetLastCheckPointLevelIndex(lastCheckPointLevelIndex);
+            //Global.gameManager.menuStateData.SetIsJustStartGame(false);
             Global.gameManager.SaveAllGameDatas();
 
             //PlayerPrefs.SetString(name_PlayerPrefs_OnPlayNewGameState, "true");
