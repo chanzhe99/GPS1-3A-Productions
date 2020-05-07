@@ -12,12 +12,13 @@ public class OpeningTimelineController : MonoBehaviour
     [SerializeField] private Transform playerPivotPoint;
     [SerializeField] private GameObject boatGameObject;
     //[SerializeField] private GameObject inGameUIGameObject;
-    [SerializeField] private GameObject triggerEvent;
     private DialogueTrigger openingDialogueTrigger;
     private DialogueManager dialogueManager;
     private float singDefaultGravityScaleValue;
 
     private bool isLastOpeningMovie = false;
+
+    public float SingDefaultGravityScaleValue => singDefaultGravityScaleValue;
 
     // Start is called before the first frame update
     private void Awake()
@@ -32,7 +33,6 @@ public class OpeningTimelineController : MonoBehaviour
         }
         else
         {
-            Destroy(triggerEvent);
             DestroyAllOpeningGameObjects();
         }
     }

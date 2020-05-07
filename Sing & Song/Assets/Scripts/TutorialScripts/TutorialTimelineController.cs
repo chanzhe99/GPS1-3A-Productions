@@ -8,6 +8,7 @@ public class TutorialTimelineController : MonoBehaviour
 {
     //[SerializeField] private GameObject inGameUIGameObject;
     //[SerializeField] private GameObject tutorialUIGameObject;
+    [SerializeField] private GameObject firstTriggerEvent;
     [SerializeField] private GameObject dogEnemyGameObject;
     private PlayableDirector playableDirector;
     [SerializeField] private PlayableAsset attackToturialMovie = null;
@@ -36,6 +37,7 @@ public class TutorialTimelineController : MonoBehaviour
         else
         {
             songGameObject.SetActive(true);
+            Destroy(firstTriggerEvent);
             DestroyAllTutorialGameObjects();
         }
     }

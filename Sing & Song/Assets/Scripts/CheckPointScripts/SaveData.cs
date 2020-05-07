@@ -2,25 +2,21 @@
 {
     [System.Serializable] public class PlayerSpawnData
     {
-        private int currentPointIndex = 0;
-        private int lastCheckPointLevelIndex = 0;
+        private int currentPointIndex = -1;
         private bool onPlayerRevive = false;
 
         public int CurrentPointIndex => currentPointIndex;
-        public int LastCheckPointLevelIndex => lastCheckPointLevelIndex;
 
         public bool OnPlayerRevive => onPlayerRevive;
 
         public PlayerSpawnData()
         {
             currentPointIndex = -1;
-            lastCheckPointLevelIndex = 1;
         }
 
-        public PlayerSpawnData(int currentPointIndex, int lastCheckPointLevelIndex, bool onPlayerRevive)
+        public PlayerSpawnData(int currentPointIndex, bool onPlayerRevive)
         {
             this.currentPointIndex = currentPointIndex;
-            this.lastCheckPointLevelIndex = lastCheckPointLevelIndex;
             this.onPlayerRevive = onPlayerRevive;
         }
 
@@ -29,20 +25,14 @@
             this.currentPointIndex = currentPointIndex;
         }
 
-        public void SetLastCheckPointLevelIndex(int lastCheckPointLevelIndex)
-        {
-            this.lastCheckPointLevelIndex = lastCheckPointLevelIndex;
-        }
-
         public void SetOnPlayerRevive(bool onPlayerRevive)
         {
             this.onPlayerRevive = onPlayerRevive;
         }
 
-        public void SetPlayerSpawnData(int currentPointIndex, int lastCheckPointLevelIndex, bool onPlayerRevive)
+        public void SetPlayerSpawnData(int currentPointIndex, bool onPlayerRevive)
         {
             this.currentPointIndex = currentPointIndex;
-            this.lastCheckPointLevelIndex = lastCheckPointLevelIndex;
             this.onPlayerRevive = onPlayerRevive;
         }
 
@@ -165,22 +155,31 @@
 
     [System.Serializable] public class MenuStateData
     {
+        private bool isJustStartGame = true;
         private bool isOnNewGame = true;
         private bool isReturnToMainMenu = false;
 
+        public bool IsJustStartGame => isJustStartGame;
         public bool IsOnNewGame => isOnNewGame;
         public bool IsReturnToMainMenu => isReturnToMainMenu;
 
         public MenuStateData()
         {
+            isJustStartGame = true;
             isOnNewGame = true;
             isReturnToMainMenu = false;
         }
 
-        public MenuStateData(bool isOnNewGame, bool isReturnToMainMenu)
+        public MenuStateData(bool isJustStartGame, bool isOnNewGame, bool isReturnToMainMenu)
         {
+            this.isJustStartGame = isJustStartGame;
             this.isOnNewGame = isOnNewGame;
             this.isReturnToMainMenu = isReturnToMainMenu;
+        }
+
+        public void SetIsJustStartGame(bool isJustStartGame)
+        {
+            this.isJustStartGame = isJustStartGame;
         }
 
         public void SetIsOnNewGame(bool isOnNewGame)
@@ -193,8 +192,9 @@
             this.isReturnToMainMenu = isReturnToMainMenu;
         }
 
-        public void SetMenuStateData(bool isOnNewGame, bool isReturnToMainMenu)
+        public void SetMenuStateData(bool isJustStartGame, bool isOnNewGame, bool isReturnToMainMenu)
         {
+            this.isJustStartGame = isJustStartGame;
             this.isOnNewGame = isOnNewGame;
             this.isReturnToMainMenu = isReturnToMainMenu;
         }

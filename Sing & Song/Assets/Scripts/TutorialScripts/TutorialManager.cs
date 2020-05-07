@@ -149,7 +149,6 @@ public class TutorialManager : MonoBehaviour
                     break;
 
             }// put the event triger in the switch case
-            Debug.Log(triggedEndTutorial);
 
             yield return null;
         }

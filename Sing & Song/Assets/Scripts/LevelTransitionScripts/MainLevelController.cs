@@ -9,36 +9,37 @@ public class MainLevelController : MonoBehaviour
     [SerializeField] private CameraController cameraController;
     [SerializeField] private Transform singTransform;
     [SerializeField] private Transform songTransform;
+    private Rigidbody2D singRigidbody2D;
+    private Rigidbody2D songRigidbody2D;
     [SerializeField] private SingScript singScript;
+    public bool isAbleSwitchLevel = false;
 
-    public LevelTransitionController CurrentLevel
-    {
-        get
-        {
-            return currentLevel;
-        }
-    }
+    public LevelTransitionController CurrentLevel => currentLevel;
 
     private void Start()
     {
+        singRigidbody2D = singTransform.GetComponent<Rigidbody2D>();
+        songRigidbody2D = songTransform.GetComponent<Rigidbody2D>();
+
         List<LevelTransitionController> tempLevelTransitionController = new List<LevelTransitionController>();
         tempLevelTransitionController.AddRange(FindObjectsOfType<LevelTransitionController>());
 
         for (int i=0; i < tempLevelTransitionController.Count; i++)
         {
-            if (tempLevelTransitionController[i].LevelIndex == Global.gameManager.playerSpawnData.LastCheckPointLevelIndex)
+            if (tempLevelTransitionController[i].LevelIndex == Global.gameManager.lastCheckPointLevelIndex)
             {
                 tempLevelTransitionController[i].SetUpStart();
-                tempLevelTransitionController[i].SetDisableToSwitch(true);
+                //tempLevelTransitionController[i].SetDisableToSwitch(true);
                 currentLevel = tempLevelTransitionController[i];
                 currentLevel.SetChildrenActive(true);
             }
             else
             {
                 tempLevelTransitionController[i].SetUpStart();
-                tempLevelTransitionController[i].SetDisableToSwitch(false);
+                //tempLevelTransitionController[i].SetDisableToSwitch(false);
                 tempLevelTransitionController[i].SetChildrenActive(false);
             }
+            
         }
 
     }
@@ -57,15 +58,11 @@ public class MainLevelController : MonoBehaviour
         cameraController.enabled = false;
         Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, true, Global.gameLevelTransitionFadeInSpeed);
 
-        // Set Sing and Song position to next level
-        singTransform.position = tempPosition;
-        songTransform.position = tempPosition;
-
         while (true)
         {
             // Don't let them fall down while his go thougt to next level
-            singTransform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            songTransform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            singRigidbody2D.velocity = Vector2.zero;
+            songRigidbody2D.velocity = Vector2.zero;
 
             if (!Global.userInterfaceActiveManager.MenusOnTrasition[(int)Global.MenusType.TrasitionFade]) // Wait until fade In transition finish, then just do fade out transition
             {
@@ -76,6 +73,10 @@ public class MainLevelController : MonoBehaviour
                 // Fade out transition
                 cameraController.enabled = true;
                 Global.userInterfaceActiveManager.SetMenuVisibilitySmoothly(Global.MenusType.TrasitionFade, false, Global.gameLevelTransitionFadeInSpeed);
+
+                // Set Sing and Song position to next level
+                singTransform.position = tempPosition;
+                songTransform.position = tempPosition;
 
                 singScript.CanDoAction = true; // Let player control while level finish transition
                 break;

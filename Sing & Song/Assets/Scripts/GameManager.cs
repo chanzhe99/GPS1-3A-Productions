@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     public SaveData.RhinoBossData rhinoBossData;
     public SaveData.MenuStateData menuStateData;
 
+    public int lastCheckPointLevelIndex = -1;
+
     /*
     public int currentPointIndex = -1;
     public int lastCheckPointLevelIndex = 1;
@@ -60,6 +62,9 @@ public class GameManager : MonoBehaviour
 
         menuStateData = (SaveData.MenuStateData)SaveDataManager.LoadDataGetObject(Global.pathOfData_MenuStateData);
         if (menuStateData == null) { menuStateData = new SaveData.MenuStateData(); }
+
+        FindCheckPointLocalLevelIndex();
+
     }
 
     private void Update()
@@ -103,6 +108,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void FindCheckPointLocalLevelIndex()
+    {
+        if (playerSpawnData.CurrentPointIndex == -1)
+        {
+            lastCheckPointLevelIndex = 1;
+            return;
+        }
+
+        List<CheckPoint> tempCheckPoint = new List<CheckPoint>();
+        tempCheckPoint.AddRange(FindObjectsOfType<CheckPoint>());
+
+        for (int i = 0; i < tempCheckPoint.Count; i++)
+        {
+            if (tempCheckPoint[i].PointIndex == playerSpawnData.CurrentPointIndex)
+            {
+                lastCheckPointLevelIndex = tempCheckPoint[i].CurrentLocalLevelIndex;
+                return;
+            }
+        }
+
+        lastCheckPointLevelIndex = 1;
+    }
+
     private void DefinePlayerLocation()
     {
         if (playerSpawnData.CurrentPointIndex == -1) return;
@@ -113,6 +141,7 @@ public class GameManager : MonoBehaviour
             {
                 playerScript.GetComponent<Transform>().position = checkPoints[i].PlayerSpawnPosition;
                 songGameObject.GetComponent<Transform>().position = checkPoints[i].PlayerSpawnPosition;
+
                 break;
             }
             
@@ -183,5 +212,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(endSceneTransitionTime);
         SceneManager.LoadSceneAsync((int)Global.SceneIndex.EndScene, LoadSceneMode.Single);
     }
+
+    private void OnApplicationQuit()
+    {
+        menuStateData.SetIsJustStartGame(true);
+        SaveAllGameDatas();
+    }
+
 }
 

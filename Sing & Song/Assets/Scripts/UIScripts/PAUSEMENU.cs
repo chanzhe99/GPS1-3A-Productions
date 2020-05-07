@@ -15,7 +15,9 @@ public class PAUSEMENU : MonoBehaviour
     [SerializeField] private GameObject pauseOptionMenuPanelGameObject;
 
     void Update()
-    {        
+    {
+        if (Global.userInterfaceActiveManager.MenusVisibilityState[(int)Global.MenusType.StartMenuUI]) return;
+
         if (Input.GetButtonDown("PauseButton"))
         {
             if (!paused)
@@ -51,6 +53,8 @@ public class PAUSEMENU : MonoBehaviour
 
     public void QuitToMainMenu()
     {
+        FindObjectOfType<MainLevelController>().isAbleSwitchLevel = false;
+
         Global.gameManager.menuStateData.SetIsReturnToMainMenu(true);
         Global.gameManager.SaveAllGameDatas();
 

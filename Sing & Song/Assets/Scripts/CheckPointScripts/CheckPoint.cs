@@ -7,6 +7,7 @@ public class CheckPoint : MonoBehaviour
 {
     [HideInInspector] public RockScript rockScript = null;
 
+    [SerializeField] private LevelTransitionController currentLocalLevel;
     [SerializeField] private Animator checkPointUIBackgroundImageAnimator = null;
     [SerializeField] private ColdDownCount timerSavedPointRequest = null;
     [SerializeField] private Vector2 boxSizeVector2 = Vector2.zero;
@@ -35,11 +36,7 @@ public class CheckPoint : MonoBehaviour
     public bool AbleToSaveData { get { return ableToSaveData; } }
 
     private string layerMaskPlayer = "Player";
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
-    }
+    public int CurrentLocalLevelIndex => currentLocalLevel.LevelIndex;
 
     void Update()
     {
